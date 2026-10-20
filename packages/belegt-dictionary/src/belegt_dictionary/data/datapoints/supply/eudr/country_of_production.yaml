@@ -1,0 +1,33 @@
+id: dp:supply.eudr.country_of_production
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Erzeugungsland
+  en: Country of production
+  zh: 生产国
+definition:
+  en: Country (ISO 3166-1 alpha-2) in which the relevant commodity was produced, and where relevant the parts of it. One value per answer; several countries require several answers per boundary.
+  de: Land (ISO 3166-1 alpha-2), in dem der relevante Rohstoff erzeugt wurde.
+  zh: 相关商品的生产国（ISO 3166-1 alpha-2）；每个答案一个值，多国需按口径分多个答案。
+value_type: enum
+enum_ref: enums/iso3166_alpha2.yaml
+period_type: point_in_time
+boundary:
+  - product
+methodology_refs:
+  - ref: eu_2023_1115_eudr
+    clause: Art. 9(1)(c)
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - supplier_response
+    - document
+    - historical_answer
+  min_sources: 1
+  max_age_days: 365
+  requires_calculation: false
+  human_confirmation_allowed: false
+tags:
+  - eudr_dds
+  - eudr

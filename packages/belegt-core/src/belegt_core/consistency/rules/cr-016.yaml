@@ -1,0 +1,20 @@
+# Spec: 06 §2.2 CR-016
+rule_id: CR-016
+rule_version: 1.0.0
+category: validity
+severity: warn
+title:
+  de: Faktorsatz veraltet oder Nachfolger verfügbar
+  en: Factor set deprecated or newer available
+scope: answer
+triggers:
+- answer_write
+- pre_submit_gate
+- daily_batch
+- context_change
+plugin: cr_016
+assert: '!deprecated && !newer_available'
+severity_expr: 'deprecated ? ''warn'' : ''info'''
+default_action: open_conflict
+explain_template: cr-016
+tests: tests/test_consistency_rules.py::test_cr_016

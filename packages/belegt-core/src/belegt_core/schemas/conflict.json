@@ -1,0 +1,292 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.belegt.org/graph/2026-10/conflict.json",
+  "title": "Conflict",
+  "type": "object",
+  "required": [
+    "id",
+    "rule_id",
+    "severity",
+    "datapoint_id",
+    "subject_refs",
+    "detail",
+    "status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^cfl_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "org_id": true,
+    "version": true,
+    "created_at": true,
+    "provenance": true,
+    "supersedes": true,
+    "schema_version": true,
+    "content_hash": true,
+    "tags": true,
+    "created_by": {
+      "$ref": "common.json#/$defs/actor"
+    },
+    "trust_zone": {
+      "const": "trusted"
+    },
+    "rule_id": {
+      "type": "string",
+      "pattern": "^CR-[0-9]{3}$"
+    },
+    "severity": {
+      "enum": [
+        "blocking",
+        "warning"
+      ]
+    },
+    "datapoint_id": {
+      "$ref": "common.json#/$defs/datapointRef"
+    },
+    "subject_refs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "common.json#/$defs/objectRef"
+      }
+    },
+    "detail": {
+      "type": "object",
+      "required": [
+        "values"
+      ],
+      "properties": {
+        "values": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "ref",
+              "value"
+            ],
+            "properties": {
+              "ref": {
+                "$ref": "common.json#/$defs/objectRef"
+              },
+              "value": {
+                "$ref": "common.json#/$defs/decStr"
+              },
+              "unit": {
+                "type": "string"
+              },
+              "customer_scope": {
+                "$ref": "common.json#/$defs/customerScope"
+              }
+            }
+          }
+        },
+        "delta": {
+          "$ref": "common.json#/$defs/decStr"
+        },
+        "delta_ratio": {
+          "$ref": "common.json#/$defs/decStr"
+        },
+        "threshold": {
+          "$ref": "common.json#/$defs/decStr"
+        }
+      }
+    },
+    "explanation": {
+      "$ref": "common.json#/$defs/i18nText"
+    },
+    "explanation_by": {
+      "type": "string",
+      "const": "agent:consistency-auditor"
+    },
+    "request_id": {
+      "type": "string",
+      "pattern": "^req_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "conflict_key": {
+      "$ref": "common.json#/$defs/sha256"
+    },
+    "resolution": {
+      "type": "object",
+      "required": [
+        "kind",
+        "note",
+        "resolved_by"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "corrected",
+            "accepted_divergence",
+            "dismissed",
+            "auto_cleared"
+          ]
+        },
+        "note": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        },
+        "approval_ref": {
+          "type": "string",
+          "pattern": "^apr_[0-9A-HJKMNP-TV-Z]{26}#v[1-9][0-9]*$"
+        },
+        "resolved_by": {
+          "$ref": "common.json#/$defs/actor"
+        },
+        "divergence": {
+          "type": "object",
+          "description": "结构化差异记录，字段同 06 §3.3 ADR/1",
+          "required": [
+            "format",
+            "reason_code",
+            "customer_requirement_refs",
+            "sides",
+            "include_in_export",
+            "review_by"
+          ],
+          "properties": {
+            "format": {
+              "const": "ADR/1"
+            },
+            "reason_code": {
+              "enum": [
+                "customer_methodology",
+                "consolidation",
+                "period",
+                "product_scope",
+                "boundary",
+                "timing_correction"
+              ]
+            },
+            "customer_requirement_refs": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string"
+              }
+            },
+            "sides": {
+              "type": "array",
+              "minItems": 2,
+              "items": {
+                "type": "object",
+                "required": [
+                  "answer",
+                  "customer_scope",
+                  "basis"
+                ],
+                "properties": {
+                  "answer": {
+                    "$ref": "common.json#/$defs/objectRef"
+                  },
+                  "customer_scope": {
+                    "$ref": "common.json#/$defs/customerScope"
+                  },
+                  "basis": {
+                    "type": "string",
+                    "maxLength": 200
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "disclosure_text": {
+              "$ref": "common.json#/$defs/i18nText"
+            },
+            "include_in_export": {
+              "type": "boolean"
+            },
+            "review_by": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "status": {
+      "enum": [
+        "open",
+        "resolved",
+        "accepted_divergence",
+        "dismissed"
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "$ref": "common.json#/$defs/envelope"
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "open"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "created_by": {
+            "const": "agent:consistency-auditor"
+          }
+        }
+      },
+      "else": {
+        "required": [
+          "resolution"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "accepted_divergence",
+              "dismissed"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "resolution": {
+            "properties": {
+              "resolved_by": {
+                "pattern": "^user:"
+              }
+            },
+            "required": [
+              "approval_ref"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "accepted_divergence"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "resolution": {
+            "required": [
+              "divergence"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

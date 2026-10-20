@@ -1,0 +1,108 @@
+template_mapping: tm:eu_battery_passport@2023-1542
+template_id: eu_battery_passport
+template_version: 2023-1542
+template_source: Regulation (EU) 2023/1542 Art. 77 and Annex XIII; field names after Battery Pass consortium / DIN DKE SPEC 99100
+dictionary_min_version: v2027.1
+license_note: 仅题号与短标签；原文请查阅官方来源
+maintainers:
+  - '@belegt/dict-maintainers'
+notes: field 名待核对；FR-503（V2），条目 v0.1 即进入 draft
+entries:
+  - entry_id: manufacturer_name
+    locator:
+      kind: paragraph
+      ref: Annex XIII 1(a)
+      field: manufacturerInformation.name
+      verify: true
+    short_label: Manufacturer name
+    datapoint_id: dp:org.identity.legal_name
+    direction: export
+    transform:
+      type: identity
+  - entry_id: battery_identifier
+    locator:
+      kind: paragraph
+      ref: Annex XIII 1(a)
+      field: batteryPassportIdentifier
+      verify: true
+    short_label: Battery model identifier
+    datapoint_id: dp:prod.identity.product_id
+    direction: export
+    transform:
+      type: identity
+  - entry_id: annex13_1b_chemistry
+    locator:
+      kind: paragraph
+      ref: Annex XIII 1(b)
+      field: batteryChemistry
+      verify: true
+    short_label: Battery chemistry
+    datapoint_id: dp:prod.battery.chemistry
+    direction: export
+    transform:
+      type: enum_map
+      map:
+        NMC: nmc
+        LFP: lfp
+        NCA: nca
+  - entry_id: annex13_1c_cf
+    locator:
+      kind: paragraph
+      ref: Annex XIII 1(c) → Art. 7(1)
+      field: batteryCarbonFootprint
+      verify: true
+    short_label: Carbon footprint per functional unit
+    datapoint_id: dp:prod.battery.carbon_footprint_per_kwh
+    direction: export
+    unit_hint: kgCO2e/kWh
+    boundary_hint: product_per_unit
+    transform:
+      type: identity
+  - entry_id: annex13_1e_rc_cobalt
+    locator:
+      kind: paragraph
+      ref: Annex XIII 1(e) → Art. 8(1)
+      field: recycledContent.cobalt
+      verify: true
+    short_label: Recycled content share, cobalt
+    datapoint_id: dp:prod.battery.recycled_content.cobalt
+    direction: export
+    unit_hint: '%'
+    transform:
+      type: identity
+  - entry_id: annex13_1e_rc_lithium
+    locator:
+      kind: paragraph
+      ref: Annex XIII 1(e) → Art. 8(1)
+      field: recycledContent.lithium
+      verify: true
+    short_label: Recycled content share, lithium
+    datapoint_id: dp:prod.battery.recycled_content.lithium
+    direction: export
+    unit_hint: '%'
+    transform:
+      type: identity
+  - entry_id: annex13_1e_rc_nickel
+    locator:
+      kind: paragraph
+      ref: Annex XIII 1(e) → Art. 8(1)
+      field: recycledContent.nickel
+      verify: true
+    short_label: Recycled content share, nickel
+    datapoint_id: dp:prod.battery.recycled_content.nickel
+    direction: export
+    unit_hint: '%'
+    transform:
+      type: identity
+  - entry_id: annex13_1e_rc_lead
+    locator:
+      kind: paragraph
+      ref: Annex XIII 1(e) → Art. 8(1)
+      field: recycledContent.lead
+      verify: true
+    short_label: Recycled content share, lead
+    datapoint_id: dp:prod.battery.recycled_content.lead
+    direction: export
+    unit_hint: '%'
+    transform:
+      type: identity

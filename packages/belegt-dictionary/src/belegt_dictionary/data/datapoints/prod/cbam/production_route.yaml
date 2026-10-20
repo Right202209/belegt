@@ -1,0 +1,34 @@
+id: dp:prod.cbam.production_route
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Herstellungsroute (CBAM)
+  en: CBAM production route
+  zh: 生产路线
+definition:
+  en: Production route of the CBAM good at the installation, chosen from the routes defined in the CBAM implementing rules for the sector (e.g. blast furnace/basic oxygen furnace, electric arc furnace, DRI-EAF). Determines the applicable monitoring rules and default values.
+  de: Herstellungsroute der CBAM-Ware in der Anlage gemäß den sektorspezifischen CBAM-Durchführungsvorschriften (z. B. Hochofen/Konverter, Elektrolichtbogenofen, DRI-EAF).
+  zh: CBAM 货物在装置中的生产路线，取自 CBAM 实施规则中对该行业定义的路线（如高炉-转炉、电弧炉、直接还原-电弧炉），决定适用的监测规则与默认值。
+value_type: enum
+enum_ref: enums/cbam_production_route.yaml
+period_type: point_in_time
+boundary:
+  - product
+  - site
+methodology_refs:
+  - ref: eu_2023_1773_cbam_ir
+    clause: Annex II
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - human_confirmation
+    - historical_answer
+  min_sources: 1
+  max_age_days: 365
+  requires_calculation: false
+  human_confirmation_allowed: true
+tags:
+  - cbam_communication
+  - cbam

@@ -1,0 +1,33 @@
+id: dp:prod.identity.product_id
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Produktkennung
+  en: Product identifier
+  zh: 产品标识
+definition:
+  en: 'Identifier of the reported product or article as used in the exchange with the customer: supplier part number, customer part number, GTIN or another URN-style ID. The answer states the identifier scheme. Excludes customs codes (dp:prod.identity.cn_code).'
+  de: 'Kennung des berichteten Produkts im Austausch mit dem Kunden: Lieferanten- oder Kundenteilenummer, GTIN oder andere URN. Das Schema ist anzugeben. Zolltarifnummern siehe dp:prod.identity.cn_code.'
+  zh: 与客户交换时使用的产品/物品标识：供应商料号、客户料号、GTIN 或其他 URN 形式标识，答案须注明标识体系；不含海关编码（dp:prod.identity.cn_code）。
+value_type: text
+period_type: point_in_time
+boundary:
+  - product
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - public_source
+    - human_confirmation
+    - historical_answer
+  min_sources: 1
+  max_age_days: 730
+  requires_calculation: false
+  human_confirmation_allowed: true
+tags:
+  - pact_pcf
+  - cbam_communication
+  - reach_scip
+  - eu_battery_passport
+  - identity

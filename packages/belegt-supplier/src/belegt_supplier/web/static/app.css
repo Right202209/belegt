@@ -1,0 +1,20 @@
+/* Spec: 08 §6.2 移动优先：最小宽度 360px、单列、大按钮 */
+*{box-sizing:border-box}body{margin:0;font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans",sans-serif;color:#1d1d1f;background:#f5f5f7}
+.bar{display:flex;justify-content:space-between;align-items:center;padding:.75rem 1rem;background:#fff;border-bottom:1px solid #ddd}
+.brand{font-weight:600}.langs a{margin-left:.5rem;color:#555;text-decoration:none;font-size:.9rem}.langs a.on{color:#000;font-weight:700}
+main{max-width:640px;margin:0 auto;padding:1rem;min-width:320px}h1{font-size:1.3rem}h2{font-size:1.1rem}
+.card{background:#fff;border-radius:12px;padding:1rem;margin:0 0 1rem;box-shadow:0 1px 2px rgba(0,0,0,.06)}
+.facts{display:grid;grid-template-columns:auto 1fr;gap:.25rem 1rem}.facts dt{color:#666}.facts dd{margin:0}
+.choice{display:block;padding:1rem;border:1px solid #ccc;border-radius:10px;margin:.5rem 0;text-decoration:none;color:inherit;font-size:1.05rem}
+.choice small{display:block;color:#666}.choice.disabled{opacity:.5}
+.field{border-top:1px solid #eee;padding:.75rem 0}.field label{font-weight:600;display:block}.dp{font-size:.75rem;color:#888}
+.row{display:flex;gap:.5rem;margin:.35rem 0}.row input,.row select,.row textarea{flex:1}
+input,select,textarea,button,.button{font:inherit;padding:.6rem .7rem;border:1px solid #bbb;border-radius:8px;min-height:44px}
+textarea{width:100%}.note{width:100%;margin-top:.35rem}
+button,.button{background:#0a58ca;color:#fff;border-color:#0a58ca;cursor:pointer;text-decoration:none;display:inline-block}
+.secondary{background:#fff;color:#0a58ca}.actions{display:flex;gap:.5rem;justify-content:flex-end;align-items:center;flex-wrap:wrap;margin:1rem 0}
+.hint{color:#8a5a00;margin:.25rem 0}.hint.block{color:#b00020}.err{color:#b00020}.ok{color:#11772d}.notice{color:#8a5a00}
+.invalid input,.invalid select{border-color:#b00020}.muted{color:#666}.beta{background:#fff8e1;margin:0;padding:.4rem 1rem;font-size:.85rem}
+.summary{width:100%;border-collapse:collapse}.summary th,.summary td{text-align:left;padding:.3rem;border-bottom:1px solid #eee;vertical-align:top}
+.hash{word-break:break-all}.check{display:flex;gap:.5rem;align-items:flex-start}.files li{margin:.4rem 0}.inline{display:inline}
+footer{text-align:center;padding:1.5rem;color:#666;font-size:.85rem}footer a{color:#666}

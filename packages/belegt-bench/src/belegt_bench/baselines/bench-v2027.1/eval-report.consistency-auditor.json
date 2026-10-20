@@ -1,0 +1,124 @@
+{
+ "schema": "belegt-eval-report/1",
+ "created_at": "2026-10-19T15:50:27Z",
+ "agent": "consistency-auditor",
+ "dataset_version": "bench-v2027.1",
+ "partition": "test",
+ "smoke": false,
+ "status": "ok",
+ "skip_reason": null,
+ "config": {
+  "predictor": "baseline-rules@1",
+  "predictor_kind": "baseline",
+  "model_id": null,
+  "prompt_version": null,
+  "params": {
+   "temperature": 0,
+   "top_p": 1
+  },
+  "bootstrap": 2000,
+  "seed": 7
+ },
+ "manifest_ok": true,
+ "manifest_errors": [],
+ "leak": {
+  "ok": true,
+  "checks": {
+   "LEAK-01": {
+    "ok": true,
+    "pairs_checked": 6300,
+    "hits": []
+   },
+   "LEAK-02": {
+    "ok": true,
+    "violations": []
+   },
+   "LEAK-03": {
+    "ok": true,
+    "org_overlap": [],
+    "clusters_split": []
+   }
+  }
+ },
+ "metrics": {
+  "M-AUD-01": {
+   "name": "冲突漏检率 ★",
+   "value": 0.0,
+   "n": 16,
+   "star": true,
+   "primary": false,
+   "direction": "lower",
+   "family": "rate_low",
+   "ci95": [
+    0.0,
+    0.0
+   ],
+   "violations": 0.0
+  },
+  "M-AUD-02": {
+   "name": "误报率",
+   "value": 0.0,
+   "n": 16,
+   "star": false,
+   "primary": true,
+   "direction": "lower",
+   "family": "rate_low",
+   "ci95": [
+    0.0,
+    0.0
+   ],
+   "violations": null
+  },
+  "M-AUD-03": {
+   "name": "解释中新增数字 ★",
+   "value": 0.0,
+   "n": 16,
+   "star": true,
+   "primary": false,
+   "direction": "lower",
+   "family": "count",
+   "ci95": [
+    0.0,
+    0.0
+   ],
+   "violations": 0.0
+  }
+ },
+ "cells": [
+  {
+   "cell": "none×de×json",
+   "n": 16,
+   "metrics": {
+    "M-AUD-02": {
+     "value": 0.0,
+     "n": 16
+    }
+   }
+  }
+ ],
+ "worst_cell": {
+  "metric": "M-AUD-02",
+  "cell": "none×de×json",
+  "n": 16,
+  "metrics": {
+   "M-AUD-02": {
+    "value": 0.0,
+    "n": 16
+   }
+  }
+ },
+ "ops": {
+  "wall_seconds": 0.0,
+  "M-OPS-01": {
+   "name": "单份问卷 LLM 成本（EUR）",
+   "value": 0.0,
+   "total_eur": 0.0
+  },
+  "M-OPS-02": {
+   "name": "每 100 单元首稿机器时长（分钟）",
+   "value": 0.0
+  }
+ },
+ "n_samples": 16,
+ "sample_details": "eval-samples.consistency-auditor.jsonl"
+}

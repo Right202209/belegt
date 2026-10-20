@@ -1,0 +1,23 @@
+belegt-dictionary — licensing
+==============================
+
+This package contains two kinds of material under two licenses (02 §6.1, 09 §1.2):
+
+1. DATA — Creative Commons Attribution 4.0 International (CC BY 4.0)
+   Everything under src/belegt_dictionary/data/ (DataPoint definitions, TemplateMapping
+   files, units and conversion tables, enums, aliases, reference lists, JSON Schemas,
+   migration notes) and rfcs/.
+   Full text: LICENSES/CC-BY-4.0.txt — https://creativecommons.org/licenses/by/4.0/legalcode
+   Attribution: "Belegt Data Point Dictionary (belegt-dictionary), © Belegt dictionary
+   contributors, licensed under CC BY 4.0".
+
+   TemplateMapping files contain only locators (question numbers, cells, field names) and
+   short labels written by the contributors. They do not reproduce questionnaire or
+   regulation text; official sources remain subject to their own terms.
+
+2. CODE — Apache License, Version 2.0
+   Everything under src/belegt_dictionary/ except data/ (loader, models, unit conversion,
+   period alignment, validator `belegt-dict`), tests/ and pyproject.toml.
+   Full text: LICENSES/Apache-2.0.txt — https://www.apache.org/licenses/LICENSE-2.0
+
+SPDX: data `CC-BY-4.0`, code `Apache-2.0`.

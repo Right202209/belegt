@@ -1,0 +1,130 @@
+{
+ "id": "TV-04",
+ "title": "Scope 2 market-based（复现 03 §5.6.8）",
+ "spec": "05 §9 TV-04",
+ "cases": [
+  {
+   "id": "TV-04",
+   "description": "(4820 − 1200) × 0.56；因子库 fs:aib-residual-mix@2025.1（rows_hash 沿用 03 的占位值）",
+   "request": {
+    "method_id": "ghg.scope2.market_based",
+    "methodology_version": "ghg-scope2-market@1.0.0",
+    "factor_set_version": "fs:aib-residual-mix@2025.1",
+    "boundary": "organization",
+    "period": {
+     "start": "2025-01-01",
+     "end": "2025-12-31"
+    },
+    "params": {
+     "consolidation": "operational_control",
+     "grid_region": "DE"
+    },
+    "inputs": [
+     {
+      "name": "electricity_contractual_renewable",
+      "ref": "ev_01JD8Z4M5N6P7Q8R9S0T1V2W3X#v2",
+      "value": "1200",
+      "unit": "MWh"
+     },
+     {
+      "name": "electricity_purchased",
+      "ref": "ev_01JD8Z1A2B3C4D5E6F7G8H9J0K#v2",
+      "value": "4820",
+      "unit": "MWh"
+     }
+    ]
+   },
+   "factor_set_ref": {
+    "id": "fs:aib-residual-mix@2025.1",
+    "path": "fs/aib-residual-mix@2025.1.yaml",
+    "rows_hash": "sha256:35f78fd009ad6f51b4973c5a50e77fdf25d81dfaa58395010609c6a7e3b1b460"
+   },
+   "expected": {
+    "result": {
+     "value": "2027.2",
+     "unit": "tCO2e",
+     "rounding": {
+      "mode": "half_even",
+      "digits": 3
+     }
+    },
+    "breakdown": [
+     {
+      "name": "eac_consumption",
+      "value": "1200",
+      "unit": "MWh"
+     },
+     {
+      "name": "eac_emissions",
+      "value": "0",
+      "unit": "tCO2e"
+     },
+     {
+      "name": "residual_mix_consumption",
+      "value": "3620",
+      "unit": "MWh"
+     },
+     {
+      "name": "residual_mix_emissions",
+      "value": "2027.2",
+      "unit": "tCO2e"
+     },
+     {
+      "name": "factor_year_gap",
+      "value": "1",
+      "unit": "1"
+     },
+     {
+      "name": "emissions_unrounded",
+      "value": "2027.2",
+      "unit": "tCO2e"
+     }
+    ],
+    "input_hash": "sha256:fa52b131cff377ebdaec89df24a2a00382ad4837e8dc577c3989a7a302ede446"
+   },
+   "tolerance": "0",
+   "doc_note": "03 §5.6.8 的 output_hash sha256:12a0337f… 对应 rounding.digits=1 且 breakdown 只有两项；按 05 §1.2 默认 3 位（digits 覆盖须经 params.rounding_digits 进入 input_hash），本引擎的 output_hash 不同，result.value 相同（见 README「文档问题」）。"
+  },
+  {
+   "id": "TV-04.err-ref",
+   "description": "错误向量：ref 未钉住版本 → CALC_INPUT_MISSING",
+   "request": {
+    "method_id": "ghg.scope2.market_based",
+    "methodology_version": "ghg-scope2-market@1.0.0",
+    "factor_set_version": "fs:aib-residual-mix@2025.1",
+    "boundary": "organization",
+    "period": {
+     "start": "2025-01-01",
+     "end": "2025-12-31"
+    },
+    "params": {
+     "consolidation": "operational_control",
+     "grid_region": "DE"
+    },
+    "inputs": [
+     {
+      "name": "electricity_contractual_renewable",
+      "ref": "ev_01JD8Z4M5N6P7Q8R9S0T1V2W3X",
+      "value": "1200",
+      "unit": "MWh"
+     },
+     {
+      "name": "electricity_purchased",
+      "ref": "ev_01JD8Z1A2B3C4D5E6F7G8H9J0K#v2",
+      "value": "4820",
+      "unit": "MWh"
+     }
+    ]
+   },
+   "factor_set_ref": {
+    "id": "fs:aib-residual-mix@2025.1",
+    "path": "fs/aib-residual-mix@2025.1.yaml",
+    "rows_hash": "sha256:35f78fd009ad6f51b4973c5a50e77fdf25d81dfaa58395010609c6a7e3b1b460"
+   },
+   "expected": {
+    "error_code": "CALC_INPUT_MISSING"
+   },
+   "tolerance": "0"
+  }
+ ]
+}

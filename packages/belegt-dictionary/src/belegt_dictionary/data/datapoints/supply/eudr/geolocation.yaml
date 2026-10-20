@@ -1,0 +1,55 @@
+id: dp:supply.eudr.geolocation
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Geolokalisierung der Erzeugungsflächen
+  en: Geolocation of production plots
+  zh: 地块地理坐标
+definition:
+  en: 'Geolocation of all plots of land where the relevant commodity was produced, one record per plot: point for plots up to 4 ha, polygon for larger plots (cattle: establishments), as GeoJSON with WGS84 coordinates and at least six decimal digits.'
+  de: 'Geolokalisierung aller Flächen, auf denen der relevante Rohstoff erzeugt wurde, ein Datensatz je Fläche: Punkt bis 4 ha, Polygon darüber, als GeoJSON (WGS84, mind. sechs Dezimalstellen).'
+  zh: 生产相关商品的全部地块的地理坐标，每块一条记录：≤ 4 ha 可用点，更大地块用多边形（牛为养殖场所），GeoJSON、WGS84、至少 6 位小数。
+value_type: geo
+cardinality: many
+record_fields:
+  - name: plot_id
+    value_type: text
+    required: true
+  - name: geometry
+    value_type: geo
+    required: true
+  - name: area
+    value_type: number
+    unit: ha
+    required: false
+  - name: country
+    value_type: enum
+    enum_ref: enums/iso3166_alpha2.yaml
+    required: true
+period_type: point_in_time
+boundary:
+  - product
+methodology_refs:
+  - ref: eu_2023_1115_eudr
+    clause: Art. 9(1)(d)
+  - ref: eu_2023_1115_eudr
+    clause: Art. 2(28)
+sensitivity: restricted
+evidence_requirements:
+  accepted_source_types:
+    - supplier_response
+    - document
+    - historical_answer
+  min_sources: 1
+  max_age_days: 365
+  requires_calculation: false
+  human_confirmation_allowed: false
+validity_rule:
+  expires_by: evidence_valid_until
+related_datapoints:
+  - id: dp:supply.eudr.country_of_production
+    relation: see_also
+tags:
+  - eudr_dds
+  - eudr

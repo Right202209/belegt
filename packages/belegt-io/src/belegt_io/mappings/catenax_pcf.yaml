@@ -1,0 +1,22 @@
+# Spec: 02 §4.3.3。io.catenax.pcf 10.0.0（Tractus-X 语义模型，status=release）
+template_mapping: tm:catenax_pcf@cx-0136
+template_id: catenax_pcf
+template_version: cx-0136
+template_source: "Catena-X CX-0136 / io.catenax.pcf:10.0.0"
+fingerprint:
+  threshold: 0.85
+  markers:
+    - { json_key: "scopeOfPcfForm", weight: 3 }
+    - { json_key: "productLifeCycleStagesAndEmissions", weight: 3 }
+    - { json_key: "pcfAssessmentAndMethodology", weight: 1 }
+entries:
+  - entry_id: pcf_excl_biogenic_uptake
+    locator: { kind: json_path, ref: "$.productLifeCycleStagesAndEmissions[0].productionStage[0].pcfExcludingBiogenicUptake" }
+    short_label: "PCF excl. biogenic uptake"
+    datapoint_id: dp:prod.pcf.cradle_to_gate.excluding_biogenic
+    direction: both
+  - entry_id: pcf_incl_biogenic_uptake
+    locator: { kind: json_path, ref: "$.productLifeCycleStagesAndEmissions[0].productionStage[0].pcfIncludingBiogenicUptake" }
+    short_label: "PCF incl. biogenic uptake"
+    datapoint_id: dp:prod.pcf.cradle_to_gate
+    direction: both

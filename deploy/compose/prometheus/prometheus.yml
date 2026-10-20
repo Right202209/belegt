@@ -1,0 +1,31 @@
+# Spec: 10 §5.1（指标）、§5.3（SLO 与 burn-rate 告警）、§5.5（原始保留 15 天）
+global:
+  scrape_interval: 15s
+  evaluation_interval: 30s
+  external_labels:
+    deployment_environment: dev
+    belegt_deploy_profile: private-compose
+
+rule_files:
+  - /etc/prometheus/rules/*.yml
+
+# compose 精简栈不带 Alertmanager；接入时取消注释并配置值班路由（ALR 级别：page / ticket / security）
+# alerting:
+#   alertmanagers:
+#     - static_configs: [{ targets: ["alertmanager:9093"] }]
+
+scrape_configs:
+  - job_name: belegt-api
+    metrics_path: /metrics
+    static_configs: [{ targets: ["belegt-api:8000"], labels: { service: graph-api } }]
+  - job_name: belegt-worker
+    metrics_path: /metrics
+    static_configs: [{ targets: ["belegt-worker:9464"], labels: { service: belegt-worker } }]
+  - job_name: otel-collector
+    static_configs: [{ targets: ["otel-collector:8889"] }]
+  - job_name: temporal
+    static_configs: [{ targets: ["temporal:9090"] }]
+  - job_name: postgres
+    static_configs: [{ targets: ["postgres-exporter:9187"] }]
+  - job_name: prometheus
+    static_configs: [{ targets: ["localhost:9090"] }]

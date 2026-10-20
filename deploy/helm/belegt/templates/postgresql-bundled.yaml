@@ -1,0 +1,86 @@
+{{- /* 仅开发/演示（values-dev.yaml）：单实例 PostgreSQL 16 + pgvector。生产用托管 PG 或独立主备（10 §6.3、§6.6）。 */ -}}
+{{- if .Values.postgresql.bundled.enabled }}
+{{- $ns := include "belegt.ns" (list . "data") }}
+{{- $name := printf "%s-postgresql" (include "belegt.fullname" .) }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ $name }}
+  namespace: {{ $ns }}
+  labels:
+    {{- include "belegt.labels" . | nindent 4 }}
+    {{- include "belegt.selector" (list . "postgresql" "data") | nindent 4 }}
+spec:
+  serviceName: {{ $name }}
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "belegt.selector" (list . "postgresql" "data") | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "belegt.labels" . | nindent 8 }}
+        {{- include "belegt.selector" (list . "postgresql" "data") | nindent 8 }}
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+        runAsGroup: 999
+        fsGroup: 999
+        seccompProfile: { type: RuntimeDefault }
+      {{- include "belegt.scheduling" (list . "data") | nindent 6 }}
+      containers:
+        - name: postgres
+          image: {{ .Values.image.postgres }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - { name: POSTGRES_USER, value: {{ .Values.postgresql.adminUser | quote }} }
+            - { name: POSTGRES_DB, value: {{ .Values.postgresql.database | quote }} }
+            - { name: PGDATA, value: /var/lib/postgresql/data/pgdata }
+            - name: POSTGRES_PASSWORD
+              valueFrom: { secretKeyRef: { name: {{ include "belegt.secretName" . }}, key: postgres-admin-password } }
+          ports:
+            - { name: postgres, containerPort: 5432, protocol: TCP }
+          readinessProbe:
+            exec: { command: ["sh", "-c", "pg_isready -U \"$POSTGRES_USER\" -d \"$POSTGRES_DB\""] }
+            periodSeconds: 5
+          livenessProbe:
+            exec: { command: ["sh", "-c", "pg_isready -U \"$POSTGRES_USER\""] }
+            periodSeconds: 20
+          resources:
+            {{- toYaml .Values.postgresql.bundled.resources | nindent 12 }}
+          securityContext:
+            {{- include "belegt.containerSecurityContext" . | nindent 12 }}
+          volumeMounts:
+            - { name: data, mountPath: /var/lib/postgresql/data }
+            - { name: run, mountPath: /var/run/postgresql }
+            - { name: tmp, mountPath: /tmp }
+      volumes:
+        - { name: run, emptyDir: { medium: Memory, sizeLimit: 16Mi } }
+        {{- include "belegt.tmpVolume" . | nindent 8 }}
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: [ReadWriteOnce]
+        {{- with .Values.postgresql.bundled.storageClass }}
+        storageClassName: {{ . }}
+        {{- end }}
+        resources:
+          requests:
+            storage: {{ .Values.postgresql.bundled.storage }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $name }}
+  namespace: {{ $ns }}
+  labels:
+    {{- include "belegt.metaLabels" . | nindent 4 }}
+spec:
+  selector:
+    {{- include "belegt.selector" (list . "postgresql" "data") | nindent 4 }}
+  ports:
+    - { name: postgres, port: 5432, targetPort: postgres, protocol: TCP }
+{{- end }}

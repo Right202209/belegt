@@ -1,0 +1,62 @@
+# Spec: 10 §5.1（信号规范：W3C traceparent、尾部采样、禁止业务值进 span）、§5.4（compose 默认纯 OTel + Grafana）
+# 应用经 OTLP 发到本 Collector；指标由 Prometheus 拉取 :8889；trace 默认只打日志计数（compose 精简栈不带 Tempo），
+# 需要时把 traces 管道的 exporter 换成 otlp/tempo 或 Langfuse 的 OTLP 端点（Helm 私有化可选 Langfuse）。
+receivers:
+  otlp:
+    protocols:
+      grpc: { endpoint: 0.0.0.0:4317 }
+      http: { endpoint: 0.0.0.0:4318 }
+
+processors:
+  memory_limiter:
+    check_interval: 1s
+    limit_mib: 400
+  # 10 §5.1 禁止：业务值、联系人邮箱、提示正文进入 span 属性 —— Collector 侧兜底删除
+  attributes/scrub:
+    actions:
+      - { key: gen_ai.prompt, action: delete }
+      - { key: gen_ai.completion, action: delete }
+      - { key: gen_ai.input.messages, action: delete }
+      - { key: gen_ai.output.messages, action: delete }
+      - { key: belegt.value, action: delete }
+      - { key: email, action: delete }
+      - { key: user.email, action: delete }
+      - { key: http.request.header.authorization, action: delete }
+  # 尾部采样：错误、halted、成本 > €0.10、慢链路 100%；其余基础设施 span 10%
+  tail_sampling:
+    decision_wait: 10s
+    policies:
+      - { name: errors, type: status_code, status_code: { status_codes: [ERROR] } }
+      - { name: halted, type: string_attribute, string_attribute: { key: belegt.policy_check, values: [halted] } }
+      - { name: expensive, type: numeric_attribute, numeric_attribute: { key: belegt.cost_eur, min_value: 0.10, max_value: 1000000 } }
+      - { name: llm, type: string_attribute, string_attribute: { key: gen_ai.system, values: [".+"], enabled_regex_matching: true } }
+      - { name: slow, type: latency, latency: { threshold_ms: 2000 } }
+      - { name: baseline, type: probabilistic, probabilistic: { sampling_percentage: 10 } }
+  batch: {}
+
+exporters:
+  prometheus:
+    endpoint: 0.0.0.0:8889
+    namespace: ""
+    resource_to_telemetry_conversion: { enabled: false }   # 不把资源属性（可能含租户信息）变成指标标签
+  debug:
+    verbosity: basic
+
+extensions:
+  health_check: { endpoint: 0.0.0.0:13133 }
+
+service:
+  extensions: [health_check]
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [memory_limiter, attributes/scrub, tail_sampling, batch]
+      exporters: [debug]
+    metrics:
+      receivers: [otlp]
+      processors: [memory_limiter, batch]
+      exporters: [prometheus]
+    logs:
+      receivers: [otlp]
+      processors: [memory_limiter, attributes/scrub, batch]
+      exporters: [debug]

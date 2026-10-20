@@ -1,0 +1,101 @@
+{{- /* Spec: 08 §6（供应商端，沿用 packages/belegt-supplier/Dockerfile，SQLite on PVC → 单副本 Recreate） */ -}}
+{{- if .Values.supplier.enabled }}
+{{- $ns := include "belegt.ns" (list . "app") }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "belegt.fullname" . }}-supplier-data
+  namespace: {{ $ns }}
+  labels:
+    {{- include "belegt.metaLabels" . | nindent 4 }}
+  annotations:
+    helm.sh/resource-policy: keep
+spec:
+  accessModes: [ReadWriteOnce]
+  {{- with .Values.supplier.persistence.storageClass }}
+  storageClassName: {{ . }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.supplier.persistence.size }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "belegt.fullname" . }}-supplier
+  namespace: {{ $ns }}
+  labels:
+    {{- include "belegt.labels" . | nindent 4 }}
+    {{- include "belegt.selector" (list . "supplier" "app") | nindent 4 }}
+spec:
+  replicas: 1
+  strategy: { type: Recreate }
+  selector:
+    matchLabels:
+      {{- include "belegt.selector" (list . "supplier" "app") | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "belegt.labels" . | nindent 8 }}
+        {{- include "belegt.selector" (list . "supplier" "app") | nindent 8 }}
+        belegt.io/egress-client: "true"
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        {{- include "belegt.podSecurityContext" . | nindent 8 }}
+      {{- include "belegt.scheduling" (list . "app") | nindent 6 }}
+      containers:
+        - name: supplier
+          image: {{ include "belegt.image" (list . .Values.image.supplier) }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - { name: http, containerPort: 8080, protocol: TCP }
+          env:
+            - { name: BELEGT_SUPPLIER_DATA_DIR, value: /data }
+            - { name: BELEGT_SUPPLIER_PUBLIC_URL, value: {{ .Values.supplier.publicUrl | quote }} }
+            - { name: BELEGT_SUPPLIER_CORE_URL, value: {{ printf "http://%s-api.%s.svc:%v" (include "belegt.fullname" .) $ns .Values.api.service.port | quote }} }
+            - { name: BELEGT_SUPPLIER_DEFAULT_LOCALE, value: {{ .Values.supplier.defaultLocale | quote }} }
+            - { name: BELEGT_SUPPLIER_SMTP_HOST, value: {{ .Values.supplier.smtpHost | quote }} }
+            - { name: BELEGT_SUPPLIER_SMTP_PORT, value: {{ .Values.supplier.smtpPort | quote }} }
+            - { name: BELEGT_SUPPLIER_MAIL_FROM, value: {{ .Values.supplier.mailFrom | quote }} }
+            - { name: BELEGT_SUPPLIER_TRUST_PROXY, value: "true" }
+            - name: BELEGT_SUPPLIER_SECRET
+              valueFrom: { secretKeyRef: { name: {{ include "belegt.secretName" . }}, key: supplier-secret } }
+            - name: BELEGT_SUPPLIER_MANIFEST_SECRET
+              valueFrom: { secretKeyRef: { name: {{ include "belegt.secretName" . }}, key: supplier-manifest-secret } }
+            - name: BELEGT_SUPPLIER_WEBHOOK_SECRET
+              valueFrom: { secretKeyRef: { name: {{ include "belegt.secretName" . }}, key: supplier-webhook-secret } }
+            - name: BELEGT_SUPPLIER_ADMIN_KEY
+              valueFrom: { secretKeyRef: { name: {{ include "belegt.secretName" . }}, key: supplier-admin-key, optional: true } }
+            {{- include "belegt.proxyEnv" . | nindent 12 }}
+          readinessProbe:
+            httpGet: { path: /healthz, port: http }
+          livenessProbe:
+            httpGet: { path: /healthz, port: http }
+            periodSeconds: 20
+          resources:
+            {{- toYaml .Values.supplier.resources | nindent 12 }}
+          securityContext:
+            {{- include "belegt.containerSecurityContext" . | nindent 12 }}
+          volumeMounts:
+            - { name: data, mountPath: /data }
+            - { name: tmp, mountPath: /tmp }
+      volumes:
+        {{- include "belegt.tmpVolume" . | nindent 8 }}
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ include "belegt.fullname" . }}-supplier-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "belegt.fullname" . }}-supplier
+  namespace: {{ $ns }}
+  labels:
+    {{- include "belegt.metaLabels" . | nindent 4 }}
+spec:
+  selector:
+    {{- include "belegt.selector" (list . "supplier" "app") | nindent 4 }}
+  ports:
+    - { name: http, port: {{ .Values.supplier.service.port }}, targetPort: http, protocol: TCP }
+{{- end }}

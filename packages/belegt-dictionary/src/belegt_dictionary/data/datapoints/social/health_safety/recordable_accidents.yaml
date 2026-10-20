@@ -1,0 +1,48 @@
+id: dp:social.health_safety.recordable_accidents
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Meldepflichtige Arbeitsunfälle
+  en: Recordable work-related accidents
+  zh: 可记录工伤事故数
+definition:
+  en: Number of recordable work-related accidents (injuries resulting in lost time, medical treatment beyond first aid, or death) of own employees during the reporting period. The rate per hours worked is dp:social.health_safety.recordable_accident_rate.
+  de: Anzahl meldepflichtiger Arbeitsunfälle eigener Beschäftigter im Berichtszeitraum (Ausfallzeit, ärztliche Behandlung über Erste Hilfe hinaus oder Tod). Quote siehe dp:social.health_safety.recordable_accident_rate.
+  zh: 报告期内自有员工可记录工伤事故数（导致误工、超出急救的医疗处理或死亡）；按工时计的比率见 dp:social.health_safety.recordable_accident_rate。
+value_type: number
+unit: '1'
+period_type: reporting_period
+boundary:
+  - organization
+  - site
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: eu_2026_1560_vcs
+    clause: B9 Para 41(a)
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - erp
+    - human_confirmation
+    - historical_answer
+  min_sources: 1
+  max_age_days: 400
+  requires_calculation: false
+  human_confirmation_allowed: true
+validity_rule:
+  min: 0
+  regex: ^[0-9]+$
+  expires_by: period_end_plus_days
+  expires_after_days: 550
+related_datapoints:
+  - id: dp:social.health_safety.recordable_accident_rate
+    relation: see_also
+tags:
+  - vsme
+  - health_safety
+  - human_confirmable_number

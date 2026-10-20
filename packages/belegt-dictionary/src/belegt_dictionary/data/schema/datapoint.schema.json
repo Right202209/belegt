@@ -1,0 +1,436 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.belegt.org/dictionary/datapoint/0.1.0",
+  "title": "Belegt DataPoint",
+  "type": "object",
+  "required": [
+    "id",
+    "version",
+    "introduced_in",
+    "status",
+    "label",
+    "definition",
+    "value_type",
+    "period_type",
+    "boundary",
+    "sensitivity",
+    "evidence_requirements"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^dp:(org|env|energy|prod|mat|supply|cert|gov|social)\\.[a-z][a-z0-9_]{1,40}\\.[a-z][a-z0-9_]{1,48}(\\.[a-z][a-z0-9_]{0,40})?$"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "introduced_in": {
+      "type": "string",
+      "pattern": "^v\\d{4}\\.[1-4]$"
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "active",
+        "deprecated",
+        "retired"
+      ]
+    },
+    "label": {
+      "$ref": "#/$defs/i18n_required"
+    },
+    "definition": {
+      "type": "object",
+      "required": [
+        "en"
+      ],
+      "properties": {
+        "de": {
+          "type": "string"
+        },
+        "en": {
+          "type": "string",
+          "minLength": 20
+        },
+        "zh": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "value_type": {
+      "enum": [
+        "number",
+        "text",
+        "enum",
+        "bool",
+        "date",
+        "file",
+        "geo"
+      ]
+    },
+    "cardinality": {
+      "enum": [
+        "one",
+        "many"
+      ],
+      "default": "one"
+    },
+    "record_fields": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "value_type",
+          "required"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "value_type": {
+            "enum": [
+              "number",
+              "text",
+              "enum",
+              "bool",
+              "date",
+              "file",
+              "geo"
+            ]
+          },
+          "unit": {
+            "type": "string"
+          },
+          "enum_ref": {
+            "type": "string"
+          },
+          "required": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "enum_ref": {
+      "type": "string",
+      "pattern": "^enums/[a-z0-9_]+\\.yaml$"
+    },
+    "unit": {
+      "type": "string"
+    },
+    "allowed_units": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "period_type": {
+      "enum": [
+        "calendar_year",
+        "fiscal_year",
+        "reporting_period",
+        "point_in_time",
+        "validity_range"
+      ]
+    },
+    "boundary": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "enum": [
+          "organization",
+          "site",
+          "product",
+          "product_per_unit"
+        ]
+      }
+    },
+    "consolidation": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "operational_control",
+          "financial_control",
+          "equity_share"
+        ]
+      }
+    },
+    "methodology_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "ref"
+        ],
+        "properties": {
+          "ref": {
+            "type": "string"
+          },
+          "clause": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "sensitivity": {
+      "enum": [
+        "public",
+        "customer_shared",
+        "confidential",
+        "restricted"
+      ]
+    },
+    "evidence_requirements": {
+      "type": "object",
+      "required": [
+        "accepted_source_types",
+        "min_sources",
+        "requires_calculation",
+        "human_confirmation_allowed"
+      ],
+      "properties": {
+        "accepted_source_types": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "document",
+              "erp",
+              "human_confirmation",
+              "supplier_response",
+              "historical_answer",
+              "public_source"
+            ]
+          }
+        },
+        "min_sources": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "max_age_days": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "requires_calculation": {
+          "type": "boolean"
+        },
+        "human_confirmation_allowed": {
+          "type": "boolean"
+        }
+      }
+    },
+    "validity_rule": {
+      "type": "object",
+      "properties": {
+        "min": {
+          "type": "number"
+        },
+        "max": {
+          "type": "number"
+        },
+        "regex": {
+          "type": "string"
+        },
+        "expires_by": {
+          "enum": [
+            "value",
+            "evidence_valid_until",
+            "period_end_plus_days"
+          ]
+        },
+        "expires_after_days": {
+          "type": "integer"
+        },
+        "plausibility": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "expr",
+              "severity"
+            ],
+            "properties": {
+              "expr": {
+                "type": "string"
+              },
+              "note": {
+                "type": "string"
+              },
+              "severity": {
+                "enum": [
+                  "warn",
+                  "block"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "related_datapoints": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "relation"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^dp:"
+          },
+          "relation": {
+            "enum": [
+              "component_of",
+              "sum_of",
+              "derived_from",
+              "alternative_of",
+              "see_also"
+            ]
+          }
+        }
+      }
+    },
+    "deprecation": {
+      "type": "object",
+      "required": [
+        "since",
+        "reason",
+        "replaced_by",
+        "retire_after"
+      ],
+      "properties": {
+        "since": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "replaced_by": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "retire_after": {
+          "type": "string"
+        },
+        "migration": {
+          "type": "string"
+        }
+      }
+    },
+    "aliases": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "value_type": {
+            "const": "number"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "unit"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "value_type": {
+            "const": "enum"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "enum_ref"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "cardinality": {
+            "const": "many"
+          }
+        },
+        "required": [
+          "cardinality"
+        ]
+      },
+      "then": {
+        "required": [
+          "record_fields"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "deprecated",
+              "retired"
+            ]
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "required": [
+          "deprecation"
+        ]
+      }
+    }
+  ],
+  "$defs": {
+    "i18n_required": {
+      "type": "object",
+      "required": [
+        "de",
+        "en",
+        "zh"
+      ],
+      "properties": {
+        "de": {
+          "type": "string",
+          "maxLength": 80
+        },
+        "en": {
+          "type": "string",
+          "maxLength": 80
+        },
+        "zh": {
+          "type": "string",
+          "maxLength": 80
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

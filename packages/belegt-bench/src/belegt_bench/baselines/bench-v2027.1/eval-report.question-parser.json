@@ -1,0 +1,580 @@
+{
+ "schema": "belegt-eval-report/1",
+ "created_at": "2026-10-19T15:50:25Z",
+ "agent": "question-parser",
+ "dataset_version": "bench-v2027.1",
+ "partition": "test",
+ "smoke": false,
+ "status": "ok",
+ "skip_reason": null,
+ "config": {
+  "predictor": "baseline-lexical@1",
+  "predictor_kind": "baseline",
+  "model_id": null,
+  "prompt_version": null,
+  "params": {
+   "temperature": 0,
+   "top_p": 1
+  },
+  "bootstrap": 2000,
+  "seed": 7
+ },
+ "manifest_ok": true,
+ "manifest_errors": [],
+ "leak": {
+  "ok": true,
+  "checks": {
+   "LEAK-01": {
+    "ok": true,
+    "pairs_checked": 6300,
+    "hits": []
+   },
+   "LEAK-02": {
+    "ok": true,
+    "violations": []
+   },
+   "LEAK-03": {
+    "ok": true,
+    "org_overlap": [],
+    "clusters_split": []
+   }
+  }
+ },
+ "metrics": {
+  "M-MAP-01": {
+   "name": "Top-1 准确率",
+   "value": 0.888031,
+   "n": 259,
+   "star": false,
+   "primary": true,
+   "direction": "higher",
+   "family": "accuracy",
+   "ci95": [
+    0.829543,
+    0.938272
+   ],
+   "violations": null
+  },
+  "M-MAP-02": {
+   "name": "Top-3 准确率",
+   "value": 0.953668,
+   "n": 259,
+   "star": false,
+   "primary": false,
+   "direction": "higher",
+   "family": "accuracy",
+   "ci95": [
+    0.897607,
+    0.991599
+   ],
+   "violations": null
+  },
+  "M-MAP-03": {
+   "name": "置信度校准 ECE",
+   "value": 0.241428,
+   "n": 253,
+   "star": false,
+   "primary": true,
+   "direction": "lower",
+   "family": "ece",
+   "ci95": [
+    0.209827,
+    0.276273
+   ],
+   "violations": null
+  },
+  "M-MAP-04": {
+   "name": "低置信度路由召回 ★",
+   "value": 1.0,
+   "n": 33,
+   "star": true,
+   "primary": false,
+   "direction": "higher",
+   "family": "recall",
+   "ci95": [
+    1.0,
+    1.0
+   ],
+   "violations": 0.0
+  },
+  "M-MAP-05": {
+   "name": "自动采用覆盖率",
+   "value": 0.0,
+   "n": 263,
+   "star": false,
+   "primary": false,
+   "direction": "higher",
+   "family": "accuracy",
+   "ci95": [
+    0.0,
+    0.0
+   ],
+   "violations": null
+  }
+ },
+ "cells": [
+  {
+   "cell": "catenax_pcf×en×json",
+   "n": 6,
+   "metrics": {
+    "M-MAP-01": {
+     "value": 1.0,
+     "n": 6
+    },
+    "M-MAP-03": {
+     "value": 0.2252,
+     "n": 6
+    }
+   }
+  },
+  {
+   "cell": "cbam_communication×de×xlsx",
+   "n": 8,
+   "metrics": {
+    "M-MAP-01": {
+     "value": 0.875,
+     "n": 8
+    },
+    "M-MAP-03": {
+     "value": 0.348675,
+     "n": 8
+    }
+   }
+  },
+  {
+   "cell": "cbam_communication×en×xlsx",
+   "n": 8,
+   "metrics": {
+    "M-MAP-01": {
+     "value": 1.0,
+     "n": 8
+    },
+    "M-MAP-03": {
+     "value": 0.261012,
+     "n": 8
+    }
+   }
+  },
+  {
+   "cell": "cdp_climate×de×xlsx",
+   "n": 10,
+   "metrics": {
+    "M-MAP-01": {
+     "value": 0.8,
+     "n": 10
+    },
+    "M-MAP-03": {
+     "value": 0.43413,
+     "n": 10
+    }
+   }
+  },
+  {
+   "cell": "cdp_climate×en×pdf_text",
+   "n": 9,
+   "metrics": {
+    "M-MAP-01": {
+     "value": 1.0,
+     "n": 9
+    },
+    "M-MAP-03": {
+     "value": 0.271689,
+     "n": 9
+    }
+   }
+  },
+  {
+   "cell": "cdp_climate×en×xlsx",
+   "n": 10,
+   "metrics": {
+    "M-MAP-01": {
+     "value": 0.9,
+     "n": 10
+    },
+    "M-MAP-03": {
+     "value": 0.21022,
+     "n": 10
+    }
+   }
+  },
+  {
+   "cell": "cmrt×en×xlsx",
+   "n": 5,
+   "metrics": {
+    "M-MAP-01": {
+     "value": 1.0,
+     "n": 5
+    },
+    "M-MAP-03": {
+     "value": 0.24752,
+     "n": 5
+    }
+   }
+  },
+  {
+   "cell": "eu_battery_passport×en×pdf_text",
+   "n": 8,
+   "metrics": {
+    "M-MAP-01": {
+     "value": 1.0,
+     "n": 8
+    },
+    "M-MAP-03": {
+     "value": 0.192987,
+     "n": 8
+    }
+   }
+  },
+  {
+   "cell": "eudr_dds×de×pdf_text",
+   "n": 7,
+   "metrics": {
+    "M-MAP-01": {
+     "value": 1.0,
+     "n": 7
+    },
+    "M-MAP-03": {
+     "value": 0.268971,
+     "n": 7
+    }
+   }
+  },
+  {
+   "cell": "eudr_dds×en×email_body",
+   "n": 6,
+   "metrics": {
+    "M-MAP-01": {
+     "value": 1.0,
+     "n": 6
+    },
+    "M-MAP-03": {
+     "value": 0.261533,
+     "n": 6
+    }
+   }
+  },
+  {
+   "cell": "pact_pcf×en×json",
+   "n": 7,
+   "metrics": {
+    "M-MAP-01": {
+     "value": 1.0,
+     "n": 7
+    },
+    "M-MAP-03": {
+     "value": 0.211571,
+     "n": 7
+    }
+   }
+  },
+  {
+   "cell": "private_oem_a×de×csv",
+   "n": 10,
+   "metrics": {
+    "M-MAP-01": {
+     "value": 0.7,
+     "n": 10
+    },
+    "M-MAP-03": {
+     "value": 0.29848,
+     "n": 10
+    }
+   }
+  },
+  {
+   "cell": "private_oem_a×de×xlsx",
+   "n": 10,
+   "metrics": {
+    "M-MAP-01": {
+     "value": 1.0,
+     "n": 10
+    },
+    "M-MAP-03": {
+     "value": 0.29502,
+     "n": 10
+    }
+   }
+  },
+  {
+   "cell": "private_oem_a×en×xlsx",
+   "n": 10,
+   "metrics": {
+    "M-MAP-01": {
+     "value": 1.0,
+     "n": 10
+    },
+    "M-MAP-03": {
+     "value": 0.23852,
+     "n": 10
+    }
+   }
+  },
+  {
+   "cell": "private_oem_b×de×docx",
+   "n": 10,
+   "metrics": {
+    "M-MAP-01": {
+     "value": 0.9,
+     "n": 10
+    },
+    "M-MAP-03": {
+     "value": 0.37159,
+     "n": 10
+    }
+   }
+  },
+  {
+   "cell": "private_oem_b×de×email_body",
+   "n": 8,
+   "metrics": {
+    "M-MAP-01": {
+     "value": 0.875,
+     "n": 8
+    },
+    "M-MAP-03": {
+     "value": 0.358713,
+     "n": 8
+    }
+   }
+  },
+  {
+   "cell": "private_oem_b×en×xlsx",
+   "n": 10,
+   "metrics": {
+    "M-MAP-01": {
+     "value": 1.0,
+     "n": 10
+    },
+    "M-MAP-03": {
+     "value": 0.28431,
+     "n": 10
+    }
+   }
+  },
+  {
+   "cell": "private_oem_c×de×xlsx",
+   "n": 10,
+   "metrics": {
+    "M-MAP-01": {
+     "value": 0.7,
+     "n": 10
+    },
+    "M-MAP-03": {
+     "value": 0.39504,
+     "n": 10
+    }
+   }
+  },
+  {
+   "cell": "private_oem_c×en×pdf_text",
+   "n": 10,
+   "metrics": {
+    "M-MAP-01": {
+     "value": 1.0,
+     "n": 10
+    },
+    "M-MAP-03": {
+     "value": 0.27242,
+     "n": 10
+    }
+   }
+  },
+  {
+   "cell": "private_oem_hard×de×email_body",
+   "n": 8,
+   "metrics": {
+    "M-MAP-01": {
+     "value": 0.75,
+     "n": 8
+    },
+    "M-MAP-03": {
+     "value": 0.2926,
+     "n": 8
+    }
+   }
+  },
+  {
+   "cell": "private_oem_hard×de×pdf_text",
+   "n": 14,
+   "metrics": {
+    "M-MAP-01": {
+     "value": 0.692308,
+     "n": 13
+    },
+    "M-MAP-03": {
+     "value": 0.246183,
+     "n": 12
+    }
+   }
+  },
+  {
+   "cell": "private_oem_hard×de×xlsx",
+   "n": 8,
+   "metrics": {
+    "M-MAP-01": {
+     "value": 0.857143,
+     "n": 7
+    },
+    "M-MAP-03": {
+     "value": 0.374583,
+     "n": 6
+    }
+   }
+  },
+  {
+   "cell": "private_oem_hard×en×email_body",
+   "n": 8,
+   "metrics": {
+    "M-MAP-01": {
+     "value": 0.714286,
+     "n": 7
+    },
+    "M-MAP-03": {
+     "value": 0.4297,
+     "n": 5
+    }
+   }
+  },
+  {
+   "cell": "private_oem_hard×en×pdf_text",
+   "n": 2,
+   "metrics": {
+    "M-MAP-01": {
+     "value": 1.0,
+     "n": 2
+    },
+    "M-MAP-03": {
+     "value": 0.52995,
+     "n": 2
+    }
+   }
+  },
+  {
+   "cell": "private_oem_hard×en×xlsx",
+   "n": 8,
+   "metrics": {
+    "M-MAP-01": {
+     "value": 0.714286,
+     "n": 7
+    },
+    "M-MAP-03": {
+     "value": 0.254667,
+     "n": 6
+    }
+   }
+  },
+  {
+   "cell": "reach_scip×en×xlsx",
+   "n": 7,
+   "metrics": {
+    "M-MAP-01": {
+     "value": 1.0,
+     "n": 7
+    },
+    "M-MAP-03": {
+     "value": 0.225329,
+     "n": 7
+    }
+   }
+  },
+  {
+   "cell": "vsme×de×csv",
+   "n": 9,
+   "metrics": {
+    "M-MAP-01": {
+     "value": 0.888889,
+     "n": 9
+    },
+    "M-MAP-03": {
+     "value": 0.296889,
+     "n": 9
+    }
+   }
+  },
+  {
+   "cell": "vsme×de×pdf_text",
+   "n": 10,
+   "metrics": {
+    "M-MAP-01": {
+     "value": 0.7,
+     "n": 10
+    },
+    "M-MAP-03": {
+     "value": 0.284433,
+     "n": 9
+    }
+   }
+  },
+  {
+   "cell": "vsme×de×xlsx",
+   "n": 10,
+   "metrics": {
+    "M-MAP-01": {
+     "value": 0.8,
+     "n": 10
+    },
+    "M-MAP-03": {
+     "value": 0.23938,
+     "n": 10
+    }
+   }
+  },
+  {
+   "cell": "vsme×en×docx",
+   "n": 9,
+   "metrics": {
+    "M-MAP-01": {
+     "value": 1.0,
+     "n": 9
+    },
+    "M-MAP-03": {
+     "value": 0.243144,
+     "n": 9
+    }
+   }
+  },
+  {
+   "cell": "vsme×zh×xlsx",
+   "n": 8,
+   "metrics": {
+    "M-MAP-01": {
+     "value": 1.0,
+     "n": 8
+    },
+    "M-MAP-03": {
+     "value": 0.303762,
+     "n": 8
+    }
+   }
+  }
+ ],
+ "worst_cell": {
+  "metric": "M-MAP-01",
+  "cell": "private_oem_hard×de×pdf_text",
+  "n": 14,
+  "metrics": {
+   "M-MAP-01": {
+    "value": 0.692308,
+    "n": 13
+   },
+   "M-MAP-03": {
+    "value": 0.246183,
+    "n": 12
+   }
+  }
+ },
+ "ops": {
+  "wall_seconds": 0.768,
+  "M-OPS-01": {
+   "name": "单份问卷 LLM 成本（EUR）",
+   "value": 0.0,
+   "total_eur": 0.0
+  },
+  "M-OPS-02": {
+   "name": "每 100 单元首稿机器时长（分钟）",
+   "value": 0.0049
+  }
+ },
+ "n_samples": 263,
+ "sample_details": "eval-samples.question-parser.jsonl"
+}

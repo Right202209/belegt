@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "belegt-dictionary"
+version = "0.1.0"
+description = "Belegt 开源数据点字典（DataPoint、TemplateMapping、单位表）与校验工具 —— 字典发版 v2027.1"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "CC-BY-4.0 (data) AND Apache-2.0 (code)" }
+authors = [{ name = "Belegt dictionary maintainers" }]
+dependencies = [
+  "pydantic>=2.5",
+  "pyyaml>=6.0",
+  "jsonschema>=4.18",
+]
+classifiers = [
+  "Programming Language :: Python :: 3.12",
+  "License :: OSI Approved :: Apache Software License",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
+[project.scripts]
+belegt-dict = "belegt_dictionary.cli:main"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+belegt_dictionary = [
+  "data/*.yaml",
+  "data/schema/*.json",
+  "data/datapoints/**/*.yaml",
+  "data/mappings/**/*.yaml",
+  "data/units/*.yaml",
+  "data/enums/*.yaml",
+  "data/refs/*.yaml",
+  "data/aliases/*.yaml",
+  "data/migrations/*",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

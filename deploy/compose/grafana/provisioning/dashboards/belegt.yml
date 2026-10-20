@@ -1,0 +1,11 @@
+# Spec: 10 §5.2（DSH-01…DSH-06 预置，只读）
+apiVersion: 1
+providers:
+  - name: belegt
+    folder: Belegt
+    type: file
+    disableDeletion: true
+    allowUiUpdates: false
+    options:
+      path: /var/lib/grafana-dashboards
+      foldersFromFilesStructure: false

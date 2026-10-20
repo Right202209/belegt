@@ -1,0 +1,266 @@
+{
+ "$defs": {
+  "Annotation": {
+   "additionalProperties": false,
+   "description": "双人标注的一份原始标注（裁决前）。`label` 为该类型的判定值（分类类直接比较；值类比较规范化键）。",
+   "properties": {
+    "annotated_at": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Annotated At"
+    },
+    "annotator": {
+     "title": "Annotator",
+     "type": "string"
+    },
+    "label": {
+     "title": "Label"
+    },
+    "note": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Note"
+    }
+   },
+   "required": [
+    "annotator",
+    "label"
+   ],
+   "title": "Annotation",
+   "type": "object"
+  },
+  "Strata": {
+   "additionalProperties": false,
+   "properties": {
+    "format": {
+     "title": "Format",
+     "type": "string"
+    },
+    "lang": {
+     "title": "Lang",
+     "type": "string"
+    },
+    "template": {
+     "title": "Template",
+     "type": "string"
+    }
+   },
+   "required": [
+    "template",
+    "lang",
+    "format"
+   ],
+   "title": "Strata",
+   "type": "object"
+  }
+ },
+ "additionalProperties": false,
+ "description": "LBL-INJ：外部内容是否含提示词注入及意图类别（红队样本 + 难负例）。",
+ "properties": {
+  "_canary": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ],
+   "default": null,
+   "title": "Canary"
+  },
+  "adjudicated_by": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ],
+   "default": null,
+   "title": "Adjudicated By"
+  },
+  "annotation_version": {
+   "default": "lbl-2026.10",
+   "title": "Annotation Version",
+   "type": "string"
+  },
+  "annotations": {
+   "items": {
+    "$ref": "#/$defs/Annotation"
+   },
+   "title": "Annotations",
+   "type": "array"
+  },
+  "channel": {
+   "enum": [
+    "email_body",
+    "supplier_reply",
+    "attachment_text",
+    "portal_page",
+    "questionnaire_cell"
+   ],
+   "title": "Channel",
+   "type": "string"
+  },
+  "cluster_id": {
+   "title": "Cluster Id",
+   "type": "string"
+  },
+  "difficulty": {
+   "default": "medium",
+   "enum": [
+    "easy",
+    "medium",
+    "hard"
+   ],
+   "title": "Difficulty",
+   "type": "string"
+  },
+  "flags": {
+   "items": {
+    "type": "string"
+   },
+   "title": "Flags",
+   "type": "array"
+  },
+  "forbidden_actions": {
+   "items": {
+    "type": "string"
+   },
+   "title": "Forbidden Actions",
+   "type": "array"
+  },
+  "history_refs": {
+   "items": {
+    "additionalProperties": {
+     "type": "string"
+    },
+    "type": "object"
+   },
+   "title": "History Refs",
+   "type": "array"
+  },
+  "intent": {
+   "default": "none",
+   "enum": [
+    "none",
+    "action",
+    "approval_manipulation",
+    "exfiltration",
+    "instruction_override",
+    "data_tampering"
+   ],
+   "title": "Intent",
+   "type": "string"
+  },
+  "is_injection": {
+   "title": "Is Injection",
+   "type": "boolean"
+  },
+  "label_type": {
+   "const": "LBL-INJ",
+   "default": "LBL-INJ",
+   "title": "Label Type",
+   "type": "string"
+  },
+  "lang": {
+   "title": "Lang",
+   "type": "string"
+  },
+  "notes": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ],
+   "default": null,
+   "title": "Notes"
+  },
+  "org": {
+   "title": "Org",
+   "type": "string"
+  },
+  "partition": {
+   "enum": [
+    "fewshot",
+    "dev",
+    "test",
+    "holdout"
+   ],
+   "title": "Partition",
+   "type": "string"
+  },
+  "received_at": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ],
+   "default": null,
+   "title": "Received At"
+  },
+  "sample_id": {
+   "title": "Sample Id",
+   "type": "string"
+  },
+  "strata": {
+   "$ref": "#/$defs/Strata"
+  },
+  "synthetic": {
+   "default": true,
+   "title": "Synthetic",
+   "type": "boolean"
+  },
+  "technique": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ],
+   "default": null,
+   "title": "Technique"
+  },
+  "text": {
+   "title": "Text",
+   "type": "string"
+  }
+ },
+ "required": [
+  "sample_id",
+  "partition",
+  "strata",
+  "cluster_id",
+  "org",
+  "channel",
+  "text",
+  "lang",
+  "is_injection"
+ ],
+ "title": "InjSample",
+ "type": "object"
+}

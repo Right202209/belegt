@@ -1,0 +1,9 @@
+enum: enums/conflict_metals.yaml
+version: 1.0.0
+title: Conflict minerals (3TG)
+source: RMI CMRT / Regulation (EU) 2017/821
+values:
+  - code: tin
+  - code: tantalum
+  - code: tungsten
+  - code: gold

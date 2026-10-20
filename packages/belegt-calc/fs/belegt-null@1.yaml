@@ -1,0 +1,11 @@
+# 特殊因子库 fs:belegt-null@1（05 §7.1）。
+id: fs:belegt-null@1
+source: belegt-null
+license: Apache-2.0
+published_at: '2026-10-18'
+valid_from: '1900-01-01'
+note: 零行因子库，供纯聚合与期间对齐使用（ghg.scope1.total 汇总模式、period.aggregate；05 §7.1）
+rows: []
+row_count: 0
+rows_hash: sha256:4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945
+status: active

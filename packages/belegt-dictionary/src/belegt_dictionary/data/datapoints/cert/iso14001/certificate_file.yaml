@@ -1,0 +1,39 @@
+id: dp:cert.iso14001.certificate_file
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: ISO-14001-Zertifikat (Datei)
+  en: ISO 14001 certificate file
+  zh: ISO 14001 证书文件
+definition:
+  en: Copy of the current ISO 14001 certificate (PDF or image) issued by an accredited certification body, including any annex listing covered sites. Its validity is tracked through dp:cert.iso14001.valid_until.
+  de: Kopie des aktuellen ISO-14001-Zertifikats (PDF oder Bild) einer akkreditierten Stelle einschließlich Standortanhang. Gültigkeit über dp:cert.iso14001.valid_until.
+  zh: 经认可认证机构签发的现行 ISO 14001 证书副本（PDF 或图片），含列明覆盖场址的附件；有效期通过 dp:cert.iso14001.valid_until 追踪。
+value_type: file
+period_type: validity_range
+boundary:
+  - organization
+  - site
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: iso_14001
+sensitivity: public
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - public_source
+  min_sources: 1
+  requires_calculation: false
+  human_confirmation_allowed: false
+validity_rule:
+  expires_by: evidence_valid_until
+related_datapoints:
+  - id: dp:cert.iso14001.valid_until
+    relation: see_also
+tags:
+  - oem_custom
+  - certificate

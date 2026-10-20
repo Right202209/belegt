@@ -1,0 +1,38 @@
+# Spec: 11 §3.1（绝对目标，MVP / V1）、§5.2（QG-01…QG-07）、§5.3（显著性）、§3.2（M-OPS 超基线 20% warn）
+# 门禁配置。租户/私有化可复制本文件后收紧（不得放宽 ★ 指标）。
+schema: belegt-bench-thresholds/1
+
+# 当期绝对目标（QG-05）。direction 取自指标定义：higher → value ≥ target；lower → value ≤ target。
+targets:
+  M-MAP-01: {mvp: 0.85, v1: 0.90}
+  M-MAP-02: {mvp: 0.95, v1: 0.97}
+  M-MAP-03: {mvp: 0.05, v1: 0.03}
+  M-MAP-04: {mvp: 1.0, v1: 1.0}
+  M-MAP-05: {mvp: 0.60, v1: 0.75}
+  M-EVI-01P: {mvp: 0.97, v1: 0.98}
+  M-EVI-01R: {mvp: 0.85, v1: 0.90}
+  M-EVI-02: {mvp: 0.95, v1: 0.98}
+  M-EVI-03: {mvp: 0.95, v1: 0.98}
+  M-EVI-04: {mvp: 0.0, v1: 0.0}
+  M-AUD-01: {mvp: 0.0, v1: 0.0}
+  M-AUD-02: {mvp: 0.15, v1: 0.10}
+  M-AUD-03: {mvp: 0, v1: 0}
+  M-SRR-03: {mvp: 1.0, v1: 1.0}
+  M-SRR-03A: {mvp: 0, v1: 0}
+  M-DRF-03: {mvp: 0, v1: 0}
+
+# QG-02/03 的 δ（按指标族；准确率类 1.0 个百分点、ECE 0.01、F1 1.0 个百分点）
+delta:
+  accuracy: 0.01
+  ece: 0.01
+  f1: 0.01
+  recall: 0.01
+  rate_low: 0.01
+  count: 0.0
+
+cell_delta_multiplier: 3      # QG-04：任一分层单元格下降 > 3δ
+min_cell_n: 5                 # 单元格样本少于此数时不参与 QG-04（只报告）
+ops_increase_warn: 0.20       # QG-06：成本或时延比基线上升 > 20%
+ops_min_wall_seconds: 5.0     # QG-06：基线墙钟时间低于此值时不比较时延（亚秒级运行的抖动不是回归）
+bootstrap: {b: 10000, seed: 11}
+stage_target: {pr: mvp, merge: mvp, release: mvp}   # 各阶段对照的目标档位；V1 发版后改为 v1

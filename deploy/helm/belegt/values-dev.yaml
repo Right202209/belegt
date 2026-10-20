@@ -1,0 +1,33 @@
+# 开发 / kind / k3d：内置 PostgreSQL、单副本、关闭 HPA 与 Ingress；chart 自建 Secret（仅开发）
+global:
+  deployProfile: private-k8s
+  environment: dev
+  imageRegistry: belegt          # kind load docker-image belegt/core-api:0.1.0 …
+image:
+  pullPolicy: IfNotPresent
+postgresql:
+  bundled: { enabled: true, storage: 5Gi }
+  external: { enabled: false }
+  hashModulus: 1
+  sslmode: disable
+temporal:
+  address: temporal-frontend.temporal.svc:7233
+secrets:
+  create: true
+  values:
+    postgresAdminPassword: dev-postgres-admin-0000
+    appDbPassword: dev-app-0000
+    quarantineDbPassword: dev-quarantine-0000
+    auditorDbPassword: dev-auditor-0000
+    supplierSecret: dev-supplier-secret-0000
+    supplierManifestSecret: dev-manifest-0000
+    supplierWebhookSecret: dev-webhook-0000
+    devTokensJson: '{"dev-compliance-owner": {"actor": "user:u_compliance01", "org_id": "org_01JC0A1B2C3D4E5F6G7H8J9K0M", "roles": ["compliance_owner", "org_admin"]}}'
+api: { replicas: 1, devTokens: true, hpa: { enabled: false }, pdb: { enabled: false } }
+worker: { replicas: 1, hpa: { enabled: false }, pdb: { enabled: false } }
+web: { replicas: 1, pdb: { enabled: false } }
+egressGateway: { replicas: 1, pdb: { enabled: false } }
+networkPolicy:
+  peers:
+    temporal:
+      - namespaceSelector: { matchLabels: { kubernetes.io/metadata.name: temporal } }

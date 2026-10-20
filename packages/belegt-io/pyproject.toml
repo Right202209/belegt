@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "belegt-io"
+version = "0.1.0"
+description = "Belegt 文件导入导出：问卷解析、原格式回填、证据定位、PACT/Catena-X/CBAM/CMRT/电池护照导出"
+readme = "README.md"
+license = { text = "Apache-2.0" }
+requires-python = ">=3.12"
+authors = [{ name = "Belegt contributors" }]
+dependencies = [
+  "openpyxl>=3.1",
+  "pyyaml>=6.0",
+  "pydantic>=2.6",
+  "jsonschema>=4.20",
+  "pypdf>=4.0",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8"]
+
+[project.scripts]
+belegt-io-examples = "belegt_io.examples:main"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+belegt_io = ["schemas/*.json", "mappings/*.yaml", "py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

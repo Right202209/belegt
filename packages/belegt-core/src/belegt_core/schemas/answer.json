@@ -1,0 +1,390 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.belegt.org/graph/2026-10/answer.json",
+  "title": "Answer",
+  "type": "object",
+  "required": [
+    "id",
+    "datapoint_id",
+    "value",
+    "value_type",
+    "period",
+    "boundary",
+    "customer_scope",
+    "origin",
+    "answer_key",
+    "status",
+    "is_estimate",
+    "legal_commitment"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^ans_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "org_id": true,
+    "version": true,
+    "created_at": true,
+    "created_by": true,
+    "trust_zone": {
+      "const": "trusted"
+    },
+    "provenance": true,
+    "supersedes": true,
+    "schema_version": true,
+    "content_hash": true,
+    "tags": true,
+    "datapoint_id": {
+      "$ref": "common.json#/$defs/datapointRef"
+    },
+    "value_type": {
+      "enum": [
+        "number",
+        "text",
+        "enum",
+        "bool",
+        "date",
+        "file",
+        "geo"
+      ]
+    },
+    "value": true,
+    "unit": {
+      "type": "string",
+      "maxLength": 32
+    },
+    "text_lang": {
+      "type": "string",
+      "pattern": "^[a-z]{2}(-[A-Z]{2})?$"
+    },
+    "period": {
+      "$ref": "common.json#/$defs/period"
+    },
+    "boundary": {
+      "$ref": "common.json#/$defs/boundary"
+    },
+    "consolidation": {
+      "enum": [
+        "operational_control",
+        "financial_control",
+        "equity_share"
+      ]
+    },
+    "customer_scope": {
+      "$ref": "common.json#/$defs/customerScope"
+    },
+    "question_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^q_[0-9A-HJKMNP-TV-Z]{26}$"
+      }
+    },
+    "evidence_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^ev_[0-9A-HJKMNP-TV-Z]{26}#v[1-9][0-9]*$"
+      }
+    },
+    "calculation_ref": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^calc_[0-9A-HJKMNP-TV-Z]{26}#v[1-9][0-9]*$"
+        }
+      ]
+    },
+    "reused_from": {
+      "type": "string",
+      "pattern": "^ans_[0-9A-HJKMNP-TV-Z]{26}#v[1-9][0-9]*$"
+    },
+    "origin": {
+      "enum": [
+        "generated",
+        "imported",
+        "human"
+      ]
+    },
+    "answer_key": {
+      "$ref": "common.json#/$defs/sha256"
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "in_review",
+        "approved",
+        "rejected",
+        "submitted",
+        "superseded"
+      ]
+    },
+    "risk_level": {
+      "enum": [
+        "L0",
+        "L1",
+        "L2",
+        "L3"
+      ]
+    },
+    "is_estimate": {
+      "type": "boolean"
+    },
+    "estimate_method": {
+      "type": "string",
+      "maxLength": 200
+    },
+    "legal_commitment": {
+      "type": "boolean"
+    },
+    "approval_ref": {
+      "type": "string",
+      "pattern": "^apr_[0-9A-HJKMNP-TV-Z]{26}#v[1-9][0-9]*$"
+    },
+    "submission": {
+      "type": "object",
+      "required": [
+        "request_id",
+        "channel",
+        "submitted_at",
+        "export_input_hash"
+      ],
+      "properties": {
+        "request_id": {
+          "type": "string",
+          "pattern": "^req_[0-9A-HJKMNP-TV-Z]{26}$"
+        },
+        "channel": {
+          "enum": [
+            "file_export",
+            "portal",
+            "api",
+            "a2a"
+          ]
+        },
+        "submitted_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "export_input_hash": {
+          "$ref": "common.json#/$defs/sha256"
+        }
+      },
+      "additionalProperties": false
+    },
+    "drafting_note": {
+      "$ref": "common.json#/$defs/i18nText"
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "$ref": "common.json#/$defs/envelope"
+    },
+    {
+      "if": {
+        "properties": {
+          "value_type": {
+            "const": "number"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "unit"
+        ],
+        "properties": {
+          "value": {
+            "$ref": "common.json#/$defs/decStr"
+          }
+        },
+        "anyOf": [
+          {
+            "required": [
+              "evidence_refs"
+            ],
+            "properties": {
+              "evidence_refs": {
+                "minItems": 1
+              }
+            }
+          },
+          {
+            "required": [
+              "calculation_ref"
+            ],
+            "properties": {
+              "calculation_ref": {
+                "type": "string"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "value_type": {
+            "const": "text"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "text_lang"
+        ],
+        "properties": {
+          "value": {
+            "type": "string",
+            "maxLength": 20000
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "value_type": {
+            "const": "bool"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "value": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "value_type": {
+            "const": "date"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "value": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "value_type": {
+            "const": "file"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "value": {
+            "type": "object",
+            "required": [
+              "blob_sha256"
+            ],
+            "properties": {
+              "blob_sha256": {
+                "$ref": "common.json#/$defs/sha256"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "is_estimate": {
+            "const": true
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "estimate_method"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "legal_commitment": {
+            "const": true
+          }
+        },
+        "required": [
+          "risk_level"
+        ]
+      },
+      "then": {
+        "properties": {
+          "risk_level": {
+            "const": "L3"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "in_review",
+              "approved",
+              "submitted"
+            ]
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "risk_level"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "approved",
+              "submitted"
+            ]
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "approval_ref"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "submitted"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "submission"
+        ]
+      }
+    }
+  ]
+}

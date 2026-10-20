@@ -1,0 +1,37 @@
+# Spec: 10 §6.1 private-airgap（离线，data_residency=private，只允许本地模型 GP-11）、§6.4（gpu-l 推荐、vLLM、离线包 cosign 验签）、
+#       FR-704、NFR-16（外联 0）。镜像与模型权重先用 belegtctl 导入内部仓库与 PVC。
+global:
+  deployProfile: private-airgap
+  environment: prod-eu1
+  dataResidency: private
+  imageRegistry: registry.kunde.local/belegt
+
+image:
+  squid: registry.kunde.local/mirror/ubuntu/squid:latest
+  postgres: registry.kunde.local/mirror/pgvector/pgvector:pg16
+  vllm: registry.kunde.local/mirror/vllm/vllm-openai:v0.6.3
+
+postgresql:
+  hashModulus: 1           # 单租户（03 §6.4）
+
+llm:
+  baseUrl: http://belegt-vllm.belegt.svc:8000/v1   # 必须是集群内 *.svc（validate.yaml 校验）
+  model: local-vllm
+  vllm:
+    enabled: true
+    model: /models/Qwen3-32B-FP8                   # 预置在 modelsPvc 中的本地路径
+    servedModelName: local-vllm
+    gpuCount: 1
+    modelsPvc: belegt-model-weights
+    nodeSelector: { nvidia.com/gpu.present: "true" }
+
+egressGateway:
+  enabled: true
+  allowlist: []            # 外联 0（NFR-16）；NetworkPolicy 同时拒绝 egress-gateway 的一切出站
+
+supplier:
+  enabled: false           # 离线时供应商无法访问门户；改为导出文件邮寄
+
+observability:
+  serviceMonitor: { enabled: true }
+  prometheusRule: { enabled: true }

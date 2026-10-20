@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block main %}
+<section class="card">
+  <h1>{{ result.template }}</h1>
+  <table class="summary">
+    <tr><th>{{ t('excel_found') }}</th><th></th><th>{{ t('excel_cell') }}</th></tr>
+    {% for f in result.found %}<tr><td>{{ f.datapoint_id }}</td><td>{{ f.value }} {{ f.unit or '' }}</td><td>{{ f.source.sheet }}!{{ f.source.cell }}</td></tr>{% endfor %}
+  </table>
+  <form method="post" action="/r/{{ token }}/form">
+    <input type="hidden" name="csrf" value="{{ csrf }}"><input type="hidden" name="merge" value="1">
+    {% for f in result.found if f.field %}<input type="hidden" name="v__{{ f.field }}" value="{{ f.value }}">{% if f.unit %}<input type="hidden" name="u__{{ f.field }}" value="{{ f.unit }}">{% endif %}{% endfor %}
+    <button type="submit" name="action" value="save">{{ t('excel_apply') }}</button>
+  </form>
+</section>
+{% endblock %}

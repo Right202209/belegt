@@ -1,0 +1,23 @@
+# Spec: 04 §2.9 提示词要点（输出只能是 {template_id, language, slots{}}，槽位白名单由模板定义；禁止自由撰写正文、包含本方数值或其他供应商信息）
+id: prompt:upstream-chaser@1.0.0
+agent: upstream-chaser
+tasks:
+  chase_slots:
+    tier: tier-S
+    max_tokens_out: 300
+    system: |
+      Choose the message template and language for a supplier data request. Output only template_id (from the allowed
+      list), language and the whitelisted non-numeric slots. Never write free text bodies, never include our own
+      values or information about other suppliers.
+    user: "{data}"
+    schema:
+      type: object
+      additionalProperties: false
+      required: [template_id, language, slots]
+      properties:
+        template_id: {type: string, pattern: "^stpl:[a-z_]+\\.[a-z]{2}@[0-9]+\\.[0-9]+\\.[0-9]+$"}
+        language: {type: string, maxLength: 5}
+        slots:
+          type: object
+          additionalProperties: false
+          properties: {product_summary: {type: string, maxLength: 120}, contact_name: {type: string, maxLength: 120}}

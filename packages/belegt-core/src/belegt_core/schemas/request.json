@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.belegt.org/graph/2026-10/request.json",
+  "title": "Request",
+  "type": "object",
+  "required": [
+    "id",
+    "counterparty_id",
+    "channel",
+    "source_ref",
+    "title",
+    "language",
+    "priority",
+    "triage_confidence",
+    "status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^req_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "org_id": true,
+    "version": true,
+    "created_at": true,
+    "created_by": true,
+    "trust_zone": true,
+    "provenance": true,
+    "supersedes": true,
+    "schema_version": true,
+    "content_hash": true,
+    "tags": true,
+    "promotion": {
+      "$ref": "common.json#/$defs/promotion"
+    },
+    "counterparty_id": {
+      "type": "string",
+      "pattern": "^cp_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "channel": {
+      "enum": [
+        "email",
+        "portal",
+        "upload",
+        "api",
+        "a2a"
+      ]
+    },
+    "source_ref": {
+      "type": "object",
+      "required": [
+        "blob_sha256"
+      ],
+      "properties": {
+        "message_id": {
+          "type": "string"
+        },
+        "portal_task_id": {
+          "type": "string"
+        },
+        "blob_sha256": {
+          "type": "array",
+          "items": {
+            "$ref": "common.json#/$defs/sha256"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "template_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "maxLength": 300
+    },
+    "language": {
+      "type": "string",
+      "pattern": "^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$"
+    },
+    "due_date": {
+      "$ref": "common.json#/$defs/date"
+    },
+    "reporting_period": {
+      "$ref": "common.json#/$defs/period"
+    },
+    "priority": {
+      "enum": [
+        "low",
+        "normal",
+        "high",
+        "urgent"
+      ]
+    },
+    "triage_confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "status": {
+      "enum": [
+        "received",
+        "triaged",
+        "parsed",
+        "mapped",
+        "evidence_gathering",
+        "awaiting_supplier",
+        "drafting",
+        "auditing",
+        "in_review",
+        "approved",
+        "filling",
+        "submitted",
+        "archived",
+        "awaiting_human",
+        "halted",
+        "cancelled"
+      ]
+    },
+    "status_reason": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "workflow_id": {
+      "type": "string"
+    },
+    "assignee": {
+      "$ref": "common.json#/$defs/userActor"
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "$ref": "common.json#/$defs/envelope"
+    },
+    {
+      "if": {
+        "properties": {
+          "trust_zone": {
+            "const": "quarantine"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "const": "received"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "awaiting_human",
+              "halted"
+            ]
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "status_reason"
+        ],
+        "properties": {
+          "status_reason": {
+            "pattern": "^(awaiting_human:(cq|conflict|confirm)|halted:[a-z0-9_.-]+);return_to=[a-z_]+$"
+          }
+        }
+      }
+    }
+  ]
+}

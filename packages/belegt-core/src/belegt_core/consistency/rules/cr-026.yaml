@@ -1,0 +1,21 @@
+# Spec: 06 §2.2 CR-026
+rule_id: CR-026
+rule_version: 1.0.0
+category: period
+severity: warn
+title:
+  de: Jahreswert unvollständig
+  en: Annual value incomplete
+scope: answer
+triggers:
+- answer_write
+- pre_submit_gate
+- daily_batch
+- context_change
+plugin: cr_026
+assert: months >= 12 && gaps == 0
+tolerance:
+  months: 0
+default_action: open_conflict
+explain_template: cr-026
+tests: tests/test_consistency_rules.py::test_cr_026

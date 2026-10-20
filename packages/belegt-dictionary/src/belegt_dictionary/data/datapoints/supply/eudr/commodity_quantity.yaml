@@ -1,0 +1,39 @@
+id: dp:supply.eudr.commodity_quantity
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Nettomasse des Rohstoffs
+  en: Net mass of the relevant commodity
+  zh: 商品净质量
+definition:
+  en: Quantity of the relevant commodity or product placed on the market or exported, expressed as net mass in kilograms (supplementary units where the customs nomenclature requires them belong in the answer note).
+  de: Menge des relevanten Rohstoffs oder Erzeugnisses als Nettomasse in Kilogramm.
+  zh: 投放市场或出口的相关商品/产品数量，以净质量千克计（海关目录要求的补充单位写在答案备注）。
+value_type: number
+unit: kg
+allowed_units:
+  - kg
+  - t
+period_type: point_in_time
+boundary:
+  - product
+methodology_refs:
+  - ref: eu_2023_1115_eudr
+    clause: Art. 9(1)(b)
+sensitivity: confidential
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - erp
+    - supplier_response
+    - historical_answer
+  min_sources: 1
+  max_age_days: 365
+  requires_calculation: false
+  human_confirmation_allowed: false
+validity_rule:
+  min: 0
+tags:
+  - eudr_dds
+  - eudr

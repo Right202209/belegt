@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.belegt.org/graph/2026-10/site.json",
+  "title": "Site",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "country"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^site_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "org_id": true,
+    "version": true,
+    "created_at": true,
+    "created_by": true,
+    "trust_zone": true,
+    "provenance": true,
+    "supersedes": true,
+    "schema_version": true,
+    "content_hash": true,
+    "tags": true,
+    "name": {
+      "type": "string"
+    },
+    "country": {
+      "type": "string",
+      "pattern": "^[A-Z]{2}$"
+    },
+    "address": {
+      "type": "string"
+    },
+    "geo": {
+      "type": "object",
+      "required": [
+        "type",
+        "coordinates"
+      ],
+      "properties": {
+        "type": {
+          "const": "Point"
+        },
+        "coordinates": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 3,
+          "items": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "grid_region": {
+      "type": "string"
+    },
+    "operational_control": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "$ref": "common.json#/$defs/envelope"
+    }
+  ]
+}

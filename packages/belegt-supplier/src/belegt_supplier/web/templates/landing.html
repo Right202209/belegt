@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block main %}
+<section class="card">
+  <h1>{{ t('requests_data', customer=m.customer_name, supplier=m.supplier_name) }}</h1>
+  <dl class="facts">
+    <dt>{{ t('period') }}</dt><dd>{{ period_txt }}</dd>
+    <dt>{{ t('due') }}</dt><dd>{{ due_long }}{% if days_left >= 0 %} ({{ t('days_left', n=days_left) }}){% endif %}</dd>
+    {% if m.products %}<dt>{{ t('products') }}</dt><dd>{{ m.products|length }} ({% for p in m.products[:3] %}{{ p.cn_code or p.name }}{% if not loop.last %}, {% endif %}{% endfor %}{% if m.products|length > 3 %}…{% endif %})</dd>{% endif %}
+  </dl>
+  <p class="muted"><strong>{{ t('why') }}</strong> {{ t('why_text') }}</p>
+  {% if readonly %}<p class="notice">{{ t('readonly_notice') }}</p>{% endif %}
+  {% if submissions %}<p class="ok">✓ {{ t('submitted_title') }}</p>{% endif %}
+</section>
+{% if not readonly %}
+<section class="card">
+  <h2>{{ t('how_answer') }}</h2>
+  <a class="choice" href="/r/{{ token }}/form">✎ {{ t('method_form') }}<small>{{ t('method_form_hint') }}</small></a>
+  <a class="choice" href="/r/{{ token }}/form#upload">⇪ {{ t('method_excel') }}</a>
+  <span class="choice disabled" aria-disabled="true">↺ {{ t('method_reuse') }}<small>{{ t('method_reuse_hint') }}</small></span>
+</section>
+<section class="card">
+  <details><summary>{{ t('ask_question') }}</summary>
+    <form method="post" action="/r/{{ token }}/question">
+      <input type="hidden" name="csrf" value="{{ csrf }}">
+      <textarea name="text" required maxlength="4000" placeholder="{{ t('question_placeholder') }}"></textarea>
+      <button type="submit">{{ t('ask_question') }}</button>
+    </form>
+  </details>
+  <details><summary>{{ t('not_available') }}</summary>
+    <form method="post" action="/r/{{ token }}/decline">
+      <input type="hidden" name="csrf" value="{{ csrf }}">
+      <label>{{ t('decline_reason') }}
+        <select name="reason">{% for r in decline_reasons %}<option value="{{ r }}">{{ t('decline_reasons.' ~ r) }}</option>{% endfor %}</select>
+      </label>
+      <textarea name="text" maxlength="4000"></textarea>
+      <button type="submit">{{ t('not_available') }}</button>
+    </form>
+  </details>
+</section>
+{% endif %}
+{% endblock %}

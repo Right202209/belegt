@@ -1,0 +1,38 @@
+id: dp:mat.recycled_content.steel_share
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Rezyklatanteil Stahl
+  en: Recycled content share of steel
+  zh: 钢材再生料占比
+definition:
+  en: Share of pre- and post-consumer scrap in the steel used in the product, as percentage by mass, per the supplier mill certificate or declaration. The answer states whether pre-consumer scrap is included.
+  de: Anteil von Pre- und Post-Consumer-Schrott im im Produkt verwendeten Stahl in Massenprozent laut Werkszeugnis oder Lieferantenerklärung.
+  zh: 产品所用钢材中消费前与消费后废钢的质量百分比，以钢厂质保书或供应商声明为准；答案注明是否含消费前废料。
+value_type: number
+unit: '%'
+period_type: reporting_period
+boundary:
+  - product
+methodology_refs:
+  - ref: iso_14021
+    clause: '7.8'
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - supplier_response
+    - document
+    - historical_answer
+  min_sources: 1
+  max_age_days: 365
+  requires_calculation: false
+  human_confirmation_allowed: false
+validity_rule:
+  min: 0
+  max: 100
+  expires_by: evidence_valid_until
+tags:
+  - pact_pcf
+  - oem_custom
+  - recycled_content

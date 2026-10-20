@@ -1,0 +1,47 @@
+enum: enums/qualifiers.yaml
+version: 1.0.0
+title: Registered qualifier dimensions (02 §2.3)
+dimensions:
+  - dimension: biogenic
+    values:
+      - including_biogenic
+      - excluding_biogenic
+  - dimension: scope3_category
+    values:
+      - c01
+      - c02
+      - c03
+      - c04
+      - c05
+      - c06
+      - c07
+      - c08
+      - c09
+      - c10
+      - c11
+      - c12
+      - c13
+      - c14
+      - c15
+  - dimension: metal
+    values:
+      - tin
+      - tantalum
+      - tungsten
+      - gold
+      - cobalt
+      - lithium
+      - nickel
+      - lead
+      - mica
+  - dimension: waste_nature
+    values:
+      - hazardous
+      - non_hazardous
+  - dimension: gender
+    values:
+      - female
+      - male
+      - other
+      - not_reported
+values: []

@@ -1,0 +1,19 @@
+# Spec: 06 §2.2 CR-041
+rule_id: CR-041
+rule_version: 1.0.0
+category: legal
+severity: block
+title:
+  de: Rechtsverbindliche Frage nicht als solche markiert
+  en: Legal clause not flagged on answer
+scope: answer
+triggers:
+- answer_write
+- pre_submit_gate
+- daily_batch
+- context_change
+plugin: cr_041
+assert: '!legal_flag || legal_commitment'
+default_action: open_conflict
+explain_template: cr-041
+tests: tests/test_consistency_rules.py::test_cr_041

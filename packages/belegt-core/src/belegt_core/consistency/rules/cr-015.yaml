@@ -1,0 +1,21 @@
+# Spec: 06 §2.2 CR-015
+rule_id: CR-015
+rule_version: 1.0.0
+category: validity
+severity: warn
+title:
+  de: Stichtagswert zu alt
+  en: Point-in-time value too old
+scope: answer
+triggers:
+- answer_write
+- pre_submit_gate
+- daily_batch
+- context_change
+plugin: cr_015
+assert: gap_days <= limit
+tolerance:
+  days: 0
+default_action: open_conflict
+explain_template: cr-015
+tests: tests/test_consistency_rules.py::test_cr_015

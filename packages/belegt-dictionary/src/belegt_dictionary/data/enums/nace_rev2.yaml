@@ -1,0 +1,353 @@
+enum: enums/nace_rev2.yaml
+version: 1.0.0
+title: NACE Rev. 2 sections and divisions
+source: Regulation (EC) No 1893/2006（NACE Rev. 2）；代码写法：门类字母，或门类字母 + 两位大类号（如 C25）
+values:
+  - code: A
+    level: section
+    label:
+      en: Agriculture, forestry and fishing
+  - code: A01
+    level: division
+    parent: A
+  - code: A02
+    level: division
+    parent: A
+  - code: A03
+    level: division
+    parent: A
+  - code: B
+    level: section
+    label:
+      en: Mining and quarrying
+  - code: B05
+    level: division
+    parent: B
+  - code: B06
+    level: division
+    parent: B
+  - code: B07
+    level: division
+    parent: B
+  - code: B08
+    level: division
+    parent: B
+  - code: B09
+    level: division
+    parent: B
+  - code: C
+    level: section
+    label:
+      en: Manufacturing
+  - code: C10
+    level: division
+    parent: C
+  - code: C11
+    level: division
+    parent: C
+  - code: C12
+    level: division
+    parent: C
+  - code: C13
+    level: division
+    parent: C
+  - code: C14
+    level: division
+    parent: C
+  - code: C15
+    level: division
+    parent: C
+  - code: C16
+    level: division
+    parent: C
+  - code: C17
+    level: division
+    parent: C
+  - code: C18
+    level: division
+    parent: C
+  - code: C19
+    level: division
+    parent: C
+  - code: C20
+    level: division
+    parent: C
+  - code: C21
+    level: division
+    parent: C
+  - code: C22
+    level: division
+    parent: C
+  - code: C23
+    level: division
+    parent: C
+  - code: C24
+    level: division
+    parent: C
+  - code: C25
+    level: division
+    parent: C
+  - code: C26
+    level: division
+    parent: C
+  - code: C27
+    level: division
+    parent: C
+  - code: C28
+    level: division
+    parent: C
+  - code: C29
+    level: division
+    parent: C
+  - code: C30
+    level: division
+    parent: C
+  - code: C31
+    level: division
+    parent: C
+  - code: C32
+    level: division
+    parent: C
+  - code: C33
+    level: division
+    parent: C
+  - code: D
+    level: section
+    label:
+      en: Electricity, gas, steam and air conditioning supply
+  - code: D35
+    level: division
+    parent: D
+  - code: E
+    level: section
+    label:
+      en: Water supply; sewerage, waste management and remediation
+  - code: E36
+    level: division
+    parent: E
+  - code: E37
+    level: division
+    parent: E
+  - code: E38
+    level: division
+    parent: E
+  - code: E39
+    level: division
+    parent: E
+  - code: F
+    level: section
+    label:
+      en: Construction
+  - code: F41
+    level: division
+    parent: F
+  - code: F42
+    level: division
+    parent: F
+  - code: F43
+    level: division
+    parent: F
+  - code: G
+    level: section
+    label:
+      en: Wholesale and retail trade; repair of motor vehicles
+  - code: G45
+    level: division
+    parent: G
+  - code: G46
+    level: division
+    parent: G
+  - code: G47
+    level: division
+    parent: G
+  - code: H
+    level: section
+    label:
+      en: Transportation and storage
+  - code: H49
+    level: division
+    parent: H
+  - code: H50
+    level: division
+    parent: H
+  - code: H51
+    level: division
+    parent: H
+  - code: H52
+    level: division
+    parent: H
+  - code: H53
+    level: division
+    parent: H
+  - code: I
+    level: section
+    label:
+      en: Accommodation and food service activities
+  - code: I55
+    level: division
+    parent: I
+  - code: I56
+    level: division
+    parent: I
+  - code: J
+    level: section
+    label:
+      en: Information and communication
+  - code: J58
+    level: division
+    parent: J
+  - code: J59
+    level: division
+    parent: J
+  - code: J60
+    level: division
+    parent: J
+  - code: J61
+    level: division
+    parent: J
+  - code: J62
+    level: division
+    parent: J
+  - code: J63
+    level: division
+    parent: J
+  - code: K
+    level: section
+    label:
+      en: Financial and insurance activities
+  - code: K64
+    level: division
+    parent: K
+  - code: K65
+    level: division
+    parent: K
+  - code: K66
+    level: division
+    parent: K
+  - code: L
+    level: section
+    label:
+      en: Real estate activities
+  - code: L68
+    level: division
+    parent: L
+  - code: M
+    level: section
+    label:
+      en: Professional, scientific and technical activities
+  - code: M69
+    level: division
+    parent: M
+  - code: M70
+    level: division
+    parent: M
+  - code: M71
+    level: division
+    parent: M
+  - code: M72
+    level: division
+    parent: M
+  - code: M73
+    level: division
+    parent: M
+  - code: M74
+    level: division
+    parent: M
+  - code: M75
+    level: division
+    parent: M
+  - code: N
+    level: section
+    label:
+      en: Administrative and support service activities
+  - code: N77
+    level: division
+    parent: N
+  - code: N78
+    level: division
+    parent: N
+  - code: N79
+    level: division
+    parent: N
+  - code: N80
+    level: division
+    parent: N
+  - code: N81
+    level: division
+    parent: N
+  - code: N82
+    level: division
+    parent: N
+  - code: O
+    level: section
+    label:
+      en: Public administration and defence; compulsory social security
+  - code: O84
+    level: division
+    parent: O
+  - code: P
+    level: section
+    label:
+      en: Education
+  - code: P85
+    level: division
+    parent: P
+  - code: Q
+    level: section
+    label:
+      en: Human health and social work activities
+  - code: Q86
+    level: division
+    parent: Q
+  - code: Q87
+    level: division
+    parent: Q
+  - code: Q88
+    level: division
+    parent: Q
+  - code: R
+    level: section
+    label:
+      en: Arts, entertainment and recreation
+  - code: R90
+    level: division
+    parent: R
+  - code: R91
+    level: division
+    parent: R
+  - code: R92
+    level: division
+    parent: R
+  - code: R93
+    level: division
+    parent: R
+  - code: S
+    level: section
+    label:
+      en: Other service activities
+  - code: S94
+    level: division
+    parent: S
+  - code: S95
+    level: division
+    parent: S
+  - code: S96
+    level: division
+    parent: S
+  - code: T
+    level: section
+    label:
+      en: Activities of households as employers
+  - code: T97
+    level: division
+    parent: T
+  - code: T98
+    level: division
+    parent: T
+  - code: U
+    level: section
+    label:
+      en: Activities of extraterritorial organisations and bodies
+  - code: U99
+    level: division
+    parent: U

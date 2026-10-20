@@ -1,0 +1,21 @@
+# Spec: 06 §2.2 CR-020
+rule_id: CR-020
+rule_version: 1.0.0
+category: unit
+severity: warn
+title:
+  de: Prozent/Dezimal-Verwechslung
+  en: Percent vs. fraction ambiguity
+scope: org
+triggers:
+- answer_write
+- pre_submit_gate
+- daily_batch
+- context_change
+plugin: cr_020
+assert: '!(dec(x) <= dec(''1'') && dec(ref) > dec(''1'') && dec_eq(dec(x) * dec(''100''), dec(ref), dec(''0''), dec(''0.2'')))'
+tolerance:
+  rel: '0.2'
+default_action: closed_question
+explain_template: cr-020
+tests: tests/test_consistency_rules.py::test_cr_020

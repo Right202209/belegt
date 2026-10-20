@@ -1,0 +1,44 @@
+id: dp:mat.conflict_minerals.intentionally_added.tin
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Zinn absichtlich zugesetzt
+  en: Tin intentionally added
+  zh: 是否有意添加锡
+definition:
+  en: Whether tin is intentionally added to or necessary for the functionality or production of the products in scope of the declaration, as asked per metal in conflict minerals reporting. Excludes trace contamination.
+  de: Ob Zinn den Produkten im Erklärungsumfang absichtlich zugesetzt wird oder für Funktion oder Herstellung notwendig ist. Spuren durch Verunreinigung zählen nicht.
+  zh: 锡是否被有意添加到声明范围内产品中或为其功能/生产所必需（冲突矿产申报中按金属逐项询问）；不含痕量污染。
+value_type: bool
+period_type: point_in_time
+boundary:
+  - organization
+  - product
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: rmi_cmrt
+    clause: Declaration Q1
+  - ref: eu_2017_821_conflict_minerals
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - supplier_response
+    - document
+    - historical_answer
+    - human_confirmation
+  min_sources: 1
+  max_age_days: 365
+  requires_calculation: false
+  human_confirmation_allowed: true
+validity_rule:
+  expires_by: evidence_valid_until
+related_datapoints:
+  - id: dp:mat.conflict_minerals.smelter_list
+    relation: see_also
+tags:
+  - cmrt
+  - conflict_minerals

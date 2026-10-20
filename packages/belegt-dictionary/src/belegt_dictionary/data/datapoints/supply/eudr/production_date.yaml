@@ -1,0 +1,32 @@
+id: dp:supply.eudr.production_date
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Erzeugungsdatum/-zeitraum
+  en: Date or time range of production
+  zh: 生产日期/区间
+definition:
+  en: Date or time range in which the relevant commodity was produced (harvest, slaughter or felling), stored in the answer period; the value is the end date. Used to show production after the EUDR cut-off date.
+  de: Datum oder Zeitraum der Erzeugung des Rohstoffs (Ernte, Schlachtung, Einschlag), gespeichert als Periode der Antwort; Wert ist das Enddatum.
+  zh: 相关商品的生产（收获、屠宰或采伐）日期或时间区间，存于答案 period，值为截止日期；用于证明生产晚于 EUDR 截止日。
+value_type: date
+period_type: validity_range
+boundary:
+  - product
+methodology_refs:
+  - ref: eu_2023_1115_eudr
+    clause: Art. 9(1)(e)
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - supplier_response
+    - document
+    - historical_answer
+  min_sources: 1
+  max_age_days: 365
+  requires_calculation: false
+  human_confirmation_allowed: false
+tags:
+  - eudr_dds
+  - eudr

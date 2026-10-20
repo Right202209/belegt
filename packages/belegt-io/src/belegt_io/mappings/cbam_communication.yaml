@@ -1,0 +1,88 @@
+# Spec: 02 §4.3.4；05 §6.2、§6.9。单元格位置以官方模板为准 [需核对]，此处用"标签/列名"定位，跨版本更稳。
+template_mapping: tm:cbam_communication@2024
+template_id: cbam_communication
+template_version: "2024"
+template_source: "EU Commission communication template for installations (operator → importer), Impl. Reg. (EU) 2023/1773 Annex; 2026 起以当年官方模板为准 [需核对]"
+license_note: "仅题号/列名与短标签"
+fingerprint:
+  threshold: 0.85
+  markers:
+    - { sheet: "A_InstData", weight: 3 }
+    - { sheet: "Summary_Products", weight: 3 }
+    - { sheet: "D_Processes", weight: 2 }
+    - { text: "installation", weight: 1 }
+    - { text: "CBAM", weight: 1 }
+layouts:
+  A_InstData:
+    kind: form
+    labels:
+      - { label: "Installation identifier", answer_format: text }
+      - { label: "Name of the installation", answer_format: text }
+      - { label: "Operator name", answer_format: text }
+      - { label: "Country", answer_format: text }
+      - { label: "Address", answer_format: text }
+      - { label: "UN/LOCODE", answer_format: text }
+      - { label: "Reporting period start", answer_format: date }
+      - { label: "Reporting period end", answer_format: date }
+      - { label: "Contact e-mail", answer_format: text }
+  Summary_Products:
+    kind: table
+    data_rows: 10
+    columns:
+      - { column: "CN code", answer_format: text }
+      - { column: "Goods description", answer_format: text }
+      - { column: "Production route", answer_format: enum }
+      - { column: "SEE (direct)", answer_format: number, unit: "tCO2e/t" }
+      - { column: "SEE (indirect)", answer_format: number, unit: "tCO2e/t" }
+      - { column: "Specific electricity consumption", answer_format: number, unit: "MWh/t" }
+      - { column: "Determination method", answer_format: enum }
+  D_Processes:
+    kind: table
+    data_rows: 10
+    columns:
+      - { column: "Production process", answer_format: text }
+      - { column: "Production route", answer_format: enum }
+      - { column: "CN code", answer_format: text }
+      - { column: "Activity level", answer_format: number, unit: "t" }
+entries:
+  - entry_id: inst_id
+    locator: { kind: cell, ref: "A_InstData!<Installation identifier>" }
+    short_label: "Installation identifier"
+    datapoint_id: dp:prod.cbam.installation_id
+    direction: both
+    transform: { type: identity }
+  - entry_id: cn_code
+    locator: { kind: column, ref: "Summary_Products", column: "CN code" }
+    short_label: "CN code (8 digits)"
+    datapoint_id: dp:prod.identity.cn_code
+    direction: both
+    transform: { type: format, pattern: "^[0-9]{8}$" }
+  - entry_id: see_direct
+    locator: { kind: column, ref: "Summary_Products", column: "SEE (direct)" }
+    short_label: "Specific embedded emissions, direct, tCO2e/t"
+    datapoint_id: dp:prod.cbam.see_direct
+    direction: both
+    unit_hint: tCO2e/t
+    boundary_hint: product_per_unit
+    transform: { type: unit_convert, from_unit: tCO2e/t, to_unit: tCO2e/t, round: 6 }
+  - entry_id: see_indirect
+    locator: { kind: column, ref: "Summary_Products", column: "SEE (indirect)" }
+    short_label: "Specific embedded emissions, indirect, tCO2e/t"
+    datapoint_id: dp:prod.cbam.see_indirect
+    direction: both
+    unit_hint: tCO2e/t
+    boundary_hint: product_per_unit
+    transform: { type: unit_convert, from_unit: tCO2e/t, to_unit: tCO2e/t, round: 6 }
+  - entry_id: sec
+    locator: { kind: column, ref: "Summary_Products", column: "Specific electricity consumption" }
+    short_label: "Specific electricity consumption, MWh/t"
+    datapoint_id: dp:prod.cbam.specific_electricity_consumption
+    direction: both
+    unit_hint: MWh/t
+    boundary_hint: product_per_unit
+  - entry_id: production_route
+    locator: { kind: column, ref: "D_Processes", column: "Production route" }
+    short_label: "Production route"
+    datapoint_id: dp:prod.cbam.production_route
+    direction: both
+    transform: { type: enum_map, map: { "Blast furnace route": bf_bof, "Electric arc furnace": eaf, "DRI-EAF": dri_eaf } }

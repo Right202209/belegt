@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.belegt.org/graph/2026-10/question.json",
+  "title": "Question",
+  "type": "object",
+  "required": [
+    "id",
+    "request_id",
+    "ordinal",
+    "text",
+    "answer_format",
+    "locator",
+    "status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^q_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "org_id": true,
+    "version": true,
+    "created_at": true,
+    "created_by": true,
+    "trust_zone": true,
+    "provenance": true,
+    "supersedes": true,
+    "schema_version": true,
+    "content_hash": true,
+    "tags": true,
+    "promotion": {
+      "$ref": "common.json#/$defs/promotion"
+    },
+    "request_id": {
+      "type": "string",
+      "pattern": "^req_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "ordinal": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "native_id": {
+      "type": "string",
+      "maxLength": 64
+    },
+    "text": {
+      "$ref": "common.json#/$defs/i18nText"
+    },
+    "answer_format": {
+      "enum": [
+        "number",
+        "text",
+        "enum",
+        "bool",
+        "date",
+        "file",
+        "geo",
+        "table"
+      ]
+    },
+    "options": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "unit_requested": {
+      "type": "string",
+      "maxLength": 32
+    },
+    "period_requested": {
+      "$ref": "common.json#/$defs/period"
+    },
+    "locator": {
+      "$ref": "common.json#/$defs/locator"
+    },
+    "parent_question_id": {
+      "type": "string",
+      "pattern": "^q_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "status": {
+      "enum": [
+        "parsed",
+        "mapped",
+        "unmapped",
+        "answered"
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "$ref": "common.json#/$defs/envelope"
+    },
+    {
+      "if": {
+        "properties": {
+          "trust_zone": {
+            "const": "quarantine"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "const": "parsed"
+          }
+        }
+      }
+    }
+  ]
+}

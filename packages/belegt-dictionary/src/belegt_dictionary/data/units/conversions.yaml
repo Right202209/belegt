@@ -1,0 +1,54 @@
+schema: belegt.conversions/1
+note: 只收录不依赖外部参数的线性换算；factor 为有理数字符串（整数、小数或 a/b），反向换算取精确倒数；热值、密度、排放因子、汇率不是单位换算（02 §3.2）
+conversions:
+  - from: kg
+    to: t
+    factor: '0.001'
+    exact: true
+    note: 精确
+  - from: kgCO2e
+    to: tCO2e
+    factor: '0.001'
+    exact: true
+    note: 精确
+  - from: kWh
+    to: MWh
+    factor: '0.001'
+    exact: true
+    note: 精确
+  - from: GJ
+    to: MWh
+    factor: 1/3.6
+    exact: true
+    note: 1 MWh = 3.6 GJ；有理数精确值，不用 ×0.277778 截断系数（05 §1.3、TV-09）
+  - from: MWh
+    to: GJ
+    factor: '3.6'
+    exact: true
+    note: 精确
+  - from: L
+    to: m3
+    factor: '0.001'
+    exact: true
+    note: 精确
+  - from: ha
+    to: m2
+    factor: '10000'
+    exact: true
+    note: 精确
+  - from: ppm
+    to: '%w/w'
+    factor: '0.0001'
+    exact: true
+    note: 1000 ppm = 0.1 %w/w
+  - from: '%'
+    to: '1'
+    factor: '0.01'
+    exact: true
+    export_only: true
+    note: 仅模板导出时使用
+  - from: kgCO2e/kg
+    to: tCO2e/t
+    factor: '1'
+    exact: true
+    note: 数值相同，量纲一致

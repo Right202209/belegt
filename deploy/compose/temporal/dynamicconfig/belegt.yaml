@@ -1,0 +1,17 @@
+# Spec: 04 §3.5（每 Request 3 000–6 000 事件）、10 §3.2（Temporal 容量）
+# Temporal 动态配置（compose 单进程）。生产在 Temporal Helm chart 的 dynamicConfig 中设置同名键。
+limit.maxIDLength:
+  - value: 255
+    constraints: {}
+system.forceSearchAttributesCacheRefreshOnRead:
+  - value: true
+    constraints: {}
+history.maximumBufferedEventsBatch:
+  - value: 500
+    constraints: {}
+limit.historyCount.warn:
+  - value: 20000
+    constraints: {}
+limit.historyCount.error:
+  - value: 50000
+    constraints: {}

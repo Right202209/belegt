@@ -1,0 +1,20 @@
+# Spec: 06 §2.2 CR-035
+rule_id: CR-035
+rule_version: 1.0.0
+category: reference_integrity
+severity: block
+title:
+  de: Zitierter Nachweis ersetzt
+  en: Cited evidence superseded
+scope: answer
+triggers:
+- answer_write
+- pre_submit_gate
+- daily_batch
+- context_change
+plugin: cr_035
+assert: '!superseded'
+severity_expr: 'value_changed ? ''block'' : ''info'''
+default_action: open_conflict
+explain_template: cr-035
+tests: tests/test_consistency_rules.py::test_cr_035

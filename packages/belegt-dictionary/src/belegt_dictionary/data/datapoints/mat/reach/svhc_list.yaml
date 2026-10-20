@@ -1,0 +1,56 @@
+id: dp:mat.reach.svhc_list
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Liste enthaltener SVHC
+  en: List of SVHC present
+  zh: SVHC 清单（EC/CAS）
+definition:
+  en: List of Candidate List substances present above 0.1 % w/w in the article, one record per substance with EC and/or CAS number. Empty list is only valid when dp:mat.reach.svhc_present is false.
+  de: Liste der im Erzeugnis über 0,1 % (w/w) enthaltenen Kandidatenlistenstoffe, ein Datensatz je Stoff mit EG- und/oder CAS-Nummer.
+  zh: 物品中浓度超过 0.1 %w/w 的候选清单物质列表，每种物质一条记录，含 EC 和/或 CAS 号；仅当 dp:mat.reach.svhc_present 为假时可为空。
+value_type: text
+cardinality: many
+record_fields:
+  - name: substance_name
+    value_type: text
+    required: true
+  - name: ec_number
+    value_type: text
+    required: false
+  - name: cas_number
+    value_type: text
+    required: false
+  - name: concentration
+    value_type: number
+    unit: '%w/w'
+    required: false
+period_type: point_in_time
+boundary:
+  - product
+methodology_refs:
+  - ref: eu_1907_2006_reach
+    clause: Art. 33
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - supplier_response
+    - document
+    - historical_answer
+  min_sources: 1
+  max_age_days: 365
+  requires_calculation: false
+  human_confirmation_allowed: false
+validity_rule:
+  expires_by: evidence_valid_until
+  plausibility:
+    - expr: size(value) > 0 || !dp:mat.reach.svhc_present
+      severity: warn
+      note: 声明含 SVHC 却无清单
+related_datapoints:
+  - id: dp:mat.reach.svhc_present
+    relation: see_also
+tags:
+  - reach_scip
+  - reach

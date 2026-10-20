@@ -1,0 +1,19 @@
+# Spec: 06 §2.2 CR-039
+rule_id: CR-039
+rule_version: 1.0.0
+category: estimate
+severity: warn
+title:
+  de: Schätzung trotz verfügbarer Messdaten
+  en: Estimate although measured evidence exists
+scope: answer
+triggers:
+- answer_write
+- pre_submit_gate
+- daily_batch
+- context_change
+plugin: cr_039
+assert: '!measured_available'
+default_action: open_conflict
+explain_template: cr-039
+tests: tests/test_consistency_rules.py::test_cr_039

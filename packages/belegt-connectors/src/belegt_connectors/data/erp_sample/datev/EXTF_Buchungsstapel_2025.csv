@@ -1,0 +1,40 @@
+EXTF;700;21;Buchungsstapel;13;20260115083000000;;BE;belegt-sample;;29098;55003;20250101;4;20250101;20251231;Musterteile 2025;;1;0;0;EUR;;;;;;;
+Umsatz (ohne Soll/Haben-Kz);Soll/Haben-Kennzeichen;WKZ Umsatz;Konto;Gegenkonto (ohne BU-Schlüssel);BU-Schlüssel;Belegdatum;Belegfeld 1;Buchungstext;Zusatzinformation - Art 1;Zusatzinformation- Inhalt 1;Zusatzinformation - Art 2;Zusatzinformation- Inhalt 2
+97104,00;S;EUR;6325;70001;9;0502;RE255001;Stadtwerke Musterstadt GmbH Strom Netzbezug;Menge kWh;420000;Leistungszeitraum;2025-01-01/2025-01-31
+24505,00;S;EUR;6326;70001;9;0702;RE255013;Gasversorgung Süd AG Erdgas (Brennwert Hs;Menge kWh;290000;Leistungszeitraum;2025-01-01/2025-01-31
+269120,00;S;EUR;5425;70001;9;1802;RE255031;Anadolu Çelik Sanayi A.S. Warmband Coil S235JR;Menge Tonnen;420,5;Leistungszeitraum;
+91324,00;S;EUR;6325;70001;9;0503;RE255002;Stadtwerke Musterstadt GmbH Strom Netzbezug;Menge kWh;395000;Leistungszeitraum;2025-02-01/2025-02-28
+22815,00;S;EUR;6326;70001;9;0703;RE255014;Gasversorgung Süd AG Erdgas (Brennwert Hs;Menge kWh;270000;Leistungszeitraum;2025-02-01/2025-02-28
+6480,00;S;EUR;6530;70001;9;1403;RE255029;Mineralöl Krüger KG Dieselkraftstoff;Menge Liter;4000;Leistungszeitraum;
+94792,00;S;EUR;6325;70001;9;0504;RE255003;Stadtwerke Musterstadt GmbH Strom Netzbezug;Menge kWh;410000;Leistungszeitraum;2025-03-01/2025-03-31
+19435,00;S;EUR;6326;70001;9;0704;RE255015;Gasversorgung Süd AG Erdgas (Brennwert Hs;Menge kWh;230000;Leistungszeitraum;2025-03-01/2025-03-31
+196350,00;S;EUR;5425;70001;9;0904;RE255036;Gulf Aluminium Smelting LLC Aluminium Masseln P1;Menge kg;85000;Leistungszeitraum;
+11400,00;S;EUR;6327;70001;9;1004;RE255025;Fernwärme Musterstadt GmbH Fernwärme;Menge MWh;120;Leistungszeitraum;2025-01-01/2025-03-31
+90168,00;S;EUR;6325;70001;9;0505;RE255004;Stadtwerke Musterstadt GmbH Strom Netzbezug;Menge kWh;390000;Leistungszeitraum;2025-04-01/2025-04-30
+14365,00;S;EUR;6326;70001;9;0705;RE255016;Gasversorgung Süd AG Erdgas (Brennwert Hs;Menge kWh;170000;Leistungszeitraum;2025-04-01/2025-04-30
+243360,00;S;EUR;5425;70001;9;2005;RE255032;Anadolu Çelik Sanayi A.S. Warmband Coil S235JR;Menge Tonnen;380,25;Leistungszeitraum;
+92480,00;S;EUR;6325;70001;9;0506;RE255005;Stadtwerke Musterstadt GmbH Strom Netzbezug;Menge kWh;400000;Leistungszeitraum;2025-05-01/2025-05-31
+10140,00;S;EUR;6326;70001;9;0706;RE255017;Gasversorgung Süd AG Erdgas (Brennwert Hs;Menge kWh;120000;Leistungszeitraum;2025-05-01/2025-05-31
+56876,00;S;EUR;5425;70001;9;2406;RE255035;Anadolu Çelik Sanayi A.S. Betonstahl Ø20 B500B;Menge Tonnen;96,4;Leistungszeitraum;
+89012,00;S;EUR;6325;70001;9;0507;RE255006;Stadtwerke Musterstadt GmbH Strom Netzbezug;Menge kWh;385000;Leistungszeitraum;2025-06-01/2025-06-30
+7605,00;S;EUR;6326;70001;9;0707;RE255018;Gasversorgung Süd AG Erdgas (Brennwert Hs;Menge kWh;90000;Leistungszeitraum;2025-06-01/2025-06-30
+5700,00;S;EUR;6327;70001;9;1007;RE255026;Fernwärme Musterstadt GmbH Fernwärme;Menge MWh;60;Leistungszeitraum;2025-04-01/2025-06-30
+47740,00;S;EUR;5425;70001;9;1507;RE255038;Ningbo Profiles Co., Ltd. Alu-Strangpressprofi;Menge kg;12400;Leistungszeitraum;
+85544,00;S;EUR;6325;70001;9;0508;RE255007;Stadtwerke Musterstadt GmbH Strom Netzbezug;Menge kWh;370000;Leistungszeitraum;2025-07-01/2025-07-31
+6760,00;S;EUR;6326;70001;9;0708;RE255019;Gasversorgung Süd AG Erdgas (Brennwert Hs;Menge kWh;80000;Leistungszeitraum;2025-07-01/2025-07-31
+291200,00;S;EUR;5425;70001;9;1908;RE255033;Anadolu Çelik Sanayi A.S. Warmband Coil S235JR;Menge Tonnen;455;Leistungszeitraum;
+76296,00;S;EUR;6325;70001;9;0509;RE255008;Stadtwerke Musterstadt GmbH Strom Netzbezug;Menge kWh;330000;Leistungszeitraum;2025-08-01/2025-08-31
+6337,50;S;EUR;6326;70001;9;0709;RE255020;Gasversorgung Süd AG Erdgas (Brennwert Hs;Menge kWh;75000;Leistungszeitraum;2025-08-01/2025-08-31
+5670,00;S;EUR;6530;70001;9;2209;RE255030;Mineralöl Krüger KG Dieselkraftstoff;Menge Liter;3500;Leistungszeitraum;
+93636,00;S;EUR;6325;70001;9;0510;RE255009;Stadtwerke Musterstadt GmbH Strom Netzbezug;Menge kWh;405000;Leistungszeitraum;2025-09-01/2025-09-30
+9295,00;S;EUR;6326;70001;9;0710;RE255021;Gasversorgung Süd AG Erdgas (Brennwert Hs;Menge kWh;110000;Leistungszeitraum;2025-09-01/2025-09-30
+213675,00;S;EUR;5425;70001;9;0810;RE255037;Gulf Aluminium Smelting LLC Aluminium Masseln P1;Menge kg;92500;Leistungszeitraum;
+2850,00;S;EUR;6327;70001;9;1010;RE255027;Fernwärme Musterstadt GmbH Fernwärme;Menge MWh;30;Leistungszeitraum;2025-07-01/2025-09-30
+95948,00;S;EUR;6325;70001;9;0511;RE255010;Stadtwerke Musterstadt GmbH Strom Netzbezug;Menge kWh;415000;Leistungszeitraum;2025-10-01/2025-10-31
+14365,00;S;EUR;6326;70001;9;0711;RE255022;Gasversorgung Süd AG Erdgas (Brennwert Hs;Menge kWh;170000;Leistungszeitraum;2025-10-01/2025-10-31
+255200,00;S;EUR;5425;70001;9;1811;RE255034;Anadolu Çelik Sanayi A.S. Warmband Coil S235JR;Menge Tonnen;398,75;Leistungszeitraum;
+102884,00;S;EUR;6325;70001;9;0512;RE255011;Stadtwerke Musterstadt GmbH Strom Netzbezug;Menge kWh;445000;Leistungszeitraum;2025-11-01/2025-11-30
+21125,00;S;EUR;6326;70001;9;0712;RE255023;Gasversorgung Süd AG Erdgas (Brennwert Hs;Menge kWh;250000;Leistungszeitraum;2025-11-01/2025-11-30
+105196,00;S;EUR;6325;70001;9;3112;RE255012;Stadtwerke Musterstadt GmbH Strom Netzbezug;Menge kWh;455000;Leistungszeitraum;2025-12-01/2025-12-31
+24927,50;S;EUR;6326;70001;9;3112;RE255024;Gasversorgung Süd AG Erdgas (Brennwert Hs;Menge kWh;295000;Leistungszeitraum;2025-12-01/2025-12-31
+10450,00;S;EUR;6327;70001;9;3112;RE255028;Fernwärme Musterstadt GmbH Fernwärme;Menge MWh;110;Leistungszeitraum;2025-10-01/2025-12-31

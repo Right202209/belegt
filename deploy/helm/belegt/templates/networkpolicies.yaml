@@ -1,0 +1,283 @@
+{{- /*
+Spec: 07 §2.2（Kubernetes NetworkPolicy 默认 deny-all，再按表放行；隔离区无出网；egress-gateway 是唯一可访问公网的工作负载）、
+      10 §6.2（llm-proxy/mail-fetcher/mcp-broker 访问外部一律经 egress-gateway）、§6.3、04 §1.3。
+放行表：
+  web              ← ingress-controller:8080            → api:8000
+  api              ← web、supplier、worker-quarantine、ingress-controller、prometheus :8000
+                   → postgres:5432、temporal:7233、otel:4317/4318、supplier:8080、egress-gateway:3128
+  worker(trusted)  ← prometheus:9464                    → postgres、temporal、otel、api:8000、vllm:8000、egress-gateway:3128
+  worker-quarantine← prometheus:9464                    → postgres(只读凭据)、temporal、otel、api:8000、vllm:8000（无 egress-gateway）
+  supplier         ← ingress-controller、api :8080       → api:8000、egress-gateway:3128
+  egress-gateway   ← 带 belegt.io/egress-client=true 的 Pod :3128 → 公网（排除私网段）:allowedPorts
+  migrate          → postgres:5432
+  postgresql(内置) ← api、worker、worker-quarantine、migrate :5432
+  vllm             ← worker、worker-quarantine :8000
+default-deny 只选中本 Release 的 Pod（app.kubernetes.io/instance），不影响同命名空间的其他工作负载。
+*/ -}}
+{{- if .Values.networkPolicy.enabled }}
+{{- $root := . }}
+{{- $rel := .Release.Name }}
+{{- $np := .Values.networkPolicy }}
+{{- /* ---------------------------------------------------------------- default deny + DNS（每个用到的命名空间一次） */}}
+{{- $zones := list "app" "trusted" "guard" }}
+{{- if .Values.workerQuarantine.enabled }}{{ $zones = append $zones "quarantine" }}{{ end }}
+{{- if .Values.postgresql.bundled.enabled }}{{ $zones = append $zones "data" }}{{ end }}
+{{- $seen := dict }}
+{{- range $zone := $zones }}
+{{- $ns := include "belegt.ns" (list $root $zone) }}
+{{- if not (hasKey $seen $ns) }}
+{{- $_ := set $seen $ns true }}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "belegt.fullname" $root }}-default-deny
+  namespace: {{ $ns }}
+  labels: {{- include "belegt.metaLabels" $root | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels: { app.kubernetes.io/instance: {{ $rel | quote }} }
+  policyTypes: [Ingress, Egress]
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "belegt.fullname" $root }}-allow-dns
+  namespace: {{ $ns }}
+  labels: {{- include "belegt.metaLabels" $root | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels: { app.kubernetes.io/instance: {{ $rel | quote }} }
+  policyTypes: [Egress]
+  egress:
+    - to:
+        {{- toYaml $np.peers.dns | nindent 8 }}
+      ports: [{ port: 53, protocol: UDP }, { port: 53, protocol: TCP }]
+{{- end }}
+{{- end }}
+
+{{- /* ---------------------------------------------------------------- web */}}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "belegt.fullname" . }}-web
+  namespace: {{ include "belegt.ns" (list . "app") }}
+  labels: {{- include "belegt.metaLabels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels: {{- include "belegt.selector" (list . "web" "app") | nindent 6 }}
+  policyTypes: [Ingress, Egress]
+  ingress:
+    - from:
+        {{- toYaml $np.peers.ingressController | nindent 8 }}
+      ports: [{ port: 8080, protocol: TCP }]
+  egress:
+    - to:
+        {{- include "belegt.peer" (list . "api" "app") | nindent 8 }}
+      ports: [{ port: 8000, protocol: TCP }]
+
+{{- /* ---------------------------------------------------------------- api */}}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "belegt.fullname" . }}-api
+  namespace: {{ include "belegt.ns" (list . "app") }}
+  labels: {{- include "belegt.metaLabels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels: {{- include "belegt.selector" (list . "api" "app") | nindent 6 }}
+  policyTypes: [Ingress, Egress]
+  ingress:
+    - from:
+        {{- include "belegt.peer" (list . "web" "app") | nindent 8 }}
+        {{- include "belegt.peer" (list . "supplier" "app") | nindent 8 }}
+        {{- include "belegt.peer" (list . "worker" "trusted") | nindent 8 }}
+        {{- include "belegt.peer" (list . "worker-quarantine" "quarantine") | nindent 8 }}
+        {{- toYaml $np.peers.ingressController | nindent 8 }}
+        {{- toYaml $np.peers.prometheus | nindent 8 }}
+      ports: [{ port: 8000, protocol: TCP }]
+  egress:
+    {{- include "belegt.commonEgress" . | nindent 4 }}
+    {{- include "belegt.egressGwEgress" . | nindent 4 }}
+    - to:
+        {{- include "belegt.peer" (list . "supplier" "app") | nindent 8 }}
+      ports: [{ port: 8080, protocol: TCP }]
+
+{{- /* ---------------------------------------------------------------- worker（可信区） */}}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "belegt.fullname" . }}-worker
+  namespace: {{ include "belegt.ns" (list . "trusted") }}
+  labels: {{- include "belegt.metaLabels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels: {{- include "belegt.selector" (list . "worker" "trusted") | nindent 6 }}
+  policyTypes: [Ingress, Egress]
+  ingress:
+    - from:
+        {{- toYaml $np.peers.prometheus | nindent 8 }}
+      ports: [{ port: 9464, protocol: TCP }]
+  egress:
+    {{- include "belegt.commonEgress" . | nindent 4 }}
+    {{- include "belegt.egressGwEgress" . | nindent 4 }}
+    {{- include "belegt.vllmEgress" . | nindent 4 }}
+    - to:
+        {{- include "belegt.peer" (list . "api" "app") | nindent 8 }}
+      ports: [{ port: 8000, protocol: TCP }]
+
+{{- /* ---------------------------------------------------------------- worker-quarantine（隔离区：无 egress-gateway） */}}
+{{- if .Values.workerQuarantine.enabled }}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "belegt.fullname" . }}-worker-quarantine
+  namespace: {{ include "belegt.ns" (list . "quarantine") }}
+  labels: {{- include "belegt.metaLabels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels: {{- include "belegt.selector" (list . "worker-quarantine" "quarantine") | nindent 6 }}
+  policyTypes: [Ingress, Egress]
+  ingress:
+    - from:
+        {{- toYaml $np.peers.prometheus | nindent 8 }}
+      ports: [{ port: 9464, protocol: TCP }]
+  egress:
+    {{- include "belegt.commonEgress" . | nindent 4 }}
+    {{- include "belegt.vllmEgress" . | nindent 4 }}
+    - to:
+        {{- include "belegt.peer" (list . "api" "app") | nindent 8 }}
+      ports: [{ port: 8000, protocol: TCP }]
+{{- end }}
+
+{{- /* ---------------------------------------------------------------- supplier */}}
+{{- if .Values.supplier.enabled }}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "belegt.fullname" . }}-supplier
+  namespace: {{ include "belegt.ns" (list . "app") }}
+  labels: {{- include "belegt.metaLabels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels: {{- include "belegt.selector" (list . "supplier" "app") | nindent 6 }}
+  policyTypes: [Ingress, Egress]
+  ingress:
+    - from:
+        {{- toYaml $np.peers.ingressController | nindent 8 }}
+        {{- include "belegt.peer" (list . "api" "app") | nindent 8 }}
+      ports: [{ port: 8080, protocol: TCP }]
+  egress:
+    {{- include "belegt.egressGwEgress" . | nindent 4 }}
+    - to:
+        {{- include "belegt.peer" (list . "api" "app") | nindent 8 }}
+      ports: [{ port: 8000, protocol: TCP }]
+{{- end }}
+
+{{- /* ---------------------------------------------------------------- egress-gateway（唯一出公网） */}}
+{{- if .Values.egressGateway.enabled }}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "belegt.fullname" . }}-egress-gateway
+  namespace: {{ include "belegt.ns" (list . "guard") }}
+  labels: {{- include "belegt.metaLabels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels: {{- include "belegt.selector" (list . "egress-gateway" "guard") | nindent 6 }}
+  policyTypes: [Ingress, Egress]
+  ingress:
+    - from:
+        {{- range $zone := list "app" "trusted" }}
+        - namespaceSelector:
+            matchLabels: { kubernetes.io/metadata.name: {{ include "belegt.ns" (list $root $zone) }} }
+          podSelector:
+            matchLabels: { app.kubernetes.io/instance: {{ $rel | quote }}, belegt.io/egress-client: "true" }
+        {{- end }}
+      ports: [{ port: {{ .Values.egressGateway.port }}, protocol: TCP }]
+  {{- if .Values.egressGateway.allowlist }}
+  egress:
+    - to:
+        - ipBlock:
+            cidr: 0.0.0.0/0
+            except:
+              {{- toYaml $np.egressGatewayExcept | nindent 14 }}
+      ports:
+        {{- range .Values.egressGateway.allowedPorts }}
+        - { port: {{ . }}, protocol: TCP }
+        {{- end }}
+  {{- else }}
+  egress: []   # private-airgap：白名单为空 → 不允许任何出站（DNS 由 allow-dns 放行）
+  {{- end }}
+{{- end }}
+
+{{- /* ---------------------------------------------------------------- migrate Job */}}
+{{- if .Values.migrations.enabled }}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "belegt.fullname" . }}-migrate
+  namespace: {{ include "belegt.ns" (list . "app") }}
+  labels: {{- include "belegt.metaLabels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels: {{- include "belegt.selector" (list . "migrate" "app") | nindent 6 }}
+  policyTypes: [Ingress, Egress]
+  egress:
+    - to:
+        {{- include "belegt.pgPeer" . | nindent 8 }}
+      ports: [{ port: {{ .Values.postgresql.port }}, protocol: TCP }]
+{{- end }}
+
+{{- /* ---------------------------------------------------------------- 内置 PostgreSQL */}}
+{{- if .Values.postgresql.bundled.enabled }}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "belegt.fullname" . }}-postgresql
+  namespace: {{ include "belegt.ns" (list . "data") }}
+  labels: {{- include "belegt.metaLabels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels: {{- include "belegt.selector" (list . "postgresql" "data") | nindent 6 }}
+  policyTypes: [Ingress, Egress]
+  ingress:
+    - from:
+        {{- include "belegt.peer" (list . "api" "app") | nindent 8 }}
+        {{- include "belegt.peer" (list . "worker" "trusted") | nindent 8 }}
+        {{- include "belegt.peer" (list . "worker-quarantine" "quarantine") | nindent 8 }}
+        {{- include "belegt.peer" (list . "migrate" "app") | nindent 8 }}
+        {{- toYaml $np.peers.temporal | nindent 8 }}
+      ports: [{ port: 5432, protocol: TCP }]
+  egress: []
+{{- end }}
+
+{{- /* ---------------------------------------------------------------- vLLM */}}
+{{- if .Values.llm.vllm.enabled }}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "belegt.fullname" . }}-vllm
+  namespace: {{ include "belegt.ns" (list . "trusted") }}
+  labels: {{- include "belegt.metaLabels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels: {{- include "belegt.selector" (list . "vllm" "trusted") | nindent 6 }}
+  policyTypes: [Ingress, Egress]
+  ingress:
+    - from:
+        {{- include "belegt.peer" (list . "worker" "trusted") | nindent 8 }}
+        {{- include "belegt.peer" (list . "worker-quarantine" "quarantine") | nindent 8 }}
+      ports: [{ port: 8000, protocol: TCP }]
+  egress: []
+{{- end }}
+{{- end }}

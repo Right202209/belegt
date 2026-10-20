@@ -1,0 +1,57 @@
+id: dp:energy.consumption.total
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Gesamtenergieverbrauch
+  en: Total energy consumption
+  zh: 总能耗
+definition:
+  en: 'Total final energy consumed within the reporting boundary from all sources: purchased electricity, heat, steam and cooling, fuels, and self-generated energy consumed, expressed on a consistent calorific basis stated in the answer. Excludes energy sold to third parties and feedstock use of fuels.'
+  de: Gesamter Endenergieverbrauch innerhalb der Berichtsgrenze aus allen Quellen (Strom, Wärme, Dampf, Kälte, Brennstoffe, selbst erzeugte und verbrauchte Energie). An Dritte verkaufte Energie und stoffliche Nutzung sind ausgeschlossen.
+  zh: 报告边界内全部来源（外购电力、热、蒸汽、冷、燃料及自发自用能源）的最终能源消耗，按答案注明的统一热值基准计；不含售给第三方的能源和燃料的原料用途。
+value_type: number
+unit: MWh
+allowed_units:
+  - kWh
+  - MWh
+  - GJ
+period_type: reporting_period
+boundary:
+  - organization
+  - site
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: eu_2026_1560_vcs
+    clause: B3 Para 32
+sensitivity: confidential
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - erp
+    - historical_answer
+  min_sources: 1
+  max_age_days: 550
+  requires_calculation: true
+  human_confirmation_allowed: false
+validity_rule:
+  min: 0
+  expires_by: period_end_plus_days
+  expires_after_days: 550
+  plausibility:
+    - expr: value >= dp:energy.consumption.electricity_total + dp:energy.consumption.fuels_total
+      severity: warn
+      note: 总能耗不应小于电力与燃料之和
+related_datapoints:
+  - id: dp:energy.consumption.electricity_total
+    relation: see_also
+  - id: dp:energy.consumption.fuels_total
+    relation: see_also
+tags:
+  - vsme
+  - cdp_climate
+  - energy
+  - vsme_basic

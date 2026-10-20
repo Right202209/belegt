@@ -1,0 +1,45 @@
+id: dp:prod.pcf.cradle_to_gate.excluding_biogenic
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Produkt-CO2-Fußabdruck (ohne biogen)
+  en: Product carbon footprint, cradle-to-gate (excl. biogenic)
+  zh: 产品碳足迹（不含生物源）
+definition:
+  en: Cradle-to-gate GHG emissions of the product per declared unit excluding biogenic CO2 uptake and biogenic emissions, same system boundary and allocation as dp:prod.pcf.cradle_to_gate.
+  de: Cradle-to-Gate-THG-Emissionen je deklarierter Einheit ohne biogene CO2-Aufnahme und -Emissionen, mit gleicher Systemgrenze und Allokation wie dp:prod.pcf.cradle_to_gate.
+  zh: 每声明单位产品摇篮到大门排放，不含生物源 CO2 吸收与生物源排放；系统边界与分配方法与 dp:prod.pcf.cradle_to_gate 相同。
+value_type: number
+unit: kgCO2e/kg
+allowed_units:
+  - kgCO2e/kg
+  - tCO2e/t
+period_type: validity_range
+boundary:
+  - product_per_unit
+methodology_refs:
+  - ref: iso_14067
+  - ref: pact_tech_spec_v2
+    note: pCfExcludingBiogenic
+  - ref: pact_tech_spec_v3
+    note: pcfExcludingBiogenicUptake
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - supplier_response
+    - historical_answer
+  min_sources: 1
+  max_age_days: 1095
+  requires_calculation: true
+  human_confirmation_allowed: false
+validity_rule:
+  expires_by: evidence_valid_until
+related_datapoints:
+  - id: dp:prod.pcf.cradle_to_gate
+    relation: alternative_of
+tags:
+  - pact_pcf
+  - catenax_pcf
+  - pcf

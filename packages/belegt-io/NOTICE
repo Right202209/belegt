@@ -1,0 +1,20 @@
+belegt-io
+Copyright 2026 Belegt contributors
+Licensed under the Apache License, Version 2.0 (see LICENSE).
+
+This package redistributes derived machine-readable schemas from third parties:
+
+1. src/belegt_io/schemas/pact-productfootprint-3.0.3.schema.json
+   Derived from the PACT Technical Specifications OpenAPI document, version 3.0.3
+   (https://docs.carbon-transparency.org/tr/data-exchange-protocol/latest/openapi.yaml),
+   components/schemas, with descriptions removed. (c) WBCSD / Partnership for Carbon Transparency.
+   Licence terms of the upstream specification: to be confirmed before public release.
+
+2. src/belegt_io/schemas/catenax-pcf-10.0.0.schema.json
+   Generated JSON Schema of the Eclipse Tractus-X semantic model urn:samm:io.catenax.pcf:10.0.0
+   (https://github.com/eclipse-tractusx/sldt-semantic-models, io.catenax.pcf/10.0.0/gen/Pcf-schema.json),
+   descriptions removed. Copyright (c) 2022 ZF Friedrichshafen AG, T-Systems International GmbH,
+   Robert Bosch Manufacturing Solutions GmbH and contributors; licensed under CC-BY-4.0.
+
+Template mapping files (src/belegt_io/mappings/*.yaml) contain only question numbers, column names
+and Belegt-authored short labels, no copyrighted questionnaire text (02 §4.1).

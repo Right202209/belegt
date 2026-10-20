@@ -1,0 +1,5 @@
+schema: belegt.text_fingerprints/1
+note: DC-10 原文检测语料指纹：规范化后词（CJK 为字）n-gram 的 sha256 前 16 位；只存哈希，不存模板原文。维护者用 `belegt-dict validate --corpus <txt 目录>` 本地检测，或把指纹并入本文件
+fingerprints:
+  4: []
+  5: []

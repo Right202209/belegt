@@ -1,0 +1,239 @@
+{
+  "uid": "dsh-04",
+  "title": "DSH-04 Agent 质量",
+  "description": "晋升率、ClosedQuestion 生成率、unmapped 率、PC-04 失败、影子评测",
+  "tags": [
+    "belegt",
+    "dsh-04"
+  ],
+  "timezone": "Europe/Berlin",
+  "schemaVersion": 39,
+  "version": 1,
+  "editable": false,
+  "time": {
+    "from": "now-24h",
+    "to": "now"
+  },
+  "refresh": "1m",
+  "templating": {
+    "list": [
+      {
+        "name": "datasource",
+        "type": "datasource",
+        "query": "prometheus",
+        "current": {
+          "text": "Prometheus",
+          "value": "belegt-prom"
+        },
+        "hide": 2
+      }
+    ]
+  },
+  "annotations": {
+    "list": []
+  },
+  "links": [
+    {
+      "title": "Runbooks",
+      "type": "link",
+      "url": "deploy/ops/alerts-runbook.md",
+      "targetBlank": true
+    }
+  ],
+  "panels": [
+    {
+      "id": 1,
+      "type": "timeseries",
+      "title": "晋升结果（按规则）",
+      "description": "",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "belegt-prom"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "belegt-prom"
+          },
+          "expr": "sum by (rule, result) (rate(belegt_promotion_total[1h]))",
+          "legendFormat": "{{rule}} {{result}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ops"
+        },
+        "overrides": []
+      },
+      "options": {}
+    },
+    {
+      "id": 2,
+      "type": "stat",
+      "title": "PC-04 失败率（ALR-10 > 2%）",
+      "description": "",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "belegt-prom"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 4,
+        "w": 8,
+        "h": 4
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "belegt-prom"
+          },
+          "expr": "sum(rate(belegt_promotion_total{rule=\"PC-04\",result=\"fail\"}[1d])) / clamp_min(sum(rate(belegt_promotion_total{rule=\"PC-04\"}[1d])), 1e-9)",
+          "legendFormat": "PC-04"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0.02
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "none"
+      }
+    },
+    {
+      "id": 3,
+      "type": "stat",
+      "title": "映射自动晋升率（PROMO-MAP-*）",
+      "description": "",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "belegt-prom"
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 4,
+        "w": 8,
+        "h": 4
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "belegt-prom"
+          },
+          "expr": "sum(rate(belegt_promotion_total{rule=~\"PROMO-MAP.*\",result=\"promoted\"}[1d])) / clamp_min(sum(rate(belegt_promotion_total{rule=~\"PROMO-MAP.*\"}[1d])), 1e-9)",
+          "legendFormat": ""
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "none"
+      }
+    },
+    {
+      "id": 4,
+      "type": "stat",
+      "title": "证据自动核验率（EV-AUTO-*）",
+      "description": "",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "belegt-prom"
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 4,
+        "w": 8,
+        "h": 4
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "belegt-prom"
+          },
+          "expr": "sum(rate(belegt_promotion_total{rule=~\"EV-AUTO.*\",result=\"promoted\"}[1d])) / clamp_min(sum(rate(belegt_promotion_total{rule=~\"EV-AUTO.*\"}[1d])), 1e-9)",
+          "legendFormat": ""
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percentunit"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "none"
+      }
+    },
+    {
+      "id": 5,
+      "type": "text",
+      "title": "影子评测",
+      "gridPos": {
+        "x": 0,
+        "y": 8,
+        "w": 24,
+        "h": 4
+      },
+      "options": {
+        "mode": "markdown",
+        "content": "FR-004 影子评测 Top-1 与黄金集结果由 `belegt-bench` 写入评测报告（11）；下降 > 2 个百分点触发 ALR-10。"
+      }
+    }
+  ]
+}

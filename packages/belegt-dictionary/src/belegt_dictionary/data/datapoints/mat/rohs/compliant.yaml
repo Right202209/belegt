@@ -1,0 +1,35 @@
+id: dp:mat.rohs.compliant
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: RoHS-konform
+  en: RoHS compliant
+  zh: 是否符合 RoHS
+definition:
+  en: Whether the product complies with the restrictions of the RoHS Directive on hazardous substances in electrical and electronic equipment, including applicable exemptions, as declared in the EU declaration of conformity or a supplier declaration.
+  de: Ob das Produkt die Stoffbeschränkungen der RoHS-Richtlinie einschließlich anwendbarer Ausnahmen einhält, laut EU-Konformitätserklärung oder Lieferantenerklärung.
+  zh: 产品是否符合 RoHS 指令对电子电气设备有害物质的限制（含适用豁免），以欧盟符合性声明或供应商声明为准。
+value_type: bool
+period_type: point_in_time
+boundary:
+  - product
+methodology_refs:
+  - ref: eu_2011_65_rohs
+    clause: Art. 4
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - supplier_response
+    - document
+    - historical_answer
+    - human_confirmation
+  min_sources: 1
+  max_age_days: 365
+  requires_calculation: false
+  human_confirmation_allowed: true
+validity_rule:
+  expires_by: evidence_valid_until
+tags:
+  - oem_custom
+  - rohs

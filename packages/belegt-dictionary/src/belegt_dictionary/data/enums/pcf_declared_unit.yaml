@@ -1,0 +1,29 @@
+enum: enums/pcf_declared_unit.yaml
+version: 1.0.0
+title: PCF declared unit
+source: PACT Technical Specifications（v2 declaredUnit / v3 declaredUnitOfMeasurement）[需核对 v3 是否含 piece]
+values:
+  - code: kg
+    label:
+      en: kilogram
+  - code: L
+    label:
+      en: liter
+  - code: m3
+    label:
+      en: cubic meter
+  - code: kWh
+    label:
+      en: kilowatt hour
+  - code: MJ
+    label:
+      en: megajoule
+  - code: tkm
+    label:
+      en: ton kilometer
+  - code: m2
+    label:
+      en: square meter
+  - code: piece
+    label:
+      en: piece

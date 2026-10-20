@@ -1,0 +1,41 @@
+# Spec: 02 §4.3.2。题号每年可能变动 [需核对]。
+template_mapping: tm:cdp_climate@2025
+template_id: cdp_climate
+template_version: "2025"
+template_source: "CDP integrated questionnaire, Module 7 (Climate change)"
+license_note: "仅题号与短标签；不复制 CDP 原文"
+fingerprint:
+  threshold: 0.85
+  markers:
+    - { text: "CDP", weight: 3 }
+    - { text: "Climate change", weight: 1 }
+    - { native_id: "7.6", weight: 2 }
+    - { native_id: "7.7", weight: 1 }
+    - { native_id: "7.30.1", weight: 1 }
+entries:
+  - entry_id: m7_6_scope1
+    locator: { kind: question, ref: "7.6", legacy_ref: "C6.1" }
+    short_label: "Gross global Scope 1, tCO2e"
+    datapoint_id: dp:env.ghg.scope1_total
+    direction: both
+    unit_hint: tCO2e
+    transform: { type: identity }
+  - entry_id: m7_7_scope2_mb
+    locator: { kind: question, ref: "7.7", column: "market-based", legacy_ref: "C6.3" }
+    short_label: "Gross global Scope 2, market-based"
+    datapoint_id: dp:env.ghg.scope2_market_based
+    direction: both
+    unit_hint: tCO2e
+    transform: { type: identity }
+  - entry_id: m7_30_1_energy
+    locator: { kind: question, ref: "7.30.1", legacy_ref: "C8.2a" }
+    short_label: "Total energy consumption, MWh"
+    datapoint_id: dp:energy.consumption.total
+    direction: both
+    unit_hint: MWh
+    transform: { type: unit_convert, from_unit: MWh, to_unit: MWh }
+  - entry_id: m7_8_scope3_c01
+    locator: { kind: question, ref: "7.8", row: "Purchased goods and services", legacy_ref: "C6.5" }
+    short_label: "Scope 3 cat.1 emissions"
+    datapoint_id: dp:env.ghg.scope3_category.c01
+    direction: both

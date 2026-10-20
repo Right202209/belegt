@@ -1,0 +1,331 @@
+{
+ "id": "TV-11",
+ "title": "CBAM 50 t 门槛",
+ "spec": "05 §9 TV-11",
+ "cases": [
+  {
+   "id": "TV-11",
+   "description": "18 + 25 + 6.5 + 0.5 = 50.000 t（氢 3 t 不计）→ exempt=true（不超过 50 t）",
+   "request": {
+    "method_id": "cbam.threshold_check",
+    "methodology_version": "cbam-threshold@1.0.0",
+    "factor_set_version": "fs:belegt-example-cbam@2026.10",
+    "boundary": "organization",
+    "period": {
+     "start": "2026-01-01",
+     "end": "2026-12-31"
+    },
+    "params": {
+     "cn_lot_1": "72081000",
+     "cn_lot_2": "76061200",
+     "cn_lot_3": "73181500",
+     "cn_lot_4": "76169910",
+     "cn_lot_h2": "28041000"
+    },
+    "inputs": [
+     {
+      "name": "lot_1",
+      "ref": "ev_01JE0TV09L1000000000000001#v1",
+      "value": "18",
+      "unit": "t"
+     },
+     {
+      "name": "lot_2",
+      "ref": "ev_01JE0TV09L2000000000000001#v1",
+      "value": "25",
+      "unit": "t"
+     },
+     {
+      "name": "lot_3",
+      "ref": "ev_01JE0TV09L3000000000000001#v1",
+      "value": "6.5",
+      "unit": "t"
+     },
+     {
+      "name": "lot_4",
+      "ref": "ev_01JE0TV09L4000000000000001#v1",
+      "value": "0.5",
+      "unit": "t"
+     },
+     {
+      "name": "lot_h2",
+      "ref": "ev_01JE0TV09H2000000000000001#v1",
+      "value": "3",
+      "unit": "t"
+     }
+    ]
+   },
+   "factor_set_ref": {
+    "id": "fs:belegt-example-cbam@2026.10",
+    "path": "fs/belegt-example-cbam@2026.10.yaml",
+    "rows_hash": "sha256:27358e8514ba616585981f7d8e9e3c04f136eb1f2053dd95f6ba92431d2916e5"
+   },
+   "expected": {
+    "result": {
+     "value": "50",
+     "unit": "t",
+     "rounding": {
+      "mode": "half_even",
+      "digits": 3
+     }
+    },
+    "breakdown": [
+     {
+      "name": "threshold",
+      "value": "50",
+      "unit": "t"
+     },
+     {
+      "name": "excluded_mass",
+      "value": "3",
+      "unit": "t"
+     },
+     {
+      "name": "exempt",
+      "value": "1",
+      "unit": "1"
+     },
+     {
+      "name": "threshold_utilisation_percent",
+      "value": "100",
+      "unit": "%"
+     },
+     {
+      "name": "approaching_threshold",
+      "value": "1",
+      "unit": "1"
+     }
+    ],
+    "input_hash": "sha256:7b4bf0043cc5e957913c7e6745102b114ef50ba30652fc923c637e46f27c999c"
+   },
+   "tolerance": "0"
+  },
+  {
+   "id": "TV-11.exceed",
+   "description": "再进口 0.001 t → 50.001 t → exempt=false",
+   "request": {
+    "method_id": "cbam.threshold_check",
+    "methodology_version": "cbam-threshold@1.0.0",
+    "factor_set_version": "fs:belegt-example-cbam@2026.10",
+    "boundary": "organization",
+    "period": {
+     "start": "2026-01-01",
+     "end": "2026-12-31"
+    },
+    "params": {
+     "cn_lot_1": "72081000",
+     "cn_lot_2": "76061200",
+     "cn_lot_3": "73181500",
+     "cn_lot_4": "76169910",
+     "cn_lot_h2": "28041000",
+     "cn_lot_5": "72085120"
+    },
+    "inputs": [
+     {
+      "name": "lot_1",
+      "ref": "ev_01JE0TV09L1000000000000001#v1",
+      "value": "18",
+      "unit": "t"
+     },
+     {
+      "name": "lot_2",
+      "ref": "ev_01JE0TV09L2000000000000001#v1",
+      "value": "25",
+      "unit": "t"
+     },
+     {
+      "name": "lot_3",
+      "ref": "ev_01JE0TV09L3000000000000001#v1",
+      "value": "6.5",
+      "unit": "t"
+     },
+     {
+      "name": "lot_4",
+      "ref": "ev_01JE0TV09L4000000000000001#v1",
+      "value": "0.5",
+      "unit": "t"
+     },
+     {
+      "name": "lot_h2",
+      "ref": "ev_01JE0TV09H2000000000000001#v1",
+      "value": "3",
+      "unit": "t"
+     },
+     {
+      "name": "lot_5",
+      "ref": "ev_01JE0TV09L5000000000000001#v1",
+      "value": "0.001",
+      "unit": "t"
+     }
+    ]
+   },
+   "factor_set_ref": {
+    "id": "fs:belegt-example-cbam@2026.10",
+    "path": "fs/belegt-example-cbam@2026.10.yaml",
+    "rows_hash": "sha256:27358e8514ba616585981f7d8e9e3c04f136eb1f2053dd95f6ba92431d2916e5"
+   },
+   "expected": {
+    "result": {
+     "value": "50.001",
+     "unit": "t",
+     "rounding": {
+      "mode": "half_even",
+      "digits": 3
+     }
+    },
+    "breakdown": [
+     {
+      "name": "threshold",
+      "value": "50",
+      "unit": "t"
+     },
+     {
+      "name": "excluded_mass",
+      "value": "3",
+      "unit": "t"
+     },
+     {
+      "name": "exempt",
+      "value": "0",
+      "unit": "1"
+     },
+     {
+      "name": "threshold_utilisation_percent",
+      "value": "100.002",
+      "unit": "%"
+     },
+     {
+      "name": "approaching_threshold",
+      "value": "0",
+      "unit": "1"
+     }
+    ],
+    "input_hash": "sha256:754225de650d505cafaa8cff0a91e1ba2581ad76a22e18ec9a76c46bfad86412"
+   },
+   "tolerance": "0"
+  },
+  {
+   "id": "TV-11.err-period",
+   "description": "错误向量：非日历年期间 → CALC_PERIOD_MISMATCH",
+   "request": {
+    "method_id": "cbam.threshold_check",
+    "methodology_version": "cbam-threshold@1.0.0",
+    "factor_set_version": "fs:belegt-example-cbam@2026.10",
+    "boundary": "organization",
+    "period": {
+     "start": "2026-07-01",
+     "end": "2026-09-30"
+    },
+    "params": {
+     "cn_lot_1": "72081000",
+     "cn_lot_2": "76061200",
+     "cn_lot_3": "73181500",
+     "cn_lot_4": "76169910",
+     "cn_lot_h2": "28041000"
+    },
+    "inputs": [
+     {
+      "name": "lot_1",
+      "ref": "ev_01JE0TV09L1000000000000001#v1",
+      "value": "18",
+      "unit": "t"
+     },
+     {
+      "name": "lot_2",
+      "ref": "ev_01JE0TV09L2000000000000001#v1",
+      "value": "25",
+      "unit": "t"
+     },
+     {
+      "name": "lot_3",
+      "ref": "ev_01JE0TV09L3000000000000001#v1",
+      "value": "6.5",
+      "unit": "t"
+     },
+     {
+      "name": "lot_4",
+      "ref": "ev_01JE0TV09L4000000000000001#v1",
+      "value": "0.5",
+      "unit": "t"
+     },
+     {
+      "name": "lot_h2",
+      "ref": "ev_01JE0TV09H2000000000000001#v1",
+      "value": "3",
+      "unit": "t"
+     }
+    ]
+   },
+   "factor_set_ref": {
+    "id": "fs:belegt-example-cbam@2026.10",
+    "path": "fs/belegt-example-cbam@2026.10.yaml",
+    "rows_hash": "sha256:27358e8514ba616585981f7d8e9e3c04f136eb1f2053dd95f6ba92431d2916e5"
+   },
+   "expected": {
+    "error_code": "CALC_PERIOD_MISMATCH"
+   },
+   "tolerance": "0"
+  },
+  {
+   "id": "TV-11.err-cn",
+   "description": "错误向量：批次缺 CN 编码 → CALC_INPUT_MISSING",
+   "request": {
+    "method_id": "cbam.threshold_check",
+    "methodology_version": "cbam-threshold@1.0.0",
+    "factor_set_version": "fs:belegt-example-cbam@2026.10",
+    "boundary": "organization",
+    "period": {
+     "start": "2026-01-01",
+     "end": "2026-12-31"
+    },
+    "params": {
+     "cn_lot_1": "72081000",
+     "cn_lot_2": "76061200",
+     "cn_lot_3": "73181500",
+     "cn_lot_4": "76169910"
+    },
+    "inputs": [
+     {
+      "name": "lot_1",
+      "ref": "ev_01JE0TV09L1000000000000001#v1",
+      "value": "18",
+      "unit": "t"
+     },
+     {
+      "name": "lot_2",
+      "ref": "ev_01JE0TV09L2000000000000001#v1",
+      "value": "25",
+      "unit": "t"
+     },
+     {
+      "name": "lot_3",
+      "ref": "ev_01JE0TV09L3000000000000001#v1",
+      "value": "6.5",
+      "unit": "t"
+     },
+     {
+      "name": "lot_4",
+      "ref": "ev_01JE0TV09L4000000000000001#v1",
+      "value": "0.5",
+      "unit": "t"
+     },
+     {
+      "name": "lot_h2",
+      "ref": "ev_01JE0TV09H2000000000000001#v1",
+      "value": "3",
+      "unit": "t"
+     }
+    ]
+   },
+   "factor_set_ref": {
+    "id": "fs:belegt-example-cbam@2026.10",
+    "path": "fs/belegt-example-cbam@2026.10.yaml",
+    "rows_hash": "sha256:27358e8514ba616585981f7d8e9e3c04f136eb1f2053dd95f6ba92431d2916e5"
+   },
+   "expected": {
+    "error_code": "CALC_INPUT_MISSING"
+   },
+   "tolerance": "0"
+  }
+ ]
+}

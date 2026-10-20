@@ -1,0 +1,497 @@
+# Spec: 10 §6.1（private-compose / dev）、§6.3（私有化最低配置、隔离等效：internal 网络 + egress-gateway 唯一出网）、
+#       §5（OTel + Prometheus + Grafana 精简栈）、§6.4（本地模型：Ollama 演示 / vLLM 生产）；07 §2.2；04 §1.3；03 §6
+#
+# 一键启动（在本目录）：
+#   cp .env.example .env && $EDITOR .env               # 至少改掉全部 *_PASSWORD / *_SECRET
+#   docker compose up -d --build                         # 核心栈：PG16+pgvector、MinIO、Temporal、API、worker、web、supplier、观测
+#   docker compose --profile ollama up -d                # + 本地模型（演示，FR-704）
+#   docker compose --profile vllm up -d                  # + vLLM（生产推理，需 NVIDIA GPU）
+#   docker compose --profile backup up -d                # + 每日 pg_dump → 对象存储
+# 网络分区（10 §6.3）：
+#   edge        对外发布端口（web、supplier、grafana、temporal-ui；默认只绑 127.0.0.1，由 TLS 反向代理对外）
+#   app         internal：web ↔ api ↔ worker ↔ supplier
+#   data        internal：PostgreSQL、MinIO、Temporal
+#   llm         internal：worker ↔ 本地模型（ollama / vllm）
+#   quarantine  internal：隔离区 worker（profile zones）只能到 api 与本地模型，无出网
+#   obs         internal：OTel Collector、Prometheus、Grafana
+#   egress      唯一可出公网的网络，只有 egress-gateway（FQDN 白名单转发代理）挂在上面
+# 限制：Docker 要求发布端口的容器至少挂一个非 internal 网络，因此 edge 上的容器（web、supplier、grafana、temporal-ui）
+# 在技术上可出网；它们不持有 LLM 密钥，生产应在主机防火墙上对 edge 网段做出站拒绝（见 deploy/README.md）。
+
+name: belegt
+
+x-hardening: &hardening
+  read_only: true
+  security_opt: ["no-new-privileges:true"]
+  cap_drop: ["ALL"]
+  tmpfs:
+    - /tmp:rw,noexec,nosuid,size=256m
+  restart: unless-stopped
+  logging:
+    driver: json-file
+    options: { max-size: "20m", max-file: "5" }
+
+x-otel-env: &otel-env
+  OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4317
+  OTEL_EXPORTER_OTLP_PROTOCOL: grpc
+  OTEL_RESOURCE_ATTRIBUTES: deployment.environment=${BELEGT_ENV:-dev},belegt.deploy_profile=${BELEGT_DEPLOY_PROFILE:-private-compose}
+
+x-proxy-env: &proxy-env
+  # 10 §6.2：访问外部 LLM 端点/邮箱/远程 MCP 一律经 egress-gateway 的 CONNECT 代理（FQDN 白名单）
+  HTTPS_PROXY: http://egress-gateway:3128
+  HTTP_PROXY: http://egress-gateway:3128
+  NO_PROXY: localhost,127.0.0.1,belegt-api,belegt-supplier,postgres,minio,temporal,otel-collector,ollama,vllm
+
+x-core-env: &core-env
+  BELEGT_ENV: ${BELEGT_ENV:-dev}
+  BELEGT_DEPLOY_PROFILE: ${BELEGT_DEPLOY_PROFILE:-private-compose}
+  BELEGT_DB_URL: postgresql+psycopg://${BELEGT_DB_APP_USER:-belegt_app}:${BELEGT_DB_APP_PASSWORD:?set BELEGT_DB_APP_PASSWORD}@postgres:5432/${BELEGT_DB_NAME:-belegt}
+  BELEGT_PG_COMMIT: ${BELEGT_PG_COMMIT:-on}
+  BELEGT_PG_WRITER_ROLE: belegt_writer
+  BELEGT_S3_ENDPOINT: http://minio:9000
+  BELEGT_S3_BUCKET: ${BELEGT_S3_BUCKET:-belegt-eu-dev}
+  BELEGT_S3_REGION: ${BELEGT_S3_REGION:-eu-central-1}
+  AWS_ACCESS_KEY_ID: ${MINIO_ROOT_USER:-belegt-minio}
+  AWS_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD:?set MINIO_ROOT_PASSWORD}
+  BELEGT_LLM_BASE_URL: ${BELEGT_LLM_BASE_URL:-}
+  BELEGT_LLM_API_KEY: ${BELEGT_LLM_API_KEY:-}
+  BELEGT_LLM_MODEL: ${BELEGT_LLM_MODEL:-}
+  BELEGT_DATA_RESIDENCY: ${BELEGT_DATA_RESIDENCY:-eu}
+
+services:
+  # ------------------------------------------------------------------ data
+  postgres:
+    image: ${POSTGRES_IMAGE:-pgvector/pgvector:pg16}
+    environment:
+      POSTGRES_USER: ${POSTGRES_SUPERUSER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_SUPERUSER_PASSWORD:?set POSTGRES_SUPERUSER_PASSWORD}
+      POSTGRES_DB: ${BELEGT_DB_NAME:-belegt}
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --data-checksums"
+    command:
+      - postgres
+      - -c
+      - shared_preload_libraries=pg_stat_statements
+      - -c
+      - wal_level=replica
+      - -c
+      - archive_mode=${PG_ARCHIVE_MODE:-off}
+      - -c
+      - max_wal_size=2GB
+      - -c
+      - log_min_duration_statement=1000
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks: [data]
+    shm_size: 256m
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    security_opt: ["no-new-privileges:true"]
+    restart: unless-stopped
+
+  minio:
+    image: ${MINIO_IMAGE:-minio/minio:latest}
+    command: ["server", "/data", "--console-address", ":9001"]
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-belegt-minio}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:?set MINIO_ROOT_PASSWORD}
+      MINIO_REGION: ${BELEGT_S3_REGION:-eu-central-1}
+      MINIO_BROWSER: "off"
+    volumes:
+      - minio:/data
+    networks: [data]
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    security_opt: ["no-new-privileges:true"]
+    restart: unless-stopped
+
+  # 建桶：blob/审计包桶启用 Object Lock（03 §6.7；dev 默认 GOVERNANCE 1 天，生产 COMPLIANCE 3650 天）
+  minio-init:
+    image: ${MINIO_MC_IMAGE:-minio/mc:latest}
+    depends_on:
+      minio: { condition: service_healthy }
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-belegt-minio}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+      BUCKET: ${BELEGT_S3_BUCKET:-belegt-eu-dev}
+      BACKUP_BUCKET: ${BELEGT_BACKUP_BUCKET:-belegt-eu-dev-backup}
+      LOCK_MODE: ${BELEGT_OBJECT_LOCK_MODE:-GOVERNANCE}
+      LOCK_DAYS: ${BELEGT_OBJECT_LOCK_DAYS:-1}
+      BACKUP_LOCK_DAYS: ${BELEGT_BACKUP_LOCK_DAYS:-35}
+    entrypoint: ["/bin/sh", "-ec"]
+    command:
+      - |
+        mc alias set local http://minio:9000 "$$MINIO_ROOT_USER" "$$MINIO_ROOT_PASSWORD" >/dev/null
+        mc mb --ignore-existing --with-lock "local/$$BUCKET"
+        mc retention set --default "$$LOCK_MODE" "$${LOCK_DAYS}d" "local/$$BUCKET"
+        mc version enable "local/$$BUCKET"
+        mc mb --ignore-existing --with-lock "local/$$BACKUP_BUCKET"
+        mc retention set --default "$$LOCK_MODE" "$${BACKUP_LOCK_DAYS}d" "local/$$BACKUP_BUCKET"
+        echo "buckets ready"
+    networks: [data]
+    restart: "no"
+
+  # Temporal 单进程（与证据图共用 PG 实例，不同 database：temporal / temporal_visibility；10 §6.3）
+  temporal:
+    image: ${TEMPORAL_IMAGE:-temporalio/auto-setup:1.26.2}
+    depends_on:
+      postgres: { condition: service_healthy }
+    environment:
+      DB: postgres12
+      DB_PORT: "5432"
+      POSTGRES_SEEDS: postgres
+      POSTGRES_USER: ${POSTGRES_SUPERUSER:-postgres}
+      POSTGRES_PWD: ${POSTGRES_SUPERUSER_PASSWORD}
+      DBNAME: temporal
+      VISIBILITY_DBNAME: temporal_visibility
+      DEFAULT_NAMESPACE: ${BELEGT_TEMPORAL_NAMESPACE:-default}
+      DEFAULT_NAMESPACE_RETENTION: 30d
+      NUM_HISTORY_SHARDS: ${TEMPORAL_HISTORY_SHARDS:-512}   # 10 §3.2：部署后不可更改
+      PROMETHEUS_ENDPOINT: 0.0.0.0:9090
+      DYNAMIC_CONFIG_FILE_PATH: config/dynamicconfig/belegt.yaml
+    volumes:
+      - ./temporal/dynamicconfig:/etc/temporal/config/dynamicconfig:ro
+    networks: [data, obs]
+    healthcheck:
+      test: ["CMD-SHELL", "tctl --address temporal:7233 cluster health | grep -q SERVING || temporal operator cluster health --address temporal:7233"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+    security_opt: ["no-new-privileges:true"]
+    restart: unless-stopped
+
+  temporal-ui:
+    image: ${TEMPORAL_UI_IMAGE:-temporalio/ui:2.34.0}
+    depends_on: [temporal]
+    environment:
+      TEMPORAL_ADDRESS: temporal:7233
+      TEMPORAL_CORS_ORIGINS: http://localhost:${TEMPORAL_UI_PORT:-8233}
+    ports:
+      - "${BIND_ADDR:-127.0.0.1}:${TEMPORAL_UI_PORT:-8233}:8080"
+    networks: [data, edge]
+    # temporal-ui 启动时把配置模板渲染到镜像内目录，不能用只读根文件系统
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: ["ALL"]
+    restart: unless-stopped
+
+  # ------------------------------------------------------------------ 迁移 Job（执行 migrations/postgres/*.sql + 建登录角色）
+  belegt-migrate:
+    build:
+      context: ../..
+      dockerfile: deploy/docker/core.Dockerfile
+      target: migrate
+    image: ${BELEGT_IMAGE_REGISTRY:-belegt}/core-migrate:${BELEGT_VERSION:-0.1.0}
+    depends_on:
+      postgres: { condition: service_healthy }
+    environment:
+      BELEGT_MIGRATE_ADMIN_URL: postgresql://${POSTGRES_SUPERUSER:-postgres}:${POSTGRES_SUPERUSER_PASSWORD}@postgres:5432/${BELEGT_DB_NAME:-belegt}
+      BELEGT_PG_HASH_MODULUS: ${BELEGT_PG_HASH_MODULUS:-1}
+      BELEGT_DB_APP_USER: ${BELEGT_DB_APP_USER:-belegt_app}
+      BELEGT_DB_APP_PASSWORD: ${BELEGT_DB_APP_PASSWORD}
+      BELEGT_DB_QUARANTINE_USER: ${BELEGT_DB_QUARANTINE_USER:-belegt_quarantine}
+      BELEGT_DB_QUARANTINE_PASSWORD: ${BELEGT_DB_QUARANTINE_PASSWORD:?set BELEGT_DB_QUARANTINE_PASSWORD}
+      BELEGT_DB_AUDITOR_USER: ${BELEGT_DB_AUDITOR_USER:-belegt_auditor_ro}
+      BELEGT_DB_AUDITOR_PASSWORD: ${BELEGT_DB_AUDITOR_PASSWORD:?set BELEGT_DB_AUDITOR_PASSWORD}
+    networks: [data]
+    <<: *hardening
+    restart: "no"
+
+  # ------------------------------------------------------------------ app
+  belegt-api:
+    build:
+      context: ../..
+      dockerfile: deploy/docker/core.Dockerfile
+      target: api
+    image: ${BELEGT_IMAGE_REGISTRY:-belegt}/core-api:${BELEGT_VERSION:-0.1.0}
+    depends_on:
+      belegt-migrate: { condition: service_completed_successfully }
+      minio-init: { condition: service_completed_successfully }
+    environment:
+      <<: [*core-env, *otel-env]
+      OTEL_SERVICE_NAME: graph-api
+      BELEGT_DEV_TOKENS: /run/belegt/dev-tokens.json
+    command: ["--workers", "${BELEGT_API_WORKERS:-2}"]
+    volumes:
+      - ${BELEGT_DEV_TOKENS_FILE:-./config/dev-tokens.example.json}:/run/belegt/dev-tokens.json:ro
+    networks: [app, data, obs]
+    <<: *hardening
+    user: "10001:10001"
+
+  belegt-worker:
+    build:
+      context: ../..
+      dockerfile: deploy/docker/core.Dockerfile
+      target: worker
+    image: ${BELEGT_IMAGE_REGISTRY:-belegt}/core-worker:${BELEGT_VERSION:-0.1.0}
+    depends_on:
+      belegt-migrate: { condition: service_completed_successfully }
+      temporal: { condition: service_healthy }
+    environment:
+      <<: [*core-env, *otel-env, *proxy-env]
+      OTEL_SERVICE_NAME: belegt-worker-trusted
+      BELEGT_TEMPORAL_ADDRESS: temporal:7233
+      BELEGT_TEMPORAL_NAMESPACE: ${BELEGT_TEMPORAL_NAMESPACE:-default}
+      BELEGT_TEMPORAL_TASK_QUEUE: ${BELEGT_TEMPORAL_TASK_QUEUE:-belegt-requests}
+      BELEGT_SERVICES_FACTORY: ${BELEGT_SERVICES_FACTORY:-belegt_core.demo:build_env}
+    networks: [app, data, llm, obs, egress-client]
+    <<: *hardening
+    user: "10001:10001"
+
+  # 隔离区 worker（07 §2.2、04 §1.3 tq-quarantine）：无出网、只用隔离区数据库凭据。
+  # 目前 belegt_core 的工作流只使用一个 task queue，本服务预留（profile zones），代码拆分 tq-quarantine 后启用。
+  belegt-worker-quarantine:
+    profiles: ["zones"]
+    image: ${BELEGT_IMAGE_REGISTRY:-belegt}/core-worker:${BELEGT_VERSION:-0.1.0}
+    depends_on:
+      temporal: { condition: service_healthy }
+    environment:
+      <<: *otel-env
+      OTEL_SERVICE_NAME: belegt-worker-quarantine
+      BELEGT_DB_URL: postgresql+psycopg://${BELEGT_DB_QUARANTINE_USER:-belegt_quarantine}:${BELEGT_DB_QUARANTINE_PASSWORD}@postgres:5432/${BELEGT_DB_NAME:-belegt}
+      BELEGT_TEMPORAL_ADDRESS: temporal:7233
+      BELEGT_TEMPORAL_TASK_QUEUE: tq-quarantine
+      BELEGT_LLM_BASE_URL: ${BELEGT_QUARANTINE_LLM_BASE_URL:-http://ollama:11434/v1}
+      BELEGT_LLM_MODEL: ${BELEGT_QUARANTINE_LLM_MODEL:-qwen3:8b}
+    networks: [quarantine, data, llm]
+    <<: *hardening
+    user: "10001:10001"
+
+  belegt-web:
+    build:
+      context: ../..
+      dockerfile: deploy/docker/web.Dockerfile
+      args:
+        VITE_API_BASE: ${BELEGT_WEB_API_BASE:-/api}
+    image: ${BELEGT_IMAGE_REGISTRY:-belegt}/web:${BELEGT_VERSION:-0.1.0}
+    depends_on: [belegt-api]
+    environment:
+      BELEGT_API_UPSTREAM: http://belegt-api:8000
+    ports:
+      - "${BIND_ADDR:-127.0.0.1}:${BELEGT_WEB_PORT:-8080}:8080"
+    tmpfs:
+      - /tmp:rw,nosuid,size=64m
+      - /etc/nginx/conf.d:rw,nosuid,size=1m,uid=101,gid=101
+    networks: [edge, app]
+    read_only: true
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: ["ALL"]
+    restart: unless-stopped
+
+  # 供应商端（08 §6.2）：沿用 packages/belegt-supplier/Dockerfile
+  belegt-supplier:
+    build:
+      context: ../../packages/belegt-supplier
+      dockerfile: Dockerfile
+    image: ${BELEGT_IMAGE_REGISTRY:-belegt}/supplier:${BELEGT_VERSION:-0.1.0}
+    environment:
+      BELEGT_SUPPLIER_PUBLIC_URL: ${BELEGT_SUPPLIER_PUBLIC_URL:-http://localhost:8090}
+      BELEGT_SUPPLIER_SECRET: ${BELEGT_SUPPLIER_SECRET:?set BELEGT_SUPPLIER_SECRET}
+      BELEGT_SUPPLIER_MANIFEST_SECRET: ${BELEGT_SUPPLIER_MANIFEST_SECRET:?set BELEGT_SUPPLIER_MANIFEST_SECRET}
+      BELEGT_SUPPLIER_WEBHOOK_SECRET: ${BELEGT_SUPPLIER_WEBHOOK_SECRET:?set BELEGT_SUPPLIER_WEBHOOK_SECRET}
+      BELEGT_SUPPLIER_CORE_URL: http://belegt-api:8000
+      BELEGT_SUPPLIER_ADMIN_KEY: ${BELEGT_SUPPLIER_ADMIN_KEY:-}
+      BELEGT_SUPPLIER_SMTP_HOST: ${BELEGT_SUPPLIER_SMTP_HOST:-}
+      BELEGT_SUPPLIER_SMTP_PORT: ${BELEGT_SUPPLIER_SMTP_PORT:-587}
+      BELEGT_SUPPLIER_SMTP_USER: ${BELEGT_SUPPLIER_SMTP_USER:-}
+      BELEGT_SUPPLIER_SMTP_PASSWORD: ${BELEGT_SUPPLIER_SMTP_PASSWORD:-}
+      BELEGT_SUPPLIER_MAIL_FROM: ${BELEGT_SUPPLIER_MAIL_FROM:-}
+      BELEGT_SUPPLIER_TRUST_PROXY: ${BELEGT_SUPPLIER_TRUST_PROXY:-false}
+      BELEGT_SUPPLIER_DEFAULT_LOCALE: ${BELEGT_SUPPLIER_DEFAULT_LOCALE:-de}
+    volumes:
+      - supplier:/data
+    ports:
+      - "${BIND_ADDR:-127.0.0.1}:${BELEGT_SUPPLIER_PORT:-8090}:8080"
+    networks: [edge, app]
+    <<: *hardening
+    user: "10001:10001"
+
+  # ------------------------------------------------------------------ egress（唯一出公网的容器，07 §2.2、10 §6.2）
+  egress-gateway:
+    image: ${SQUID_IMAGE:-ubuntu/squid:latest}
+    volumes:
+      - ./egress/squid.conf:/etc/squid/squid.conf:ro
+      - ./egress/allowlist.txt:/etc/squid/allowlist.txt:ro
+    tmpfs:
+      - /var/spool/squid:rw,size=64m
+      - /var/log/squid:rw,size=64m
+      - /var/run:rw,size=1m
+      - /run:rw,size=1m
+    networks: [egress, egress-client]
+    healthcheck:
+      test: ["CMD-SHELL", "squid -k check || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    security_opt: ["no-new-privileges:true"]
+    restart: unless-stopped
+
+  # ------------------------------------------------------------------ 本地模型（FR-704、10 §6.4）
+  ollama:
+    profiles: ["ollama"]
+    image: ${OLLAMA_IMAGE:-ollama/ollama:latest}
+    environment:
+      OLLAMA_HOST: 0.0.0.0:11434
+      OLLAMA_KEEP_ALIVE: 30m
+      # 拉模型（ollama pull）经 egress-gateway；airgap 时 allowlist 不放行 registry.ollama.ai，改为导入离线包（10 §6.4）
+      HTTPS_PROXY: http://egress-gateway:3128
+    volumes:
+      - ollama:/root/.ollama
+    networks: [llm, egress-client]
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+    security_opt: ["no-new-privileges:true"]
+    restart: unless-stopped
+
+  vllm:
+    profiles: ["vllm"]
+    image: ${VLLM_IMAGE:-vllm/vllm-openai:v0.6.3}
+    command:
+      - --model=${VLLM_MODEL:-Qwen/Qwen3-8B}
+      - --served-model-name=${BELEGT_LLM_MODEL:-local-vllm}
+      - --max-model-len=${VLLM_MAX_MODEL_LEN:-16384}
+      - --gpu-memory-utilization=${VLLM_GPU_MEM_UTIL:-0.90}
+      - --enable-prefix-caching
+      - --api-key=${BELEGT_LLM_API_KEY:-local}
+    environment:
+      HF_HUB_OFFLINE: ${VLLM_HF_OFFLINE:-1}      # airgap：权重须预先放进 vllm-models 卷（10 §6.4 离线包）
+      HF_HOME: /models
+    volumes:
+      - vllm-models:/models
+    networks: [llm]
+    shm_size: 8g
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: ${VLLM_GPU_COUNT:-1}
+              capabilities: [gpu]
+    security_opt: ["no-new-privileges:true"]
+    restart: unless-stopped
+
+  # ------------------------------------------------------------------ 观测（10 §5，compose 默认"纯 OTel + Grafana"）
+  otel-collector:
+    image: ${OTEL_COLLECTOR_IMAGE:-otel/opentelemetry-collector-contrib:0.111.0}
+    command: ["--config=/etc/otelcol/config.yaml"]
+    volumes:
+      - ./otel/otel-collector.yaml:/etc/otelcol/config.yaml:ro
+    networks: [obs]
+    <<: *hardening
+
+  postgres-exporter:
+    image: ${POSTGRES_EXPORTER_IMAGE:-quay.io/prometheuscommunity/postgres-exporter:v0.15.0}
+    depends_on:
+      postgres: { condition: service_healthy }
+    environment:
+      DATA_SOURCE_NAME: postgresql://${POSTGRES_SUPERUSER:-postgres}:${POSTGRES_SUPERUSER_PASSWORD}@postgres:5432/${BELEGT_DB_NAME:-belegt}?sslmode=disable
+    networks: [data, obs]
+    <<: *hardening
+
+  prometheus:
+    image: ${PROMETHEUS_IMAGE:-prom/prometheus:v2.55.0}
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=15d          # 10 §5.5 原始 15 天
+      - --web.enable-lifecycle
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./prometheus/rules:/etc/prometheus/rules:ro
+      - prometheus:/prometheus
+    networks: [obs, app]
+    <<: *hardening
+    user: "65534:65534"
+
+  grafana:
+    image: ${GRAFANA_IMAGE:-grafana/grafana:11.3.0}
+    depends_on: [prometheus]
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:?set GRAFANA_ADMIN_PASSWORD}
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_ANALYTICS_REPORTING_ENABLED: "false"
+      GF_ANALYTICS_CHECK_FOR_UPDATES: "false"
+      GF_PATHS_DATA: /var/lib/grafana
+      GF_PATHS_LOGS: /tmp/grafana-logs
+      GF_LOG_MODE: console
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana-dashboards:ro
+      - grafana:/var/lib/grafana
+    ports:
+      - "${BIND_ADDR:-127.0.0.1}:${GRAFANA_PORT:-3000}:3000"
+    networks: [obs, edge]
+    <<: *hardening
+    user: "472:0"
+
+  # ------------------------------------------------------------------ 备份（profile backup；10 §6.6 private-compose 每晚备份）
+  belegt-backup:
+    profiles: ["backup"]
+    image: ${POSTGRES_IMAGE:-pgvector/pgvector:pg16}
+    depends_on:
+      postgres: { condition: service_healthy }
+    environment:
+      PGHOST: postgres
+      PGUSER: ${POSTGRES_SUPERUSER:-postgres}
+      PGPASSWORD: ${POSTGRES_SUPERUSER_PASSWORD}
+      PGDATABASES: ${BELEGT_DB_NAME:-belegt} temporal temporal_visibility
+      BACKUP_DIR: /backups
+      BACKUP_UPLOAD: none            # 上传由 belegt-backup-upload（mc mirror）完成
+      BACKUP_INTERVAL_SECONDS: ${BACKUP_INTERVAL_SECONDS:-86400}
+      BACKUP_KEEP_LOCAL: ${BACKUP_KEEP_LOCAL:-3}
+    entrypoint: ["/bin/sh", "-c", "while true; do /ops/backup.sh || echo 'backup failed'; sleep $${BACKUP_INTERVAL_SECONDS}; done"]
+    volumes:
+      - ../ops/backup.sh:/ops/backup.sh:ro
+      - backups:/backups
+    networks: [data]
+    security_opt: ["no-new-privileges:true"]
+    restart: unless-stopped
+
+  belegt-backup-upload:
+    profiles: ["backup"]
+    image: ${MINIO_MC_IMAGE:-minio/mc:latest}
+    depends_on:
+      minio-init: { condition: service_completed_successfully }
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-belegt-minio}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+      BACKUP_BUCKET: ${BELEGT_BACKUP_BUCKET:-belegt-eu-dev-backup}
+    entrypoint: ["/bin/sh", "-ec"]
+    command:
+      - |
+        mc alias set local http://minio:9000 "$$MINIO_ROOT_USER" "$$MINIO_ROOT_PASSWORD" >/dev/null
+        # 生产应把备份桶放在另一区域/另一服务商（10 §6.6 异地），这里镜像到本地 MinIO 的锁定桶作演示
+        mc mirror --watch --overwrite=false /backups "local/$$BACKUP_BUCKET/pg"
+    volumes:
+      - backups:/backups:ro
+    networks: [data]
+    restart: unless-stopped
+
+networks:
+  edge: {}
+  app: { internal: true }
+  data: { internal: true }
+  llm: { internal: true }
+  quarantine: { internal: true }
+  obs: { internal: true }
+  egress-client: { internal: true }   # 需要出网的服务只能通过它访问 egress-gateway:3128
+  egress: {}
+
+volumes:
+  pgdata: {}
+  minio: {}
+  supplier: {}
+  ollama: {}
+  vllm-models: {}
+  prometheus: {}
+  grafana: {}
+  backups: {}

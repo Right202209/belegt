@@ -1,0 +1,22 @@
+# Spec: 06 §2.2 CR-005
+rule_id: CR-005
+rule_version: 1.0.0
+category: cross_period
+severity: block
+title:
+  de: Abweichung von bereits übermittelter Antwort
+  en: Differs from already submitted answer
+scope: org
+triggers:
+- answer_write
+- pre_submit_gate
+- daily_batch
+- context_change
+plugin: cr_005
+assert: hist.norm == cur.norm || correction
+tolerance:
+  abs: '0'
+  rel: '0'
+default_action: open_conflict
+explain_template: cr-005
+tests: tests/test_consistency_rules.py::test_cr_005

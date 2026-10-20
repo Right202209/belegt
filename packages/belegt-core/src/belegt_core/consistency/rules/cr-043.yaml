@@ -1,0 +1,20 @@
+# Spec: 06 §2.2 CR-043
+rule_id: CR-043
+rule_version: 1.0.0
+category: value_chain_cap
+severity: info
+title:
+  de: Datenpunkt außerhalb der Wertschöpfungskettenobergrenze
+  en: Datapoint beyond value-chain cap
+scope: request
+triggers:
+- answer_write
+- pre_submit_gate
+- daily_batch
+- context_change
+plugin: cr_043
+when: fy_start != ''
+assert: '!(fy_start >= ''2027-01-01'' && !in_annex && !exempt)'
+default_action: hint
+explain_template: cr-043
+tests: tests/test_consistency_rules.py::test_cr_043

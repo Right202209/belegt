@@ -1,0 +1,128 @@
+template_mapping: tm:cbam_communication@2024
+template_id: cbam_communication
+template_version: '2024'
+template_source: European Commission CBAM communication template for installations (Implementing Regulation (EU) 2023/1773 Annex)
+dictionary_min_version: v2027.1
+license_note: 仅题号与短标签；原文请查阅官方来源
+maintainers:
+  - '@belegt/dict-maintainers'
+notes: 定义期（2026 起）以当年官方模板为准；全部单元格/列名 verify
+entries:
+  - entry_id: operator_name
+    locator:
+      kind: cell
+      ref: A_InstData!<operator name>
+      verify: true
+    short_label: Operator name
+    datapoint_id: dp:org.identity.legal_name
+    direction: both
+    transform:
+      type: identity
+  - entry_id: inst_id
+    locator:
+      kind: cell
+      ref: A_InstData!<installation identifier>
+      verify: true
+    short_label: Installation identifier
+    datapoint_id: dp:prod.cbam.installation_id
+    direction: both
+    boundary_hint: site
+    transform:
+      type: identity
+  - entry_id: cn_code
+    locator:
+      kind: column
+      ref: Summary_Products
+      column: CN code
+      verify: true
+    short_label: CN code (8 digits)
+    datapoint_id: dp:prod.identity.cn_code
+    direction: both
+    transform:
+      type: format
+      pattern: ^[0-9]{8}$
+  - entry_id: see_direct
+    locator:
+      kind: column
+      ref: Summary_Products
+      column: SEE (direct)
+      verify: true
+    short_label: Specific embedded emissions, direct, tCO2e/t
+    datapoint_id: dp:prod.cbam.see_direct
+    direction: both
+    unit_hint: tCO2e/t
+    period_hint: calendar_year
+    boundary_hint: product_per_unit
+    transform:
+      type: identity
+  - entry_id: see_indirect
+    locator:
+      kind: column
+      ref: Summary_Products
+      column: SEE (indirect)
+      verify: true
+    short_label: Specific embedded emissions, indirect, tCO2e/t
+    datapoint_id: dp:prod.cbam.see_indirect
+    direction: both
+    unit_hint: tCO2e/t
+    boundary_hint: product_per_unit
+    transform:
+      type: identity
+  - entry_id: sec
+    locator:
+      kind: column
+      ref: Summary_Products
+      column: Specific electricity consumption
+      verify: true
+    short_label: Specific electricity consumption, MWh/t
+    datapoint_id: dp:prod.cbam.specific_electricity_consumption
+    direction: both
+    unit_hint: MWh/t
+    boundary_hint: product_per_unit
+    transform:
+      type: identity
+  - entry_id: production_route
+    locator:
+      kind: column
+      ref: D_Processes
+      column: Production route
+      verify: true
+    short_label: Production route
+    datapoint_id: dp:prod.cbam.production_route
+    direction: both
+    transform:
+      type: enum_map
+      map:
+        Blast furnace route: bf_bof
+        Electric arc furnace: eaf
+        DRI-EAF: dri_eaf
+    notes: 模板值待核对
+  - entry_id: electricity_consumed
+    locator:
+      kind: column
+      ref: D_Processes
+      column: Electricity consumption
+      verify: true
+    short_label: Electricity consumed by the installation, MWh
+    datapoint_id: dp:energy.consumption.electricity_total
+    direction: both
+    unit_hint: MWh
+    boundary_hint: site
+    transform:
+      type: unit_convert
+      from_unit: MWh
+      to_unit: MWh
+      round: 3
+  - entry_id: carbon_price_paid
+    locator:
+      kind: column
+      ref: E_PurchPrec
+      column: Carbon price due
+      verify: true
+    short_label: Carbon price paid in country of origin, EUR
+    datapoint_id: dp:prod.cbam.carbon_price_paid
+    direction: both
+    unit_hint: EUR
+    transform:
+      type: identity
+    notes: 非 EUR 币种须经 calc-service 换算

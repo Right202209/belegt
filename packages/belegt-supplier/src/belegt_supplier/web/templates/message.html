@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block main %}
+<section class="card">
+  <h1>{{ title }}</h1>
+  {% if text %}<p>{{ text }}</p>{% endif %}
+  {% if renew_token %}<p><a class="button" href="/r/{{ renew_token }}/renew">{{ t('request_new_link') }}</a></p>{% endif %}
+  {% if back and token %}<p><a href="/r/{{ token }}">← {{ t('back') }}</a></p>{% endif %}
+</section>
+{% endblock %}

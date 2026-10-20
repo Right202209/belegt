@@ -1,0 +1,37 @@
+id: dp:prod.cbam.carbon_price_paid
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Im Ursprungsland gezahlter CO2-Preis
+  en: Carbon price paid in country of origin
+  zh: 原产国已付碳价
+definition:
+  en: Effective carbon price actually paid in the country of origin for the embedded emissions of the goods (carbon tax or emission allowances), net of rebates or free allocation, in euro for the stated quantity of goods. Conversion from other currencies is a calc-service step with documented rate.
+  de: Im Ursprungsland für die grauen Emissionen tatsächlich gezahlter CO2-Preis (Steuer oder Zertifikate) abzüglich Erstattungen und kostenloser Zuteilung, in Euro für die angegebene Warenmenge.
+  zh: 货物隐含排放在原产国实际支付的碳价（碳税或排放配额），扣除返还或免费分配，按所述货物数量以欧元计；其他币种换算由 calc-service 完成并记录汇率。
+value_type: number
+unit: EUR
+period_type: calendar_year
+boundary:
+  - product
+methodology_refs:
+  - ref: eu_2023_956_cbam
+    clause: Art. 9
+sensitivity: confidential
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - supplier_response
+    - historical_answer
+  min_sources: 1
+  max_age_days: 550
+  requires_calculation: false
+  human_confirmation_allowed: false
+validity_rule:
+  min: 0
+  expires_by: period_end_plus_days
+  expires_after_days: 550
+tags:
+  - cbam_communication
+  - cbam

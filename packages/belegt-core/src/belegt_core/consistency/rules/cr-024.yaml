@@ -1,0 +1,19 @@
+# Spec: 06 §2.2 CR-024
+rule_id: CR-024
+rule_version: 1.0.0
+category: period
+severity: warn
+title:
+  de: Abgrenzung weicht von Frage ab
+  en: Boundary differs from question hint
+scope: answer
+triggers:
+- answer_write
+- pre_submit_gate
+- daily_batch
+- context_change
+plugin: cr_024
+assert: hint == boundary
+default_action: closed_question
+explain_template: cr-024
+tests: tests/test_consistency_rules.py::test_cr_024

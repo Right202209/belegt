@@ -1,0 +1,33 @@
+id: dp:prod.battery.chemistry
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Batteriechemie
+  en: Battery chemistry
+  zh: 电池化学体系
+definition:
+  en: Cell chemistry of the battery model by cathode/anode system (e.g. NMC, LFP, NCA), as listed in the enum. Excludes detailed material composition and hazardous substances, which are separate passport fields.
+  de: Zellchemie des Batteriemodells nach Kathoden-/Anodensystem (z. B. NMC, LFP, NCA). Detaillierte Materialzusammensetzung ist nicht gemeint.
+  zh: 电池型号按正/负极体系划分的电芯化学体系（如 NMC、LFP、NCA，见枚举）；不含详细材料组成和有害物质（护照中另有字段）。
+value_type: enum
+enum_ref: enums/battery_chemistry.yaml
+period_type: point_in_time
+boundary:
+  - product
+methodology_refs:
+  - ref: eu_2023_1542_battery
+    clause: Annex XIII
+sensitivity: public
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - human_confirmation
+    - historical_answer
+  min_sources: 1
+  max_age_days: 365
+  requires_calculation: false
+  human_confirmation_allowed: true
+tags:
+  - eu_battery_passport
+  - battery

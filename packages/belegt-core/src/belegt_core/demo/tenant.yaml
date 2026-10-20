@@ -1,0 +1,176 @@
+# Spec: 演示租户（虚构的 Musterteile GmbH）：主数据、租户自定义数据点（02 oem_custom 扩展）、历史答卷、ERP 记录、文档登记表。
+# 全部数值与名称均为虚构示例，仅用于 `belegt demo` 与测试；不得当作真实数据。
+org:
+  id: org_01JDEM0000000000000000000A
+  legal_name: Musterteile GmbH
+  country: DE
+users:
+  - {token: demo-owner, id: "user:u_owner", roles: [compliance_owner, org_admin]}
+  - {token: demo-exec, id: "user:u_exec", roles: [executive]}
+  - {token: demo-sales, id: "user:u_sales", roles: [sales]}
+customer: {legal_name: OEM-A AG, domains: [oem-a.example]}
+other_customer: {legal_name: OEM-B SE, domains: [oem-b.example]}
+supplier:
+  legal_name: "Anadolu Çelik A.Ş."
+  domains: [anadolu-celik.example]
+  contacts: [{name: Ayşe Yılmaz, email: ayse.yilmaz@anadolu-celik.example, locale: en, confirmed: true}]
+  tags: ["supplier_tier:B"]
+product: {name: Stahlgehäuse SG-200, cn_code: "73269098"}
+site: {name: Werk Heilbronn, country: DE}
+period: {start: "2025-01-01", end: "2025-12-31"}
+supplier_datapoints:
+  - dp:prod.cbam.see_direct
+  - dp:prod.cbam.see_indirect
+  - dp:prod.cbam.specific_electricity_consumption
+  - dp:prod.cbam.carbon_price_paid
+# 租户自定义数据点（value_type/unit/aliases；aliases 进入映射候选检索）
+custom_datapoints:
+  - {id: dp:custom.org.address, vt: text, de: Anschrift des Hauptsitzes, en: Headquarters address, aliases: [anschrift hauptsitz]}
+  - {id: dp:custom.org.vat_id, vt: text, de: USt-IdNr., en: VAT ID, aliases: [umsatzsteuer identifikationsnummer, ust id]}
+  - {id: dp:custom.org.duns_number, vt: text, de: DUNS-Nummer, en: DUNS number, aliases: [duns nummer]}
+  - {id: dp:custom.org.legal_form, vt: enum, de: Rechtsform, en: Legal form, aliases: [rechtsform]}
+  - {id: dp:custom.org.group_member, vt: bool, de: Konzernzugehörigkeit, en: Group membership, aliases: [unternehmen konzern]}
+  - {id: dp:custom.org.parent_company, vt: text, de: Muttergesellschaft, en: Parent company, aliases: [muttergesellschaft]}
+  - {id: dp:custom.org.website, vt: text, de: Webseite, en: Website, aliases: [webseite]}
+  - {id: dp:custom.org.production_sites_count, vt: number, unit: "1", de: Anzahl Produktionsstandorte, en: Number of production sites, aliases: [anzahl produktionsstandort]}
+  - {id: dp:custom.contact.sustainability_name, vt: text, de: Ansprechpartner Nachhaltigkeit, en: Sustainability contact, aliases: [name verantwortlich person nachhaltigkeit]}
+  - {id: dp:custom.contact.sustainability_email, vt: text, de: E-Mail Ansprechpartner, en: Contact e-mail, aliases: [e mail adresse verantwortlich]}
+  - {id: dp:custom.contact.sustainability_phone, vt: text, de: Telefon Ansprechpartner, en: Contact phone, aliases: [telefonnummer verantwortlich]}
+  - {id: dp:custom.ghg.scope3_tracked, vt: bool, de: Scope-3-Erfassung, en: Scope 3 tracked, aliases: [erfassen scope 3]}
+  - {id: dp:custom.ghg.consolidation_approach, vt: enum, de: Konsolidierungsansatz, en: Consolidation approach, aliases: [konsolidierungsansatz]}
+  - {id: dp:custom.ghg.base_year, vt: number, unit: "1", de: Basisjahr THG-Bilanz, en: GHG base year, aliases: [basisjahr treibhausgasbilanz]}
+  - {id: dp:custom.ghg.sbti_status, vt: enum, de: SBTi-Status, en: SBTi status, aliases: [science based targets]}
+  - {id: dp:custom.energy.heating_oil, vt: number, unit: L, de: Heizölverbrauch, en: Heating oil consumption, aliases: [heizolverbrauch]}
+  - {id: dp:custom.energy.diesel_fleet, vt: number, unit: L, de: Dieselverbrauch Fuhrpark, en: Fleet diesel, aliases: [dieselverbrauch fahrzeugflotte]}
+  - {id: dp:custom.energy.district_heating, vt: number, unit: MWh, de: Fernwärmebezug, en: District heating, aliases: [bezug fernwarme]}
+  - {id: dp:custom.energy.green_tariff, vt: bool, de: Ökostromtarif, en: Green electricity contract, aliases: [okostrom liefervertrag]}
+  - {id: dp:custom.env.ems_description, vt: text, de: Umweltmanagementsystem, en: Environmental management system, aliases: [umweltmanagementsystem]}
+  - {id: dp:custom.energy.last_audit_date, vt: date, de: Letztes Energieaudit, en: Last energy audit, aliases: [datum letzten energieaudit]}
+  - {id: dp:custom.prod.pcf_available, vt: bool, de: PCF vorhanden, en: PCF available, aliases: [liegt produkt product carbon footprint]}
+  - {id: dp:custom.prod.pcf_reference_year, vt: number, unit: "1", de: Bezugsjahr PCF, en: PCF reference year, aliases: [bezugsjahr pcf]}
+  - {id: dp:custom.cbam.goods_supplied, vt: bool, de: CBAM-Waren geliefert, en: CBAM goods supplied, aliases: [liefern waren cbam]}
+  - {id: dp:custom.cbam.origin_country, vt: text, de: Ursprungsland, en: Country of origin, aliases: [ursprungsland produktion]}
+  - {id: dp:custom.cbam.verification_report, vt: bool, de: Prüfbericht vorhanden, en: Verification report available, aliases: [prufbericht akkreditiert]}
+  - {id: dp:custom.cbam.verifier_name, vt: text, de: Prüfstelle, en: Verifier, aliases: [name prufstelle]}
+  - {id: dp:custom.cbam.verification_date, vt: date, de: Datum der Verifizierung, en: Verification date, aliases: [datum verifizierung]}
+  - {id: dp:custom.cbam.quantity_supplied, vt: number, unit: t, de: Gelieferte CBAM-Menge, en: CBAM quantity supplied, aliases: [gelieferte menge cbam]}
+  - {id: dp:custom.cbam.operator_email, vt: text, de: E-Mail Anlagenbetreiber, en: Operator e-mail, aliases: [e mail anlagenbetreiber]}
+  - {id: dp:custom.mat.pfas_present, vt: enum, de: PFAS enthalten, en: PFAS present, aliases: [pfas]}
+  - {id: dp:custom.mat.cmrt_available, vt: enum, de: CMRT vorhanden, en: CMRT available, aliases: [cmrt]}
+  - {id: dp:custom.mat.emrt_available, vt: bool, de: EMRT vorhanden, en: EMRT available, aliases: [emrt]}
+  - {id: dp:custom.mat.imds_available, vt: bool, de: IMDS hinterlegt, en: IMDS available, aliases: [materialdaten imds]}
+  - {id: dp:custom.mat.imds_id, vt: text, de: IMDS-ID, en: IMDS ID, aliases: [imds id]}
+  - {id: dp:custom.pack.main_material, vt: enum, de: Hauptverpackungsmaterial, en: Main packaging material, aliases: [hauptverpackungsmaterial]}
+  - {id: dp:custom.pack.weight, vt: number, unit: kg, de: Verpackungsgewicht, en: Packaging weight, aliases: [verpackungsgewicht]}
+  - {id: dp:custom.pack.reusable, vt: bool, de: Mehrwegverpackung, en: Reusable packaging, aliases: [verpackung mehrwegsystem]}
+  - {id: dp:custom.cert.iso14001_certified, vt: bool, de: ISO 14001 zertifiziert, en: ISO 14001 certified, aliases: [iso 14001 zertifiziert]}
+  - {id: dp:custom.cert.iso50001_certified, vt: bool, de: ISO 50001 zertifiziert, en: ISO 50001 certified, aliases: [iso 50001 zertifiziert]}
+  - {id: dp:custom.cert.iatf16949_certified, vt: bool, de: IATF 16949 zertifiziert, en: IATF 16949 certified, aliases: [iatf 16949 zertifiziert]}
+  - {id: dp:custom.cert.iso45001_certified, vt: bool, de: ISO 45001 zertifiziert, en: ISO 45001 certified, aliases: [iso 45001 zertifiziert]}
+  - {id: dp:custom.rating.ecovadis_medal, vt: enum, de: EcoVadis-Medaille, en: EcoVadis medal, aliases: [ecovadis medaille]}
+  - {id: dp:custom.rating.ecovadis_score, vt: number, unit: "1", de: EcoVadis-Punktzahl, en: EcoVadis score, aliases: [ecovadis gesamtpunktzahl]}
+  - {id: dp:custom.supply.lksg_risk_analysis, vt: bool, de: LkSG-Risikoanalyse, en: LkSG risk analysis, aliases: [risikoanalyse lksg]}
+  - {id: dp:custom.supply.grievance_mechanism, vt: bool, de: Beschwerdemechanismus, en: Grievance mechanism, aliases: [beschwerdemechanismus]}
+  - {id: dp:custom.supply.direct_suppliers_count, vt: number, unit: "1", de: Anzahl direkter Lieferanten, en: Number of direct suppliers, aliases: [anzahl direkt lieferant]}
+  - {id: dp:custom.supply.assessed_suppliers_share, vt: number, unit: "%", de: Anteil bewerteter Lieferanten, en: Share of assessed suppliers, aliases: [anteil nachhaltigkeitskriterien bewertet lieferant]}
+  - {id: dp:custom.social.women_in_management_share, vt: number, unit: "%", de: Frauenanteil Führungspositionen, en: Women in management, aliases: [frauenanteil fuhrung]}
+  - {id: dp:custom.gov.anticorruption_policy, vt: bool, de: Antikorruptionsrichtlinie, en: Anti-corruption policy, aliases: [antikorruptionsrichtlinie]}
+  - {id: dp:custom.gov.whistleblower_system, vt: bool, de: Hinweisgebersystem, en: Whistleblower system, aliases: [hinweisgebersystem]}
+  - {id: dp:custom.gov.sustainability_report_url, vt: text, de: Nachhaltigkeitsbericht (Link), en: Sustainability report link, aliases: [link nachhaltigkeitsbericht]}
+# 历史答卷（已提交给 OEM-B 的 2025 年答卷，导入为 Answer(origin=imported, status=submitted)；只含非数字值）
+historical_answers:
+  dp:org.identity.legal_name: Musterteile GmbH
+  dp:custom.org.address: "Industriestraße 12, 74072 Heilbronn"
+  dp:custom.org.vat_id: DE123456789
+  dp:custom.org.duns_number: "315369934"
+  dp:custom.org.legal_form: GmbH
+  dp:custom.org.group_member: false
+  dp:org.identity.nace_code: C25
+  dp:custom.org.website: https://www.musterteile.example
+  dp:custom.contact.sustainability_name: Dr. Anna Becker
+  dp:custom.contact.sustainability_email: anna.becker@musterteile.example
+  dp:custom.contact.sustainability_phone: "+49 7131 123450"
+  dp:custom.ghg.scope3_tracked: true
+  dp:custom.ghg.consolidation_approach: Operative Kontrolle
+  dp:custom.ghg.sbti_status: Commitment
+  dp:env.ghg_target.has_target: true
+  dp:env.ghg_target.target_year: "2030-12-31"
+  dp:custom.energy.green_tariff: true
+  dp:custom.env.ems_description: Zertifiziertes Umweltmanagementsystem nach ISO 14001 mit jährlichem Management-Review.
+  dp:custom.energy.last_audit_date: "2024-03-15"
+  dp:custom.prod.pcf_available: true
+  dp:custom.cbam.goods_supplied: true
+  dp:prod.identity.cn_code: "73269098"
+  dp:prod.cbam.installation_id: TR-INST-0042
+  dp:custom.cbam.origin_country: TR
+  dp:prod.cbam.production_route: Elektrolichtbogenofen
+  dp:custom.cbam.verification_report: true
+  dp:custom.cbam.verifier_name: TÜV Musterland
+  dp:custom.cbam.verification_date: "2026-04-30"
+  dp:custom.cbam.operator_email: cbam@anadolu-celik.example
+  dp:mat.reach.svhc_present: false
+  dp:mat.reach.svhc_list: keine
+  dp:mat.rohs.compliant: true
+  dp:custom.mat.pfas_present: Nein
+  dp:custom.mat.cmrt_available: Ja
+  dp:custom.mat.emrt_available: false
+  dp:custom.mat.imds_available: true
+  dp:custom.mat.imds_id: IMDS-123456789
+  dp:custom.pack.main_material: Karton
+  dp:custom.pack.reusable: false
+  dp:custom.cert.iso14001_certified: true
+  dp:custom.cert.iso50001_certified: true
+  dp:custom.cert.iatf16949_certified: true
+  dp:custom.cert.iso45001_certified: false
+  dp:custom.rating.ecovadis_medal: Silber
+  dp:supply.code_of_conduct.supplier_coc_in_place: true
+  dp:custom.supply.lksg_risk_analysis: true
+  dp:custom.supply.grievance_mechanism: true
+  dp:social.remuneration.min_wage_compliance: true
+  dp:gov.policy.human_rights_policy: true
+  dp:custom.gov.anticorruption_policy: true
+  dp:custom.gov.whistleblower_system: true
+  dp:custom.gov.sustainability_report_url: https://www.musterteile.example/nachhaltigkeit
+# ERP（belegt-connector/1，attested）：活动数据（fact_key）与 KPI（datapoint_id）；值为 DEC-STR
+erp_records:
+  - {record_key: "FLEET-2025-DIESEL", fact_key: activity.diesel.volume, value: "18000", unit: L}
+  - {record_key: "HKN-2025-CANCEL", fact_key: activity.electricity.eac, value: "1200", unit: MWh}
+  - {record_key: "KPI-PV-2025", datapoint_id: dp:energy.generation.onsite_renewable, value: "310000", unit: kWh}
+  - {record_key: "KPI-ENERGY-2025", datapoint_id: dp:energy.consumption.total, value: "7220", unit: MWh}
+  - {record_key: "KPI-RES-2025", datapoint_id: dp:energy.consumption.renewable_share, value: "24.9", unit: "%"}
+  - {record_key: "KPI-WATER-2025", datapoint_id: dp:env.water.withdrawal_total, value: "12500", unit: m3}
+  - {record_key: "KPI-WASTE-2025", datapoint_id: dp:env.waste.generated, value: "420", unit: t}
+  - {record_key: "KPI-HAZ-2025", datapoint_id: dp:env.waste.generated.hazardous, value: "35", unit: t}
+  - {record_key: "KPI-DIV-2025", datapoint_id: dp:env.waste.diverted_share, value: "78", unit: "%"}
+  - {record_key: "HR-HEAD-2025", datapoint_id: dp:org.employees.headcount, value: "248", unit: "1"}
+  - {record_key: "FIN-TURNOVER-2025", datapoint_id: dp:org.financials.turnover, value: "48500000", unit: EUR}
+  - {record_key: "PLM-MASS-SG200", datapoint_id: dp:prod.mass.net_per_unit, value: "2.35", unit: kg}
+  - {record_key: "HSE-ACC-2025", datapoint_id: dp:social.health_safety.recordable_accidents, value: "3", unit: "1"}
+  - {record_key: "HSE-LTIFR-2025", datapoint_id: dp:social.health_safety.recordable_accident_rate, value: "7.2", unit: "1"}
+  - {record_key: "HR-TRAIN-2025", datapoint_id: dp:social.training.avg_hours_per_employee, value: "14.5", unit: h}
+  - {record_key: "LEGAL-FINES-2025", datapoint_id: dp:gov.anticorruption.fines_amount, value: "0", unit: EUR}
+  - {record_key: "MD-SITES", datapoint_id: dp:custom.org.production_sites_count, value: "2", unit: "1"}
+  - {record_key: "GHG-BASE", datapoint_id: dp:custom.ghg.base_year, value: "2019", unit: "1"}
+  - {record_key: "FUEL-OIL-2025", datapoint_id: dp:custom.energy.heating_oil, value: "5000", unit: L}
+  - {record_key: "FLEET-DIESEL-DP", datapoint_id: dp:custom.energy.diesel_fleet, value: "18000", unit: L}
+  - {record_key: "HEAT-2025", datapoint_id: dp:custom.energy.district_heating, value: "0", unit: MWh}
+  - {record_key: "PCF-YEAR", datapoint_id: dp:custom.prod.pcf_reference_year, value: "2024", unit: "1"}
+  - {record_key: "CBAM-QTY-2025", datapoint_id: dp:custom.cbam.quantity_supplied, value: "1250", unit: t}
+  - {record_key: "PACK-WEIGHT", datapoint_id: dp:custom.pack.weight, value: "0.4", unit: kg}
+  - {record_key: "ECOVADIS-SCORE", datapoint_id: dp:custom.rating.ecovadis_score, value: "62", unit: "1"}
+  - {record_key: "SRM-DIRECT", datapoint_id: dp:custom.supply.direct_suppliers_count, value: "140", unit: "1"}
+  - {record_key: "SRM-ASSESSED", datapoint_id: dp:custom.supply.assessed_suppliers_share, value: "65", unit: "%"}
+  - {record_key: "HR-WOMEN-MGMT", datapoint_id: dp:custom.social.women_in_management_share, value: "18", unit: "%"}
+# 文档登记表（xlsx：A=DataPoint，B=标签，C=值，D=单位）→ 带单元格定位的 document 证据
+register_rows:
+  - [dp:cert.iso14001.valid_until, "ISO 14001 Zertifikat gültig bis", "2027-05-31", null]
+  - [dp:cert.iso50001.valid_until, "ISO 50001 Zertifikat gültig bis", "2026-11-30", null]
+  - [dp:cert.iatf16949.valid_until, "IATF 16949 Zertifikat gültig bis", "2027-02-28", null]
+  - [dp:env.ghg_target.reduction_pct, "Zielreduktion THG gegenüber Basisjahr", "42", "%"]
+  - [dp:mat.recycled_content.steel_share, "Rezyklatanteil Stahl", "85", "%"]
+# 供应商回复（belegt-supplier-submission/1 的 values 部分；demo 中模拟供应商经门户提交）
+supplier_submission:
+  - {datapoint_id: dp:prod.cbam.see_direct, value: "1.85", unit: tCO2e/t}
+  - {datapoint_id: dp:prod.cbam.see_indirect, value: "0.32", unit: tCO2e/t}
+  - {datapoint_id: dp:prod.cbam.specific_electricity_consumption, value: "0.55", unit: MWh/t}
+  - {datapoint_id: dp:prod.cbam.carbon_price_paid, value: "0", unit: EUR}

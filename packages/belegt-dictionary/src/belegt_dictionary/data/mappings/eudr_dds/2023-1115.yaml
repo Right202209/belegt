@@ -1,0 +1,101 @@
+template_mapping: tm:eudr_dds@2023-1115
+template_id: eudr_dds
+template_version: 2023-1115
+template_source: Regulation (EU) 2023/1115 Art. 9 and Annex II due diligence statement, as amended by Regulation (EU) 2025/2650; EU information system (TRACES)
+dictionary_min_version: v2027.1
+license_note: 仅题号与短标签；原文请查阅官方来源
+maintainers:
+  - '@belegt/dict-maintainers'
+notes: 字段名据信息系统 API 公开文档，待核对
+entries:
+  - entry_id: operator_name
+    locator:
+      kind: field
+      ref: operator name
+      verify: true
+    short_label: Operator / trader name
+    datapoint_id: dp:org.identity.legal_name
+    direction: both
+    transform:
+      type: identity
+  - entry_id: operator_eori
+    locator:
+      kind: field
+      ref: operator EORI
+      verify: true
+    short_label: Operator EORI number
+    datapoint_id: dp:org.identity.eori_number
+    direction: both
+    transform:
+      type: identity
+  - entry_id: hs_code
+    locator:
+      kind: field
+      ref: HS heading
+      verify: true
+    short_label: HS / CN code of the product
+    datapoint_id: dp:prod.identity.cn_code
+    direction: both
+    transform:
+      type: identity
+    notes: DDS 要求 HS 品目；字典存 8 位 CN，导出时截取前 4/6 位须在 belegt-io 中按模板要求处理
+  - entry_id: net_mass
+    locator:
+      kind: field
+      ref: net mass (kg)
+      verify: true
+    short_label: Net mass, kg
+    datapoint_id: dp:supply.eudr.commodity_quantity
+    direction: both
+    unit_hint: kg
+    transform:
+      type: unit_convert
+      from_unit: kg
+      to_unit: kg
+      round: 3
+  - entry_id: geolocation
+    locator:
+      kind: field
+      ref: geolocation (GeoJSON, per plot)
+      verify: true
+    short_label: Plot geolocation
+    datapoint_id: dp:supply.eudr.geolocation
+    direction: both
+    transform:
+      type: format
+      pattern: GeoJSON RFC7946; >4 ha 地块须为 Polygon，≤4 ha 可为 Point
+  - entry_id: production_date
+    locator:
+      kind: field
+      ref: date or time range of production
+    short_label: Production date / range
+    datapoint_id: dp:supply.eudr.production_date
+    direction: both
+    period_hint: validity_range
+    transform:
+      type: format
+      pattern: YYYY-MM-DD
+  - entry_id: country_of_production
+    locator:
+      kind: field
+      ref: country of production
+    short_label: Country of production (ISO 3166)
+    datapoint_id: dp:supply.eudr.country_of_production
+    direction: both
+    transform:
+      type: identity
+  - entry_id: dds_reference
+    locator:
+      kind: field
+      ref: referenceNumber + verificationNumber
+      verify: true
+    short_label: DDS reference number
+    datapoint_id: dp:supply.eudr.dds_reference
+    direction: both
+    transform:
+      type: split
+      outputs:
+        - datapoint_id: dp:supply.eudr.dds_reference
+          selector: referenceNumber
+        - datapoint_id: dp:supply.eudr.dds_verification_number
+          selector: verificationNumber

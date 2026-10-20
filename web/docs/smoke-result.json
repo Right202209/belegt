@@ -1,0 +1,41 @@
+{
+  "base": "http://127.0.0.1:8781",
+  "request": "req_4VJH1SAKGMSJ2EDD1AAQDHT5C9",
+  "results": [
+    {
+      "step": "列表 GET /requests",
+      "ok": true,
+      "detail": "2 requests, req_4VJH1SAKGMSJ2EDD1AAQDHT5C9 in_review, 15 questions"
+    },
+    {
+      "step": "开发头 X-Belegt-Actor / 无身份 401",
+      "ok": true,
+      "detail": "X-Belegt-Actor: user:u_owner → 200；无头 → 401 GRAPH_UNAUTHENTICATED"
+    },
+    {
+      "step": "收件箱 GET /inbox",
+      "ok": true,
+      "detail": "14 pending approvals {\"L3\":3,\"L2\":5,\"L1\":6}"
+    },
+    {
+      "step": "单条批准 POST /approvals {approval_id}",
+      "ok": true,
+      "detail": "apr_01M5AKEHX5V3W5NSW6E7QH31R6 (L1) → approved"
+    },
+    {
+      "step": "批量 + 撤销 POST /approvals(批量) → /approvals/undo",
+      "ok": true,
+      "detail": "apb_01M5AKEKCJJEAP408BQCJD1YQE: staged 3（202，undo_until 窗口 10 min）→ 部分撤销 1 → 整批 undone；immediate 被拒 GRAPH_ILLEGAL_TRANSITION"
+    },
+    {
+      "step": "L2 批量 viewed_approval_ids",
+      "ok": true,
+      "detail": "无 viewed → 422 GRAPH_APPROVAL_REQUIRED；带 viewed → staged（随后撤销）"
+    },
+    {
+      "step": "POST /blobs + GET /graph/objects?type=SupplierRequest&view=timeline",
+      "ok": true,
+      "detail": "sha256:d30d5c46afee…；1 supplier request(s)"
+    }
+  ]
+}

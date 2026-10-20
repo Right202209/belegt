@@ -1,0 +1,59 @@
+id: dp:org.employees.headcount
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Beschäftigte (Köpfe, Stichtag)
+  en: Employees, headcount at period end
+  zh: 员工人数（期末）
+definition:
+  en: Number of employees in persons (not FTE) on the last day of the reporting period, within the stated consolidation boundary. Includes part-time and temporary employees; excludes non-employee workers such as agency staff and contractors. For FTE see dp:org.employees.fte.
+  de: Anzahl der Beschäftigten in Köpfen (nicht VZÄ) am letzten Tag des Berichtszeitraums. Teilzeit- und befristet Beschäftigte zählen mit; Leiharbeitnehmer und Fremdfirmen nicht. VZÄ siehe dp:org.employees.fte.
+  zh: 报告期最后一天在合并边界内的员工人数（按人头，不是全职当量），含兼职与临时合同员工；不含劳务派遣与外包人员。全职当量见 dp:org.employees.fte。
+value_type: number
+unit: '1'
+period_type: point_in_time
+boundary:
+  - organization
+  - site
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: eu_2026_1560_vcs
+    clause: B1
+  - ref: eu_2026_1560_vcs
+    clause: B8
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - erp
+    - human_confirmation
+    - historical_answer
+  min_sources: 1
+  max_age_days: 400
+  requires_calculation: false
+  human_confirmation_allowed: true
+validity_rule:
+  min: 0
+  regex: ^[0-9]+$
+  expires_by: period_end_plus_days
+  expires_after_days: 400
+  plausibility:
+    - expr: value >= dp:social.workforce.headcount.female + dp:social.workforce.headcount.male
+      severity: warn
+      note: 按性别分项之和不应超过总人数
+related_datapoints:
+  - id: dp:org.employees.fte
+    relation: see_also
+  - id: dp:social.workforce.headcount.female
+    relation: see_also
+  - id: dp:social.workforce.headcount.male
+    relation: see_also
+tags:
+  - vsme
+  - cdp_climate
+  - workforce
+  - human_confirmable_number

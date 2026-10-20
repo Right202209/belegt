@@ -1,0 +1,36 @@
+id: dp:prod.pcf.reference_period
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Bezugszeitraum (PCF)
+  en: PCF reference period
+  zh: PCF 参考期
+definition:
+  en: Time period of the activity data underlying the product carbon footprint; stored as the period of the answer (start and end date), the value being the end date. Excludes the date of calculation or publication.
+  de: Zeitraum der dem PCF zugrunde liegenden Aktivitätsdaten; gespeichert als Periode der Antwort (Beginn und Ende), Wert ist das Enddatum. Berechnungs- oder Veröffentlichungsdatum ist nicht gemeint.
+  zh: 产品碳足迹所依据活动数据的时间区间；以答案的 period（起止日期）存储，值为截止日期；不是计算或发布日期。
+value_type: date
+period_type: validity_range
+boundary:
+  - product
+methodology_refs:
+  - ref: pact_tech_spec_v2
+    note: referencePeriodStart/End
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - human_confirmation
+    - historical_answer
+  min_sources: 1
+  max_age_days: 365
+  requires_calculation: false
+  human_confirmation_allowed: true
+related_datapoints:
+  - id: dp:prod.pcf.cradle_to_gate
+    relation: see_also
+tags:
+  - pact_pcf
+  - catenax_pcf
+  - pcf

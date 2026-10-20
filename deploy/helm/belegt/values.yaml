@@ -1,0 +1,268 @@
+# Belegt Helm chart 默认值（Spec: 10 §6.1–§6.6、§8.5；07 §2.2、§4.4、§4.5、§5；03 §6.1/§6.4；04 §1.3）
+# 叠加文件：
+#   values-eu-residency.yaml      托管 SaaS（saas-multi）欧盟驻留：节点区域约束、仅 EU LLM 端点、Object Lock 合规模式
+#   values-external-postgres.yaml 外部/托管 PostgreSQL 16（RDS / Cloud SQL / STACKIT / 客户自建）
+#   values-private-airgap.yaml    离线私有化：只允许集群内 vLLM，egress 白名单为空（FR-704、GP-11）
+#   values-dev.yaml               开发/kind：内置 PostgreSQL、单副本、关闭 HPA
+
+global:
+  # 10 §6.1：saas-multi | saas-dedicated | private-k8s | private-airgap（compose 形态见 deploy/compose）
+  deployProfile: private-k8s
+  # 10 §8.1：dev | ci | eval | staging | prod-eu1 | dr-eu2
+  environment: prod-eu1
+  # 07 §5.1：eu | private（Organization.data_residency 决定租户归属实例）
+  dataResidency: eu
+  imageRegistry: ghcr.io/belegt
+  imagePullSecrets: []
+  # 所有 Pod 的额外标签/注解
+  podLabels: {}
+  podAnnotations: {}
+
+image:
+  tag: ""                # 空 = Chart.appVersion
+  pullPolicy: IfNotPresent
+  # 镜像名（registry/<name>:<tag>）；core 三个 target 见 deploy/docker/core.Dockerfile
+  api: core-api
+  worker: core-worker
+  migrate: core-migrate
+  web: web
+  supplier: supplier
+  # 第三方镜像（离线包需同时导入，10 §6.4）
+  squid: docker.io/ubuntu/squid:latest
+  postgres: docker.io/pgvector/pgvector:pg16
+  vllm: docker.io/vllm/vllm-openai:v0.6.3
+
+# ------------------------------------------------------------------------------ 信任分区与命名空间（07 §2.2、10 §6.2）
+# 每个分区可放进独立命名空间（空 = Release 命名空间）。NetworkPolicy 同时按命名空间与 Pod 标签 belegt.io/zone 隔离。
+zones:
+  createNamespaces: false     # true = 由本 chart 创建下列命名空间（需要集群级权限）
+  app:        { namespace: "" }   # web、graph-api、supplier（10 §6.2 belegt-app）
+  trusted:    { namespace: "" }   # 可信区 worker（belegt-trusted）
+  quarantine: { namespace: "" }   # 隔离区 worker（belegt-quarantine，无出网）
+  guard:      { namespace: "" }   # egress-gateway（belegt-guard，独立节点池）
+  data:       { namespace: "" }   # 内置 PostgreSQL（仅 values-dev）
+  # 分区 → 节点池（07 §2.2：guard/egress 与 Agent 不共享节点池；隔离区独立节点池）
+  nodeSelectors:
+    quarantine: {}            # 例：{ belegt.io/pool: quarantine }
+    guard: {}                 # 例：{ belegt.io/pool: guard }
+  tolerations:
+    quarantine: []
+    guard: []
+
+# ------------------------------------------------------------------------------ 欧盟驻留（07 §5、10 §6.1）
+residency:
+  # true = 所有 Pod 强制调度到 allowedRegions（topology.kubernetes.io/region）
+  enforce: false
+  allowedRegions: []          # 例：[eu-central-1, fsn1, nbg1]
+  # 渲染期校验：llm.baseUrl 与 egress 白名单中的外部域名必须匹配下列后缀之一（dataResidency=eu 时）
+  allowedLlmDomainSuffixes:
+    - api.mistral.ai
+    - eu-central-1.amazonaws.com
+    - eu-west-1.amazonaws.com
+    - openai.azure.com
+    - europe-west3-aiplatform.googleapis.com
+    - europe-west4-aiplatform.googleapis.com
+  # 其他允许出站的欧盟域名（客户门户、邮箱服务商、S3 端点等；需在子处理者清单中，07 §5.2）
+  extraAllowedEgressDomains: []
+
+# ------------------------------------------------------------------------------ PostgreSQL 16（03 §6）
+postgresql:
+  host: ""                    # 外部 PG 主机名（external.enabled 时必填）
+  port: 5432
+  database: belegt
+  sslmode: verify-full        # 外部 PG：verify-full；内置 PG：disable
+  # 迁移 Job 使用的管理员（超级用户或 belegt_owner 成员 + CREATEROLE；10 §8.4 只能由迁移流水线执行 DDL）
+  adminUser: postgres
+  # 登录角色（迁移 Job 创建并授予组角色，03 §6.1）
+  appUser: belegt_app               # API + 可信区 worker：belegt_writer + belegt_reader_trusted
+  quarantineUser: belegt_quarantine # 隔离区：belegt_reader_quarantine
+  auditorUser: belegt_auditor_ro    # 审计只读：belegt_auditor
+  # 哈希分区数（03 §6.4）：saas-multi 32；私有化单租户 1。首次迁移时确定，之后不可改
+  hashModulus: 32
+  # graph.commit_version() 适配器（belegt_core.store.pg_commit）
+  pgCommit: true
+  external:
+    enabled: true
+  # 内置单实例（仅开发/演示；生产用托管 PG 或独立主备，10 §6.3）
+  bundled:
+    enabled: false
+    storage: 50Gi
+    storageClass: ""
+    resources:
+      requests: { cpu: 500m, memory: 1Gi }
+      limits: { memory: 4Gi }
+
+# ------------------------------------------------------------------------------ Temporal（外部：官方 temporal Helm chart，10 §6.3）
+temporal:
+  address: temporal-frontend.temporal.svc:7233
+  namespace: belegt
+  taskQueue: belegt-requests
+  quarantineTaskQueue: tq-quarantine
+
+# ------------------------------------------------------------------------------ 对象存储（S3 兼容，Object Lock；03 §6.7）
+objectStorage:
+  endpoint: ""                # 空 = AWS S3 默认端点；MinIO/Ceph/STACKIT 填 https://…
+  bucket: belegt-eu-prod
+  region: eu-central-1
+  objectLockMode: COMPLIANCE  # blobs/、audit-packs/：COMPLIANCE 10 年（桶在 chart 外预置，见 deploy/README.md）
+
+# ------------------------------------------------------------------------------ LLM（04 §7、07 §5.3、10 §4/§6.4）
+llm:
+  baseUrl: ""                 # 空 = MockLLM；云端经 egress-gateway；本地 = http://<release>-vllm:8000/v1
+  model: ""
+  quarantineBaseUrl: ""       # 隔离区 worker 强制本地小模型时填写
+  quarantineModel: ""
+  # 集群内 vLLM（10 §6.4 gpu-profile；private-airgap 必开）
+  vllm:
+    enabled: false
+    model: Qwen/Qwen3-32B-FP8
+    servedModelName: local-vllm
+    maxModelLen: 16384
+    gpuCount: 1
+    resources:
+      limits: { nvidia.com/gpu: 1, memory: 96Gi }
+      requests: { cpu: "8", memory: 64Gi }
+    modelsPvc: ""             # 预置权重的 PVC（离线包导入，HF_HUB_OFFLINE=1）
+    nodeSelector: {}
+    tolerations: []
+
+# ------------------------------------------------------------------------------ Secrets（07 §4.5：生产用 Vault / External Secrets）
+secrets:
+  # true = 由 chart 用下列值创建 Secret（仅开发/测试）；false = 使用 existingSecret（由 Vault Agent / External Secrets Operator 同步）
+  create: false
+  existingSecret: belegt-secrets            # 键：见 templates/secrets.yaml 顶部注释
+  existingQuarantineSecret: belegt-quarantine-secrets
+  values:
+    postgresAdminPassword: ""
+    appDbPassword: ""
+    quarantineDbPassword: ""
+    auditorDbPassword: ""
+    s3AccessKeyId: ""
+    s3SecretAccessKey: ""
+    llmApiKey: ""
+    quarantineLlmApiKey: ""
+    supplierSecret: ""
+    supplierManifestSecret: ""
+    supplierWebhookSecret: ""
+    supplierAdminKey: ""
+    devTokensJson: ""        # 仅开发：StaticTokenTable；生产留空并接 OIDC（07 §4.6）
+
+# ------------------------------------------------------------------------------ 组件
+podSecurity:
+  runAsUser: 10001
+  runAsGroup: 10001
+  fsGroup: 10001
+  seccompProfile: RuntimeDefault
+
+api:
+  replicas: 2
+  workers: 2
+  resources:
+    requests: { cpu: 250m, memory: 512Mi }
+    limits: { memory: 1Gi }
+  hpa: { enabled: true, minReplicas: 2, maxReplicas: 8, targetCPUUtilizationPercentage: 70 }
+  pdb: { enabled: true, minAvailable: 1 }
+  service: { port: 8000 }
+  devTokens: false            # true = 挂载 secrets 中的 devTokensJson（仅开发）
+
+worker:
+  replicas: 2
+  servicesFactory: belegt_core.demo:build_env
+  resources:
+    requests: { cpu: 500m, memory: 1Gi }
+    limits: { memory: 2Gi }
+  # 10 §3.3：worker 按 Temporal task queue 积压伸缩更合适（KEDA temporal scaler）；这里提供 CPU HPA 作为保底
+  hpa: { enabled: true, minReplicas: 2, maxReplicas: 12, targetCPUUtilizationPercentage: 70 }
+  pdb: { enabled: true, minAvailable: 1 }
+  terminationGracePeriodSeconds: 120   # Activity 优雅退出
+
+# 隔离区 worker（04 §1.3 tq-quarantine）。belegt_core 目前只用一个 task queue，代码拆分后再启用
+workerQuarantine:
+  enabled: false
+  replicas: 2
+  runtimeClassName: ""        # 07 §2.2：gvisor
+  resources:
+    requests: { cpu: 250m, memory: 512Mi }
+    limits: { memory: 1Gi }
+  pdb: { enabled: true, minAvailable: 1 }
+
+web:
+  replicas: 2
+  resources:
+    requests: { cpu: 50m, memory: 64Mi }
+    limits: { memory: 128Mi }
+  hpa: { enabled: false, minReplicas: 2, maxReplicas: 4, targetCPUUtilizationPercentage: 70 }
+  pdb: { enabled: true, minAvailable: 1 }
+  service: { port: 8080 }
+
+supplier:
+  enabled: true
+  publicUrl: https://supplier.example.eu
+  defaultLocale: de
+  smtpHost: ""
+  smtpPort: 587
+  mailFrom: ""
+  persistence: { size: 10Gi, storageClass: "" }
+  resources:
+    requests: { cpu: 100m, memory: 256Mi }
+    limits: { memory: 512Mi }
+  service: { port: 8080 }
+
+egressGateway:
+  enabled: true
+  replicas: 2
+  port: 3128
+  # FQDN 白名单（前导点 = 含子域）。只放行欧盟区 LLM 端点与必要的邮箱/门户域名（07 §5.3、10 §6.2）
+  allowlist:
+    - .api.mistral.ai
+    - bedrock-runtime.eu-central-1.amazonaws.com
+  # 允许的出站端口（443 HTTPS；587 SMTP 提交）
+  allowedPorts: [443]
+  resources:
+    requests: { cpu: 50m, memory: 128Mi }
+    limits: { memory: 256Mi }
+  pdb: { enabled: true, minAvailable: 1 }
+
+migrations:
+  enabled: true               # Helm pre-install/pre-upgrade Hook：执行 migrations/postgres/*.sql（10 §6.5 ②）
+  backoffLimit: 1
+  activeDeadlineSeconds: 900
+
+ingress:
+  enabled: false
+  className: nginx
+  annotations: {}
+  web:
+    host: belegt.example.eu
+    tlsSecret: belegt-web-tls
+  supplier:
+    host: supplier.example.eu
+    tlsSecret: belegt-supplier-tls
+
+# ------------------------------------------------------------------------------ NetworkPolicy（07 §2.2：默认 deny-all，按表放行）
+networkPolicy:
+  enabled: true
+  # 外部依赖的对端（NetworkPolicyPeer 列表）。内置 PG 时 postgres 自动用 Pod 选择器
+  peers:
+    postgres:
+      - ipBlock: { cidr: 10.0.0.0/8 }
+    temporal:
+      - namespaceSelector: { matchLabels: { kubernetes.io/metadata.name: temporal } }
+    otelCollector:
+      - namespaceSelector: { matchLabels: { kubernetes.io/metadata.name: belegt-obs } }
+    ingressController:
+      - namespaceSelector: { matchLabels: { kubernetes.io/metadata.name: ingress-nginx } }
+    prometheus:
+      - namespaceSelector: { matchLabels: { kubernetes.io/metadata.name: monitoring } }
+    dns:
+      - namespaceSelector: { matchLabels: { kubernetes.io/metadata.name: kube-system } }
+        podSelector: { matchLabels: { k8s-app: kube-dns } }
+  # egress-gateway 自身访问公网时排除的私网段（防止被当作内网跳板）
+  egressGatewayExcept: [10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16, 169.254.0.0/16, 100.64.0.0/10]
+
+# ------------------------------------------------------------------------------ 观测（10 §5）
+observability:
+  otlpEndpoint: http://otel-collector.belegt-obs.svc:4317
+  serviceMonitor: { enabled: false, interval: 30s, labels: {} }     # 需 Prometheus Operator CRD
+  prometheusRule: { enabled: false, labels: {} }                   # SLO 记录规则 + ALR-01…12
+  grafanaDashboards: { enabled: false, labels: { grafana_dashboard: "1" } }  # DSH-01…06（grafana sidecar）

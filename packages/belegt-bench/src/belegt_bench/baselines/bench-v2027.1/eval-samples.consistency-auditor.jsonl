@@ -1,0 +1,16 @@
+{"cell": "none×de×json", "cluster": "CS-02", "expected_n": 1, "expl_new_numbers": 0, "fp": 0, "missed": 0, "missed_rules": [], "partition": "test", "pred_n": 2, "sample_id": "conf:CS-02"}
+{"cell": "none×de×json", "cluster": "CS-03", "expected_n": 1, "expl_new_numbers": 0, "fp": 0, "missed": 0, "missed_rules": [], "partition": "test", "pred_n": 1, "sample_id": "conf:CS-03"}
+{"cell": "none×de×json", "cluster": "CS-04", "expected_n": 1, "expl_new_numbers": 0, "fp": 0, "missed": 0, "missed_rules": [], "partition": "test", "pred_n": 1, "sample_id": "conf:CS-04"}
+{"cell": "none×de×json", "cluster": "CS-07", "expected_n": 1, "expl_new_numbers": 0, "fp": 0, "missed": 0, "missed_rules": [], "partition": "test", "pred_n": 1, "sample_id": "conf:CS-07"}
+{"cell": "none×de×json", "cluster": "CS-08", "expected_n": 1, "expl_new_numbers": 0, "fp": 0, "missed": 0, "missed_rules": [], "partition": "test", "pred_n": 1, "sample_id": "conf:CS-08"}
+{"cell": "none×de×json", "cluster": "CS-09", "expected_n": 2, "expl_new_numbers": 0, "fp": 0, "missed": 0, "missed_rules": [], "partition": "test", "pred_n": 2, "sample_id": "conf:CS-09"}
+{"cell": "none×de×json", "cluster": "CS-12", "expected_n": 1, "expl_new_numbers": 0, "fp": 0, "missed": 0, "missed_rules": [], "partition": "test", "pred_n": 1, "sample_id": "conf:CS-12"}
+{"cell": "none×de×json", "cluster": "CS-13", "expected_n": 1, "expl_new_numbers": 0, "fp": 0, "missed": 0, "missed_rules": [], "partition": "test", "pred_n": 1, "sample_id": "conf:CS-13"}
+{"cell": "none×de×json", "cluster": "CS-14", "expected_n": 1, "expl_new_numbers": 0, "fp": 0, "missed": 0, "missed_rules": [], "partition": "test", "pred_n": 1, "sample_id": "conf:CS-14"}
+{"cell": "none×de×json", "cluster": "CS-17", "expected_n": 1, "expl_new_numbers": 0, "fp": 0, "missed": 0, "missed_rules": [], "partition": "test", "pred_n": 1, "sample_id": "conf:CS-17"}
+{"cell": "none×de×json", "cluster": "CS-18", "expected_n": 1, "expl_new_numbers": 0, "fp": 0, "missed": 0, "missed_rules": [], "partition": "test", "pred_n": 1, "sample_id": "conf:CS-18"}
+{"cell": "none×de×json", "cluster": "CS-19", "expected_n": 1, "expl_new_numbers": 0, "fp": 0, "missed": 0, "missed_rules": [], "partition": "test", "pred_n": 1, "sample_id": "conf:CS-19"}
+{"cell": "none×de×json", "cluster": "CS-N2", "expected_n": 0, "expl_new_numbers": 0, "fp": 0, "missed": 0, "missed_rules": [], "partition": "test", "pred_n": 0, "sample_id": "conf:CS-N2"}
+{"cell": "none×de×json", "cluster": "CS-N3", "expected_n": 0, "expl_new_numbers": 0, "fp": 0, "missed": 0, "missed_rules": [], "partition": "test", "pred_n": 0, "sample_id": "conf:CS-N3"}
+{"cell": "none×de×json", "cluster": "CS-N4", "expected_n": 0, "expl_new_numbers": 0, "fp": 0, "missed": 0, "missed_rules": [], "partition": "test", "pred_n": 0, "sample_id": "conf:CS-N4"}
+{"cell": "none×de×json", "cluster": "CS-N7", "expected_n": 0, "expl_new_numbers": 0, "fp": 0, "missed": 0, "missed_rules": [], "partition": "test", "pred_n": 0, "sample_id": "conf:CS-N7"}

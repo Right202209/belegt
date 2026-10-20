@@ -1,0 +1,36 @@
+# Spec: 02 §4.3.6
+template_mapping: tm:reach_scip@echa-scip-3
+template_id: reach_scip
+template_version: echa-scip-3
+template_source: "REACH Art. 33 / ECHA SCIP (IUCLID-based) [需核对版本]"
+license_note: "仅字段名与短标签"
+fingerprint:
+  threshold: 0.85
+  markers:
+    - { text: "SCIP", weight: 3 }
+    - { text: "Candidate List", weight: 2 }
+    - { text: "SVHC", weight: 1 }
+entries:
+  - entry_id: svhc_present
+    locator: { kind: field, ref: "Candidate List substance present > 0.1 % w/w" }
+    short_label: "SVHC above 0.1 % w/w?"
+    datapoint_id: dp:mat.reach.svhc_present
+    direction: both
+    transform: { type: enum_map, map: { "Yes": true, "No": false, "Ja": true, "Nein": false } }
+  - entry_id: svhc_identity
+    locator: { kind: field, ref: "Candidate List substance (EC/CAS)" }
+    short_label: "SVHC identity"
+    datapoint_id: dp:mat.reach.svhc_list
+    direction: both
+  - entry_id: concentration_range
+    locator: { kind: field, ref: "Concentration range (w/w)" }
+    short_label: "Concentration range"
+    datapoint_id: dp:mat.reach.svhc_concentration
+    direction: export
+    transform: { type: enum_map, map: { "0.1-0.3": "[0.1,0.3)", "0.3-1.0": "[0.3,1.0)", "1.0-10": "[1.0,10)", "10-20": "[10,20)", ">20": "[20,100]" } }
+  - entry_id: scip_number
+    locator: { kind: field, ref: "SCIP number" }
+    short_label: "SCIP number (UUID)"
+    datapoint_id: dp:mat.scip.scip_number
+    direction: both
+    transform: { type: format, pattern: "UUID" }

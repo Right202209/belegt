@@ -1,0 +1,430 @@
+template_mapping: tm:vsme@eu-2026-1560
+template_id: vsme
+template_version: eu-2026-1560
+template_source: Delegated Regulation (EU) 2026/1560, Annex (Basic/Comprehensive Module)
+dictionary_min_version: v2027.1
+license_note: 仅题号与短标签；原文请查阅官方来源
+maintainers:
+  - '@belegt/dict-maintainers'
+notes: 段落号据 2026/1560 附件；未在 02 §4.3.1 出现的条目段落号标 verify。EFRAG 2024-12 原版另建 vsme@efrag-2024-12（未收录）。
+entries:
+  - entry_id: b1_legal_name
+    locator:
+      kind: paragraph
+      ref: B1
+      verify: true
+    short_label: Undertaking legal name
+    datapoint_id: dp:org.identity.legal_name
+    direction: both
+    period_hint: point_in_time
+    boundary_hint: organization
+    transform:
+      type: identity
+  - entry_id: b1_registration_number
+    locator:
+      kind: paragraph
+      ref: B1
+      verify: true
+    short_label: Registration number
+    datapoint_id: dp:org.identity.registration_number
+    direction: both
+    transform:
+      type: identity
+  - entry_id: b1_nace_code
+    locator:
+      kind: paragraph
+      ref: B1
+      verify: true
+    short_label: NACE sector code(s)
+    datapoint_id: dp:org.identity.nace_code
+    direction: both
+    transform:
+      type: identity
+  - entry_id: b1_country
+    locator:
+      kind: paragraph
+      ref: B1
+      verify: true
+    short_label: Country of primary operations
+    datapoint_id: dp:org.identity.hq_country
+    direction: both
+    transform:
+      type: identity
+  - entry_id: b1_turnover
+    locator:
+      kind: paragraph
+      ref: B1
+      verify: true
+    short_label: Turnover, EUR
+    datapoint_id: dp:org.financials.turnover
+    direction: both
+    unit_hint: EUR
+    period_hint: fiscal_year
+    boundary_hint: organization
+    transform:
+      type: identity
+  - entry_id: b1_employees_headcount
+    locator:
+      kind: paragraph
+      ref: B1
+      verify: true
+    short_label: Number of employees (headcount)
+    datapoint_id: dp:org.employees.headcount
+    direction: both
+    unit_hint: '1'
+    boundary_hint: organization
+    transform:
+      type: identity
+  - entry_id: b1_employees_fte
+    locator:
+      kind: paragraph
+      ref: B1
+      verify: true
+    short_label: Number of employees (FTE)
+    datapoint_id: dp:org.employees.fte
+    direction: both
+    unit_hint: '1'
+    transform:
+      type: identity
+    notes: VSME 允许人头或全职当量二选一；同一 locator 两条条目，按答案注明的口径回填
+  - entry_id: b1_module_option
+    locator:
+      kind: paragraph
+      ref: B1
+      verify: true
+    short_label: Reporting option (Basic / Comprehensive)
+    datapoint_id: dp:org.reporting.module_option
+    direction: both
+    transform:
+      type: enum_map
+      map:
+        Basic Module: basic
+        Basic and Comprehensive Module: basic_and_comprehensive
+  - entry_id: b3_32_energy_total
+    locator:
+      kind: paragraph
+      ref: B3 Para 32
+    short_label: Total energy consumption, MWh
+    datapoint_id: dp:energy.consumption.total
+    direction: both
+    unit_hint: MWh
+    period_hint: reporting_period
+    transform:
+      type: unit_convert
+      from_unit: MWh
+      to_unit: MWh
+      round: 1
+  - entry_id: b3_32_electricity
+    locator:
+      kind: paragraph
+      ref: B3 Para 32
+    short_label: Electricity consumption, MWh
+    datapoint_id: dp:energy.consumption.electricity_total
+    direction: both
+    unit_hint: MWh
+    transform:
+      type: unit_convert
+      from_unit: MWh
+      to_unit: MWh
+      round: 1
+  - entry_id: b3_32_fuels
+    locator:
+      kind: paragraph
+      ref: B3 Para 32
+    short_label: Fuel consumption, MWh
+    datapoint_id: dp:energy.consumption.fuels_total
+    direction: both
+    unit_hint: MWh
+    transform:
+      type: unit_convert
+      from_unit: MWh
+      to_unit: MWh
+      round: 1
+  - entry_id: b3_32_renewable_share
+    locator:
+      kind: paragraph
+      ref: B3 Para 32
+    short_label: Share of renewable energy, %
+    datapoint_id: dp:energy.consumption.renewable_share
+    direction: both
+    unit_hint: '%'
+    transform:
+      type: identity
+  - entry_id: b3_33a_scope1
+    locator:
+      kind: paragraph
+      ref: B3 Para 33(a)
+    short_label: Scope 1 GHG, tCO2e
+    datapoint_id: dp:env.ghg.scope1_total
+    direction: both
+    unit_hint: tCO2e
+    period_hint: reporting_period
+    boundary_hint: organization
+    transform:
+      type: identity
+    notes: Basic Module；≤10 名员工企业为自愿项
+  - entry_id: b3_33b_scope2_lb
+    locator:
+      kind: paragraph
+      ref: B3 Para 33(b)
+    short_label: Scope 2 location-based, tCO2e
+    datapoint_id: dp:env.ghg.scope2_location_based
+    direction: both
+    unit_hint: tCO2e
+    transform:
+      type: identity
+  - entry_id: b3_total_s1_s2
+    locator:
+      kind: paragraph
+      ref: B3
+      verify: true
+    short_label: Total Scope 1 + Scope 2 (location-based), tCO2e
+    direction: export
+    unit_hint: tCO2e
+    transform:
+      type: aggregate
+      op: sum
+      inputs:
+        - dp:env.ghg.scope1_total
+        - dp:env.ghg.scope2_location_based
+      round: 0
+  - entry_id: b3_ghg_intensity
+    locator:
+      kind: paragraph
+      ref: B3
+      verify: true
+    short_label: GHG intensity per turnover
+    datapoint_id: dp:env.ghg.intensity_turnover
+    direction: both
+    unit_hint: tCO2e/EUR
+    transform:
+      type: identity
+  - entry_id: b4_pollution
+    locator:
+      kind: paragraph
+      ref: B4
+      verify: true
+    short_label: Pollutant emissions already reported
+    datapoint_id: dp:env.pollution.emissions_reported
+    direction: both
+    transform:
+      type: identity
+  - entry_id: b5_biodiversity_sites
+    locator:
+      kind: paragraph
+      ref: B5
+      verify: true
+    short_label: Sites in/near biodiversity-sensitive areas
+    datapoint_id: dp:env.biodiversity.sites_near_sensitive_area
+    direction: both
+    transform: &id001
+      type: enum_map
+      map:
+        'Yes': true
+        'No': false
+  - entry_id: b6_water_withdrawal
+    locator:
+      kind: paragraph
+      ref: B6
+      verify: true
+    short_label: Total water withdrawal, m3
+    datapoint_id: dp:env.water.withdrawal_total
+    direction: both
+    unit_hint: m3
+    transform:
+      type: pipeline
+      steps:
+        - type: unit_convert
+          from_unit: m3
+          to_unit: m3
+          round: 0
+  - entry_id: b7_39a_waste
+    locator:
+      kind: paragraph
+      ref: B7 Para 39(a)
+    short_label: Waste generated, hazardous / non-hazardous
+    datapoint_id: dp:env.waste.generated
+    direction: import
+    transform:
+      type: split
+      outputs:
+        - datapoint_id: dp:env.waste.generated.hazardous
+          selector: hazardous
+        - datapoint_id: dp:env.waste.generated.non_hazardous
+          selector: non_hazardous
+  - entry_id: b7_39a_waste_total
+    locator:
+      kind: paragraph
+      ref: B7 Para 39(a)
+    short_label: Total waste generated, t
+    datapoint_id: dp:env.waste.generated
+    direction: export
+    unit_hint: t
+    transform:
+      type: identity
+  - entry_id: b7_diverted_share
+    locator:
+      kind: paragraph
+      ref: B7
+      verify: true
+    short_label: Waste diverted to recycling/reuse, %
+    datapoint_id: dp:env.waste.diverted_share
+    direction: both
+    unit_hint: '%'
+    transform:
+      type: identity
+  - entry_id: b8_headcount_female
+    locator:
+      kind: paragraph
+      ref: B8
+      verify: true
+    short_label: 'Employees by gender: female'
+    datapoint_id: dp:social.workforce.headcount.female
+    direction: both
+    unit_hint: '1'
+    transform:
+      type: identity
+  - entry_id: b8_headcount_male
+    locator:
+      kind: paragraph
+      ref: B8
+      verify: true
+    short_label: 'Employees by gender: male'
+    datapoint_id: dp:social.workforce.headcount.male
+    direction: both
+    unit_hint: '1'
+    transform:
+      type: identity
+  - entry_id: b8_temporary
+    locator:
+      kind: paragraph
+      ref: B8
+      verify: true
+    short_label: Employees on temporary contracts
+    datapoint_id: dp:social.workforce.temporary_count
+    direction: both
+    unit_hint: '1'
+    transform:
+      type: identity
+  - entry_id: b9_41a_accidents
+    locator:
+      kind: paragraph
+      ref: B9 Para 41(a)
+    short_label: Recordable work-related accidents, number and rate
+    datapoint_id: dp:social.health_safety.recordable_accidents
+    direction: both
+    transform:
+      type: identity
+    notes: 同段的比率映射到 dp:social.health_safety.recordable_accident_rate（另一条）
+  - entry_id: b9_41a_accident_rate
+    locator:
+      kind: paragraph
+      ref: B9 Para 41(a)
+    short_label: Recordable work-related accident rate
+    datapoint_id: dp:social.health_safety.recordable_accident_rate
+    direction: both
+    transform:
+      type: identity
+  - entry_id: b10_min_wage
+    locator:
+      kind: paragraph
+      ref: B10
+      verify: true
+    short_label: Pay at or above minimum wage?
+    datapoint_id: dp:social.remuneration.min_wage_compliance
+    direction: both
+    transform: *id001
+  - entry_id: b10_collective_bargaining
+    locator:
+      kind: paragraph
+      ref: B10
+      verify: true
+    short_label: Collective bargaining coverage, %
+    datapoint_id: dp:social.collective_bargaining.coverage_rate
+    direction: both
+    unit_hint: '%'
+    transform:
+      type: identity
+  - entry_id: b10_training_hours
+    locator:
+      kind: paragraph
+      ref: B10
+      verify: true
+    short_label: Average training hours per employee
+    datapoint_id: dp:social.training.avg_hours_per_employee
+    direction: both
+    unit_hint: h
+    transform:
+      type: identity
+  - entry_id: b11_convictions
+    locator:
+      kind: paragraph
+      ref: B11
+      verify: true
+    short_label: Corruption convictions, number
+    datapoint_id: dp:gov.anticorruption.convictions_count
+    direction: both
+    unit_hint: '1'
+    transform:
+      type: identity
+  - entry_id: b11_43_fines
+    locator:
+      kind: paragraph
+      ref: B11 Para 43
+    short_label: Corruption fines, total amount
+    datapoint_id: dp:gov.anticorruption.fines_amount
+    direction: both
+    unit_hint: EUR
+    transform:
+      type: identity
+  - entry_id: c3_has_target
+    locator:
+      kind: paragraph
+      ref: C3
+      verify: true
+    short_label: GHG reduction target in place?
+    datapoint_id: dp:env.ghg_target.has_target
+    direction: both
+    transform: *id001
+  - entry_id: c3_reduction_pct
+    locator:
+      kind: paragraph
+      ref: C3
+      verify: true
+    short_label: Target reduction, %
+    datapoint_id: dp:env.ghg_target.reduction_pct
+    direction: both
+    unit_hint: '%'
+    transform:
+      type: identity
+    condition: dp:env.ghg_target.has_target == true
+  - entry_id: c3_target_year
+    locator:
+      kind: paragraph
+      ref: C3
+      verify: true
+    short_label: Target year
+    datapoint_id: dp:env.ghg_target.target_year
+    direction: both
+    transform:
+      type: format
+      pattern: YYYY
+    condition: dp:env.ghg_target.has_target == true
+  - entry_id: c3_transition_plan
+    locator:
+      kind: paragraph
+      ref: C3
+      verify: true
+    short_label: Climate transition plan in place?
+    datapoint_id: dp:gov.policy.climate_transition_plan
+    direction: both
+    transform: *id001
+  - entry_id: c6_human_rights_policy
+    locator:
+      kind: paragraph
+      ref: C6
+      verify: true
+    short_label: Human rights policy in place?
+    datapoint_id: dp:gov.policy.human_rights_policy
+    direction: both
+    transform: *id001

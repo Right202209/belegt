@@ -1,0 +1,19 @@
+# Spec: 06 §2.2 CR-042
+rule_id: CR-042
+rule_version: 1.0.0
+category: legal
+severity: block
+title:
+  de: Rechtsverbindliche Antwort wiederverwendet oder im Sammelfreigabe-Batch
+  en: Legal answer reused or batched
+scope: answer
+triggers:
+- answer_write
+- pre_submit_gate
+- daily_batch
+- context_change
+plugin: cr_042
+assert: '!legal_commitment || ((risk_level == '''' || risk_level == ''L3'') && !in_batch)'
+default_action: open_conflict
+explain_template: cr-042
+tests: tests/test_consistency_rules.py::test_cr_042

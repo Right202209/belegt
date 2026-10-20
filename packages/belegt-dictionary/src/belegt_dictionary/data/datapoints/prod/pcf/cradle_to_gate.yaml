@@ -1,0 +1,50 @@
+id: dp:prod.pcf.cradle_to_gate
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Produkt-CO2-Fußabdruck cradle-to-gate (inkl. biogen)
+  en: Product carbon footprint, cradle-to-gate (incl. biogenic)
+  zh: 产品碳足迹（摇篮到大门，含生物源）
+definition:
+  en: Cradle-to-gate GHG emissions of the product per declared unit, including biogenic CO2 uptake and emissions, calculated according to ISO 14067 and the PACT methodology. The declared unit is dp:prod.pcf.declared_unit; the value excluding biogenic is dp:prod.pcf.cradle_to_gate.excluding_biogenic. Excludes use and end-of-life stages.
+  de: 'Cradle-to-Gate-THG-Emissionen des Produkts je deklarierter Einheit einschließlich biogener CO2-Aufnahme und -Emissionen, nach ISO 14067 und PACT-Methodik. Deklarierte Einheit: dp:prod.pcf.declared_unit; ohne biogen: dp:prod.pcf.cradle_to_gate.excluding_biogenic.'
+  zh: 按 ISO 14067 与 PACT 方法学计算的每声明单位产品摇篮到大门温室气体排放，含生物源 CO2 吸收与排放；声明单位见 dp:prod.pcf.declared_unit，不含生物源的值见 dp:prod.pcf.cradle_to_gate.excluding_biogenic；不含使用与寿命终止阶段。
+value_type: number
+unit: kgCO2e/kg
+allowed_units:
+  - kgCO2e/kg
+  - tCO2e/t
+period_type: validity_range
+boundary:
+  - product_per_unit
+methodology_refs:
+  - ref: iso_14067
+  - ref: pact_tech_spec_v3
+    note: pcfIncludingBiogenicUptake
+  - ref: catenax_pcf_rulebook_v4
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - supplier_response
+    - historical_answer
+  min_sources: 1
+  max_age_days: 1095
+  requires_calculation: true
+  human_confirmation_allowed: false
+validity_rule:
+  expires_by: evidence_valid_until
+related_datapoints:
+  - id: dp:prod.pcf.cradle_to_gate.excluding_biogenic
+    relation: alternative_of
+  - id: dp:prod.pcf.declared_unit
+    relation: see_also
+  - id: dp:prod.pcf.reference_period
+    relation: see_also
+tags:
+  - pact_pcf
+  - catenax_pcf
+  - eu_battery_passport
+  - oem_custom
+  - pcf

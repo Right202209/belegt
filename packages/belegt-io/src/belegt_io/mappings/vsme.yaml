@@ -1,0 +1,48 @@
+# Spec: 02 §4.3.1（段落号据 Delegated Regulation (EU) 2026/1560 附件）
+template_mapping: tm:vsme@eu-2026-1560
+template_id: vsme
+template_version: eu-2026-1560
+template_source: "Delegated Regulation (EU) 2026/1560, Annex (Basic/Comprehensive Module)"
+license_note: "仅题号与短标签；原文请查阅官方来源"
+fingerprint:
+  threshold: 0.85
+  markers:
+    - { text: "VSME", weight: 3 }
+    - { text: "Basic Module", weight: 1 }
+    - { native_id: "B3 Para 33(a)", weight: 2 }
+    - { native_id: "B3 Para 32", weight: 1 }
+entries:
+  - entry_id: b3_32_energy_total
+    locator: { kind: paragraph, ref: "B3 Para 32" }
+    short_label: "Total energy consumption, MWh"
+    datapoint_id: dp:energy.consumption.total
+    direction: both
+    unit_hint: MWh
+    transform: { type: unit_convert, from_unit: MWh, to_unit: MWh, round: 1 }
+  - entry_id: b3_33a_scope1
+    locator: { kind: paragraph, ref: "B3 Para 33(a)" }
+    short_label: "Scope 1 GHG, tCO2e"
+    datapoint_id: dp:env.ghg.scope1_total
+    direction: both
+    unit_hint: tCO2e
+    period_hint: reporting_period
+    boundary_hint: organization
+    transform: { type: identity }
+  - entry_id: b3_33b_scope2_lb
+    locator: { kind: paragraph, ref: "B3 Para 33(b)" }
+    short_label: "Scope 2 location-based, tCO2e"
+    datapoint_id: dp:env.ghg.scope2_location_based
+    direction: both
+    unit_hint: tCO2e
+    transform: { type: identity }
+  - entry_id: b9_41a_accidents
+    locator: { kind: paragraph, ref: "B9 Para 41(a)" }
+    short_label: "Recordable work-related accidents, number and rate"
+    datapoint_id: dp:social.health_safety.recordable_accidents
+    direction: both
+  - entry_id: b11_43_fines
+    locator: { kind: paragraph, ref: "B11 Para 43" }
+    short_label: "Corruption fines, total amount"
+    datapoint_id: dp:gov.anticorruption.fines_amount
+    direction: both
+    transform: { type: identity }

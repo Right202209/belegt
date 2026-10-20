@@ -1,0 +1,141 @@
+{
+  "scopeOfPcfForm": [
+    {
+      "specVersion": "urn:samm:io.catenax.pcf:10.0.0",
+      "partialFullPcf": "Cradle-to-gate"
+    }
+  ],
+  "companyAndProductInformation": [
+    {
+      "companyInformation": [
+        {
+          "companyName": "Musterfirma Präzisionsteile GmbH",
+          "companyIds": [
+            "urn:pact:company:customcode:buyer-assigned:MUSTER-0042"
+          ]
+        }
+      ],
+      "productInformation": [
+        {
+          "productNameCompany": "Stahlblech DX51D+Z 1,5 mm",
+          "productIds": [
+            "urn:pact:product-id:customcode:vendor-assigned:BLECH-150-ZN"
+          ],
+          "productDescription": "Kaltgewalztes Stahlblech, verzinkt, 1,5 mm",
+          "declaredUnitOfMeasurement": "kilogram",
+          "declaredUnitAmount": 1,
+          "productMassPerDeclaredUnit": 1
+        }
+      ]
+    }
+  ],
+  "pcfAssessmentAndMethodology": [
+    {
+      "pcfAssessmentInformation": [
+        {
+          "idAndVersion": [
+            {
+              "id": "3f2b6c1e-7d4a-4e8b-9a10-2c5d7e9f1a3b",
+              "version": 1,
+              "status": "Active",
+              "retroOrProspectivePcfType": "Retrospective PCF"
+            }
+          ],
+          "boundarySpecifications": [
+            {
+              "exemptedEmissionsPercent": 1.2,
+              "exemptedEmissionsDescription": "Hilfsstoffe < 1 % Masse"
+            }
+          ],
+          "technology": [
+            {
+              "ccsTechnologicalCO2CaptureIncluded": false
+            }
+          ],
+          "geography": [
+            {
+              "geographyRegionOrSubregion": "Western Europe",
+              "geographyCountry": "DE"
+            }
+          ],
+          "time": [
+            {
+              "referencePeriodStart": "2025-01-01T00:00:00Z",
+              "referencePeriodEnd": "2026-01-01T00:00:00Z",
+              "created": "2026-10-19T00:00:00Z",
+              "validityPeriodStart": "2026-01-01T00:00:00Z",
+              "validityPeriodEnd": "2028-01-01T00:00:00Z"
+            }
+          ]
+        }
+      ],
+      "pcfMethodology": [
+        {
+          "standards": [
+            {
+              "crossSectoralStandards": "ISO 14067",
+              "productOrSectorSpecificRules": [
+                "Catena-X PCF Rulebook"
+              ]
+            }
+          ],
+          "gwpCharacterizationFactorDetails": [
+            {
+              "ipccCharacterizationFactors": "AR6"
+            }
+          ],
+          "allocationInForeground": [
+            {
+              "allocationWasteIncineration": "cut-off",
+              "allocationRulesDescription": "Physikalische Allokation nach Maschinenstunden (template text)"
+            }
+          ],
+          "massBalancingInformation": [
+            {
+              "massBalancingUsed": false
+            }
+          ]
+        }
+      ],
+      "dataSourcesAndQuality": [
+        {
+          "primaryDataShare": 38.5,
+          "technologicalDQR": 2.1,
+          "temporalDQR": 1.4,
+          "geographicalDQR": 1.6
+        }
+      ]
+    }
+  ],
+  "general": [
+    {}
+  ],
+  "productLifeCycleStagesAndEmissions": [
+    {
+      "productionStage": [
+        {
+          "pcfIncludingBiogenicUptake": 2.4137,
+          "pcfExcludingBiogenicUptake": 2.4137,
+          "fossilGhgEmissions": 2.4137
+        }
+      ],
+      "packagingStage": [
+        {
+          "packagingEmissionsIncluded": false
+        }
+      ],
+      "distributionStage": [
+        {
+          "distributionStageIncluded": false
+        }
+      ]
+    }
+  ],
+  "carbonContent": [
+    {
+      "fossilCarbonContent": 0,
+      "biogenicCarbonContent": 0,
+      "carbonContentTotal": 0
+    }
+  ]
+}

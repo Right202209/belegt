@@ -1,0 +1,205 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.belegt.org/graph/2026-10/calculation.json",
+  "title": "Calculation",
+  "type": "object",
+  "required": [
+    "id",
+    "method_id",
+    "methodology_version",
+    "factor_set_version",
+    "engine_version",
+    "inputs",
+    "factors_used",
+    "result",
+    "input_hash",
+    "output_hash",
+    "boundary",
+    "period",
+    "customer_scope",
+    "status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^calc_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "org_id": true,
+    "version": true,
+    "created_at": true,
+    "provenance": true,
+    "supersedes": true,
+    "schema_version": true,
+    "content_hash": true,
+    "tags": true,
+    "created_by": {
+      "const": "agent:calc-service"
+    },
+    "trust_zone": {
+      "const": "trusted"
+    },
+    "method_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9_]+(\\.[a-z0-9_]+)+$"
+    },
+    "methodology_version": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+@(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+    },
+    "factor_set_version": {
+      "type": "string",
+      "pattern": "^fs:[a-z0-9-]+@[0-9A-Za-z.\\-]+$"
+    },
+    "engine_version": {
+      "type": "string",
+      "pattern": "^belegt-calc@[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "inputs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "ref",
+          "value",
+          "unit"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[a-z0-9_]+$"
+          },
+          "ref": {
+            "type": "string",
+            "pattern": "^(ev|calc)_[0-9A-HJKMNP-TV-Z]{26}#v[1-9][0-9]*$"
+          },
+          "value": {
+            "$ref": "common.json#/$defs/decStr"
+          },
+          "unit": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "factors_used": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "factor_key",
+          "value",
+          "unit",
+          "source_row_id"
+        ],
+        "properties": {
+          "factor_key": {
+            "type": "string"
+          },
+          "value": {
+            "$ref": "common.json#/$defs/decStr"
+          },
+          "unit": {
+            "type": "string"
+          },
+          "source_row_id": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "params": {
+      "type": "object"
+    },
+    "result": {
+      "type": "object",
+      "required": [
+        "value",
+        "unit",
+        "rounding"
+      ],
+      "properties": {
+        "value": {
+          "$ref": "common.json#/$defs/decStr"
+        },
+        "unit": {
+          "type": "string"
+        },
+        "rounding": {
+          "type": "object",
+          "required": [
+            "mode",
+            "digits"
+          ],
+          "properties": {
+            "mode": {
+              "enum": [
+                "half_even",
+                "half_up",
+                "none"
+              ]
+            },
+            "digits": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 12
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "breakdown": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name",
+          "value",
+          "unit"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "value": {
+            "$ref": "common.json#/$defs/decStr"
+          },
+          "unit": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "input_hash": {
+      "$ref": "common.json#/$defs/sha256"
+    },
+    "output_hash": {
+      "$ref": "common.json#/$defs/sha256"
+    },
+    "boundary": {
+      "$ref": "common.json#/$defs/boundary"
+    },
+    "period": {
+      "$ref": "common.json#/$defs/period"
+    },
+    "customer_scope": {
+      "$ref": "common.json#/$defs/customerScope"
+    },
+    "status": {
+      "enum": [
+        "computed",
+        "superseded"
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "$ref": "common.json#/$defs/envelope"
+    }
+  ]
+}

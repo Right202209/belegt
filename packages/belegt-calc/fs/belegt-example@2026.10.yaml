@@ -1,0 +1,139 @@
+# 示例因子库（EX-）：数值均为示例值，非官方因子，不得当作真实因子使用（05 §9 阅读约定）。
+# 冻结后行内容与 rows_hash 永不改变（05 §7.3-1）。
+id: fs:belegt-example@2026.10
+source: belegt-example
+license: Apache-2.0
+published_at: '2026-10-18'
+valid_from: '2025-01-01'
+valid_until: '2025-12-31'
+note: 05 §9 测试向量 TV-01…TV-06、TV-09、TV-10 用示例库；GWP 数值取自 GHG Protocol GWP 表（2024-08），其余为 EX 示例值
+rows:
+- factor_key: fuel.natural_gas.co2.per_mwh_hi
+  geography: DE
+  year: '2025'
+  value: '0.2016'
+  unit: tCO2e/MWh
+  source_row_id: EX-NG-CO2
+- factor_key: fuel.natural_gas.ch4.per_mwh_hi
+  geography: DE
+  year: '2025'
+  value: '0.0036'
+  unit: kg/MWh
+  source_row_id: EX-NG-CH4
+- factor_key: fuel.natural_gas.n2o.per_mwh_hi
+  geography: DE
+  year: '2025'
+  value: '0.00036'
+  unit: kg/MWh
+  source_row_id: EX-NG-N2O
+- factor_key: fuel.diesel.co2e.per_l
+  geography: DE
+  year: '2025'
+  value: '2.67'
+  unit: kgCO2e/L
+  source_row_id: EX-DSL
+- factor_key: gwp.ar6.ch4_non_fossil
+  geography: GLO
+  year: '2021'
+  value: '27'
+  unit: '1'
+  source_row_id: EX-GWP6-CH4
+- factor_key: gwp.ar6.n2o
+  geography: GLO
+  year: '2021'
+  value: '273'
+  unit: '1'
+  source_row_id: EX-GWP6-N2O
+- factor_key: gwp.ar6.hfc_32
+  geography: GLO
+  year: '2021'
+  value: '771'
+  unit: '1'
+  source_row_id: EX-GWP6-HFC32
+- factor_key: gwp.ar6.hfc_125
+  geography: GLO
+  year: '2021'
+  value: '3740'
+  unit: '1'
+  source_row_id: EX-GWP6-HFC125
+- factor_key: gwp.ar5.ch4
+  geography: GLO
+  year: '2014'
+  value: '28'
+  unit: '1'
+  source_row_id: EX-GWP5-CH4
+- factor_key: gwp.ar5.n2o
+  geography: GLO
+  year: '2014'
+  value: '265'
+  unit: '1'
+  source_row_id: EX-GWP5-N2O
+- factor_key: gwp.ar5.hfc_32
+  geography: GLO
+  year: '2014'
+  value: '677'
+  unit: '1'
+  source_row_id: EX-GWP5-HFC32
+- factor_key: gwp.ar5.hfc_125
+  geography: GLO
+  year: '2014'
+  value: '3170'
+  unit: '1'
+  source_row_id: EX-GWP5-HFC125
+- factor_key: blend.r_410a.hfc_32
+  geography: GLO
+  year: '-'
+  value: '0.5'
+  unit: '1'
+  source_row_id: EX-R410A-32
+- factor_key: blend.r_410a.hfc_125
+  geography: GLO
+  year: '-'
+  value: '0.5'
+  unit: '1'
+  source_row_id: EX-R410A-125
+- factor_key: grid.electricity.location.DE
+  geography: DE
+  year: '2025'
+  value: '0.344'
+  unit: tCO2e/MWh
+  source_row_id: EX-GRID-DE
+- factor_key: supplier.electricity.product_mix
+  geography: DE
+  year: '2025'
+  value: '0.25'
+  unit: tCO2e/MWh
+  source_row_id: EX-SUP-MIX
+- factor_key: residual_mix.electricity.DE
+  geography: DE
+  year: '2025'
+  value: '0.56'
+  unit: tCO2e/MWh
+  source_row_id: EX-RM-DE
+- factor_key: contractual.electricity.goo
+  geography: EU
+  year: '-'
+  value: '0'
+  unit: tCO2e/MWh
+  source_row_id: EX-GOO-ZERO
+- factor_key: fuel.natural_gas.hi_hs_ratio
+  geography: DE
+  year: '2025'
+  value: '0.903'
+  unit: '1'
+  source_row_id: EX-NG-HIHS
+- factor_key: fuel.natural_gas.co2.per_gj_hi
+  geography: DE
+  year: '2025'
+  value: '0.0561'
+  unit: tCO2e/GJ
+  source_row_id: EX-NG-CO2-GJ
+- factor_key: test.tie_factor
+  geography: GLO
+  year: '-'
+  value: '0.805'
+  unit: tCO2e/MWh
+  source_row_id: EX-TIE
+row_count: 21
+rows_hash: sha256:25cd7633e6907491a142f0c6cf90224f4403b25fb49957bacb67987bb71faaf9
+status: active

@@ -1,0 +1,20 @@
+# BuildKit：<Dockerfile>.dockerignore 仅作用于 core.Dockerfile（构建上下文 = code/belegt）
+**/__pycache__
+**/*.pyc
+**/.pytest_cache
+**/.mypy_cache
+**/*.egg-info
+**/build
+**/dist
+**/.venv
+**/node_modules
+web
+examples
+deploy/helm
+deploy/compose
+deploy/ops
+packages/*/tests
+packages/belegt-bench
+**/.env
+**/*.pem
+**/*.key

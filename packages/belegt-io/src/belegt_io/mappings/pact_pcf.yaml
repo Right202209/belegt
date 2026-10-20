@@ -1,0 +1,39 @@
+# Spec: 02 §4.3.3；05 §4.6（v3.0.3 字段已核实）。JSON 模板：用键指纹识别。
+template_mapping: tm:pact_pcf@3.0.0
+template_id: pact_pcf
+template_version: "3.0.0"
+template_source: "PACT Technical Specifications v3.0.3"
+fingerprint:
+  threshold: 0.85
+  markers:
+    - { json_key: "specVersion", weight: 1 }
+    - { json_key: "pcf.pcfExcludingBiogenicUptake", weight: 3 }
+    - { json_key: "pcf.declaredUnitOfMeasurement", weight: 2 }
+    - { json_key: "productIds", weight: 1 }
+entries:
+  - entry_id: pcf_excl_biogenic_uptake
+    locator: { kind: json_path, ref: "$.pcf.pcfExcludingBiogenicUptake" }
+    short_label: "PCF excl. biogenic uptake"
+    datapoint_id: dp:prod.pcf.cradle_to_gate.excluding_biogenic
+    direction: both
+  - entry_id: pcf_incl_biogenic_uptake
+    locator: { kind: json_path, ref: "$.pcf.pcfIncludingBiogenicUptake" }
+    short_label: "PCF incl. biogenic uptake"
+    datapoint_id: dp:prod.pcf.cradle_to_gate
+    direction: both
+  - entry_id: declared_unit_v3
+    locator: { kind: json_path, ref: "$.pcf.declaredUnitOfMeasurement" }
+    short_label: "Declared unit"
+    datapoint_id: dp:prod.pcf.declared_unit
+    direction: both
+  - entry_id: primary_data_share
+    locator: { kind: json_path, ref: "$.pcf.primaryDataShare" }
+    short_label: "Primary data share, %"
+    datapoint_id: dp:prod.pcf.primary_data_share
+    direction: both
+  - entry_id: reference_period
+    locator: { kind: json_path, ref: "$.pcf.referencePeriodStart|$.pcf.referencePeriodEnd" }
+    short_label: "Reference period"
+    datapoint_id: dp:prod.pcf.reference_period
+    direction: both
+    transform: { type: format, pattern: "RFC3339" }

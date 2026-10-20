@@ -1,0 +1,80 @@
+# Spec: 02 §4.3.7。RMI CMRT 工作表名与列名 [需核对]（6.4/6.5）。
+template_mapping: tm:cmrt@6.5
+template_id: cmrt
+template_version: "6.5"
+template_source: "RMI Conflict Minerals Reporting Template (Excel)"
+license_note: "仅题号/列名与短标签"
+fingerprint:
+  threshold: 0.85
+  markers:
+    - { sheet: "Declaration", weight: 3 }
+    - { sheet: "Smelter List", weight: 3 }
+    - { sheet: "Product List", weight: 1 }
+    - { text: "Conflict Minerals Reporting Template", weight: 2 }
+    - { text: "Tantalum", weight: 1 }
+layouts:
+  Declaration:
+    kind: matrix
+    id_header: "Nr"
+    text_header: "Question"
+    answer_headers: ["Tantalum", "Tin", "Gold", "Tungsten"]
+    options: ["Yes", "No", "Unknown"]
+  Declaration#company:
+    sheet: Declaration
+    kind: questionnaire
+    id_header: "Nr"
+    text_header: "Company question"
+    answer_header: "Answer"
+  Declaration#info:
+    sheet: Declaration
+    kind: form
+    labels:
+      - { label: "Company Name", answer_format: text }
+      - { label: "Declaration Scope", answer_format: enum }
+      - { label: "Authorized Company Representative", answer_format: text }
+      - { label: "Contact e-mail", answer_format: text }
+      - { label: "Date of Completion", answer_format: date }
+  Smelter List:
+    kind: table
+    data_rows: 20
+    columns:
+      - { column: "Metal", answer_format: enum }
+      - { column: "Smelter Name", answer_format: text }
+      - { column: "Smelter Country", answer_format: text }
+      - { column: "Smelter Identification", answer_format: text }
+      - { column: "Comments", answer_format: text }
+  Product List:
+    kind: table
+    data_rows: 10
+    columns:
+      - { column: "Manufacturer's Product Number", answer_format: text }
+      - { column: "Manufacturer's Product Name", answer_format: text }
+      - { column: "Comments", answer_format: text }
+entries:
+  - entry_id: decl_q1_intentional
+    locator: { kind: question, ref: "Declaration!Q1" }
+    short_label: "3TG intentionally added? (per metal)"
+    datapoint_id: dp:mat.conflict_minerals.intentionally_added
+    direction: both
+    per_column:
+      Tin: dp:mat.conflict_minerals.intentionally_added.tin
+      Tantalum: dp:mat.conflict_minerals.intentionally_added.tantalum
+      Tungsten: dp:mat.conflict_minerals.intentionally_added.tungsten
+      Gold: dp:mat.conflict_minerals.intentionally_added.gold
+    transform: { type: enum_map, map: { "Yes": true, "No": false } }
+  - entry_id: decl_q5_all_identified
+    locator: { kind: question, ref: "Declaration!Q5" }
+    short_label: "All smelters identified?"
+    datapoint_id: dp:mat.conflict_minerals.all_smelters_identified
+    direction: both
+    transform: { type: enum_map, map: { "Yes": true, "No": false } }
+  - entry_id: smelter_list
+    locator: { kind: column, ref: "Smelter List", columns: ["Metal", "Smelter Name", "Smelter Country", "Smelter Identification"] }
+    short_label: "Smelter list"
+    datapoint_id: dp:mat.conflict_minerals.smelter_list
+    direction: both
+  - entry_id: company_policy_url
+    locator: { kind: question, ref: "Declaration!B" }
+    short_label: "Conflict minerals policy (URL)"
+    datapoint_id: dp:mat.conflict_minerals.policy_url
+    direction: both

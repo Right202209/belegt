@@ -1,0 +1,379 @@
+{
+  "input_m": {
+    "boundary": "organization",
+    "factor_set_rows_hash": "sha256:35f78fd009ad6f51b4973c5a50e77fdf25d81dfaa58395010609c6a7e3b1b460",
+    "factor_set_version": "fs:aib-residual-mix@2025.1",
+    "inputs": [
+      {
+        "name": "electricity_contractual_renewable",
+        "ref": "ev_01JD8Z4M5N6P7Q8R9S0T1V2W3X#v2",
+        "unit": "MWh",
+        "value": "1200"
+      },
+      {
+        "name": "electricity_purchased",
+        "ref": "ev_01JD8Z1A2B3C4D5E6F7G8H9J0K#v2",
+        "unit": "MWh",
+        "value": "4820"
+      }
+    ],
+    "method_id": "ghg.scope2.market_based",
+    "methodology_version": "ghg-scope2-market@1.0.0",
+    "params": {
+      "consolidation": "operational_control",
+      "grid_region": "DE"
+    },
+    "period": {
+      "end": "2025-12-31",
+      "start": "2025-01-01"
+    }
+  },
+  "request": {
+    "id": "req_01JD8Y3K5M2N4P6Q8R0S2T4V6W",
+    "org_id": "org_01JC0A1B2C3D4E5F6G7H8J9K0M",
+    "version": 3,
+    "created_at": "2026-11-03T08:14:02Z",
+    "created_by": "service:workflow",
+    "trust_zone": "trusted",
+    "provenance": "trc_01JD8Y3K5M2N4P6Q8R0S2T4V70",
+    "supersedes": "req_01JD8Y3K5M2N4P6Q8R0S2T4V6W#v2",
+    "schema_version": "belegt.graph/2026-10",
+    "counterparty_id": "cp_01JC2B3C4D5E6F7G8H9J0K1M2N",
+    "channel": "email",
+    "source_ref": {
+      "message_id": "<a1b2c3@oem-a.example>",
+      "blob_sha256": [
+        "sha256:86d6de80ddae30b828a399aec56a52461f268b508227ddbbd808d8d858b963f8"
+      ]
+    },
+    "template_ref": null,
+    "title": "Supplier Sustainability Self-Assessment 2026",
+    "language": "en",
+    "due_date": "2026-11-30",
+    "reporting_period": {
+      "start": "2025-01-01",
+      "end": "2025-12-31"
+    },
+    "priority": "high",
+    "triage_confidence": 0.94,
+    "status": "parsed",
+    "content_hash": "sha256:1ae93bb43c9861e8aa2a8baf381370957094b8f3f8c8847dfcb669db83ccbffc"
+  },
+  "question": {
+    "id": "q_01JD8YA0B1C2D3E4F5G6H7J8K9",
+    "org_id": "org_01JC0A1B2C3D4E5F6G7H8J9K0M",
+    "version": 2,
+    "created_at": "2026-11-03T08:16:40Z",
+    "created_by": "agent:guard",
+    "trust_zone": "trusted",
+    "provenance": "trc_01JD8Y3K5M2N4P6Q8R0S2T4V71",
+    "supersedes": "q_01JD8YA0B1C2D3E4F5G6H7J8K9#v1",
+    "schema_version": "belegt.graph/2026-10",
+    "request_id": "req_01JD8Y3K5M2N4P6Q8R0S2T4V6W",
+    "ordinal": 37,
+    "native_id": "E-2.3",
+    "text": {
+      "en": "Please state your company's Scope 2 GHG emissions (market-based) for reporting year 2025 in tCO2e."
+    },
+    "answer_format": "number",
+    "unit_requested": "tCO2e",
+    "period_requested": {
+      "start": "2025-01-01",
+      "end": "2025-12-31"
+    },
+    "locator": {
+      "blob_sha256": "sha256:86d6de80ddae30b828a399aec56a52461f268b508227ddbbd808d8d858b963f8",
+      "sheet": "Environment",
+      "cell": "F42"
+    },
+    "status": "mapped",
+    "content_hash": "sha256:dc135a43356d2933fdf902480e0f871bdc53a070b44bb17545d15a4bf1c76c3c"
+  },
+  "mapping": {
+    "id": "map_01JD8YC2D3E4F5G6H7J8K9M0N1",
+    "org_id": "org_01JC0A1B2C3D4E5F6G7H8J9K0M",
+    "version": 2,
+    "created_at": "2026-11-03T08:16:41Z",
+    "created_by": "agent:guard",
+    "trust_zone": "trusted",
+    "provenance": "trc_01JD8Y3K5M2N4P6Q8R0S2T4V71",
+    "supersedes": "map_01JD8YC2D3E4F5G6H7J8K9M0N1#v1",
+    "schema_version": "belegt.graph/2026-10",
+    "question_id": "q_01JD8YA0B1C2D3E4F5G6H7J8K9",
+    "datapoint_id": "dp:env.ghg.scope2_market_based@1.1.0",
+    "confidence": 0.93,
+    "rank": 1,
+    "method": "historical",
+    "unit_hint": "tCO2e",
+    "period_hint": {
+      "start": "2025-01-01",
+      "end": "2025-12-31"
+    },
+    "boundary_hint": "organization",
+    "promotion": {
+      "rule": "PROMO-MAP-0.85",
+      "schema_version": "belegt.graph/2026-10",
+      "checked_at": "2026-11-03T08:16:41Z"
+    },
+    "status": "confirmed",
+    "content_hash": "sha256:3bb64934caedf58e0cf4f53964d056bf77cbb410a298d6057f9ee5d784454f6e"
+  },
+  "evidence_bill": {
+    "id": "ev_01JD8Z1A2B3C4D5E6F7G8H9J0K",
+    "org_id": "org_01JC0A1B2C3D4E5F6G7H8J9K0M",
+    "version": 2,
+    "created_at": "2026-11-03T08:31:12Z",
+    "created_by": "agent:evidence-miner",
+    "trust_zone": "trusted",
+    "provenance": "trc_01JD8Y3K5M2N4P6Q8R0S2T4V72",
+    "supersedes": "ev_01JD8Z1A2B3C4D5E6F7G8H9J0K#v1",
+    "schema_version": "belegt.graph/2026-10",
+    "source_type": "document",
+    "fact_key": "activity.electricity.purchased",
+    "extracted_value": "4820",
+    "value_type": "number",
+    "unit": "MWh",
+    "period": {
+      "start": "2025-01-01",
+      "end": "2025-12-31"
+    },
+    "boundary": "organization",
+    "locator": {
+      "blob_sha256": "sha256:c9c2548450165ddb78c597f020912adfe8ab438569f68ac1e8e8016d341c7105",
+      "mime": "application/pdf",
+      "page": 2,
+      "bbox": [
+        72.0,
+        410.5,
+        520.0,
+        428.0
+      ]
+    },
+    "valid_from": "2025-01-01",
+    "valid_until": "2025-12-31",
+    "confidence": 0.96,
+    "verification": {
+      "method": "auto_rule",
+      "rule_id": "EV-AUTO-0.90-LOC",
+      "by": "agent:evidence-miner"
+    },
+    "status": "verified",
+    "content_hash": "sha256:cff6a7fe9c80cdff7c807e2e5b4a73f6ecc70a66857cf42ca36553340fe1bafc"
+  },
+  "closed_question": {
+    "id": "cq_01JD8Z9A0B1C2D3E4F5G6H7J8K",
+    "org_id": "org_01JC0A1B2C3D4E5F6G7H8J9K0M",
+    "version": 2,
+    "created_at": "2026-11-03T09:02:55Z",
+    "created_by": "user:u_compliance01",
+    "trust_zone": "trusted",
+    "provenance": "trc_01JD8Y3K5M2N4P6Q8R0S2T4V73",
+    "supersedes": "cq_01JD8Z9A0B1C2D3E4F5G6H7J8K#v1",
+    "schema_version": "belegt.graph/2026-10",
+    "target_ref": "ev_01JD8Z4M5N6P7Q8R9S0T1V2W3X#v1",
+    "request_id": "req_01JD8Y3K5M2N4P6Q8R0S2T4V6W",
+    "kind": "numeric_confirm",
+    "prompt": {
+      "de": "Herkunftsnachweise 2025 entwertet: 1.200 MWh – korrekt?",
+      "en": "Guarantees of origin cancelled for 2025: 1,200 MWh – correct?"
+    },
+    "proposed_value": {
+      "value": "1200",
+      "unit": "MWh",
+      "evidence_ref": "ev_01JD8Z4M5N6P7Q8R9S0T1V2W3X#v1"
+    },
+    "assignee_role": "compliance_owner",
+    "expires_at": "2026-11-10T17:00:00Z",
+    "answer": {
+      "bool": true,
+      "answered_by": "user:u_compliance01",
+      "answered_at": "2026-11-03T09:02:55Z"
+    },
+    "status": "answered",
+    "content_hash": "sha256:afb1ac926a07c539ffbfe71c1fd1c45694b668bd637b741535f70b2ba6e3f3cc"
+  },
+  "evidence_hkn": {
+    "id": "ev_01JD8Z4M5N6P7Q8R9S0T1V2W3X",
+    "org_id": "org_01JC0A1B2C3D4E5F6G7H8J9K0M",
+    "version": 2,
+    "created_at": "2026-11-03T09:02:55Z",
+    "created_by": "user:u_compliance01",
+    "trust_zone": "trusted",
+    "provenance": "trc_01JD8Y3K5M2N4P6Q8R0S2T4V73",
+    "supersedes": "ev_01JD8Z4M5N6P7Q8R9S0T1V2W3X#v1",
+    "schema_version": "belegt.graph/2026-10",
+    "source_type": "document",
+    "fact_key": "activity.electricity.contractual_renewable",
+    "extracted_value": "1200",
+    "value_type": "number",
+    "unit": "MWh",
+    "period": {
+      "start": "2025-01-01",
+      "end": "2025-12-31"
+    },
+    "boundary": "organization",
+    "locator": {
+      "blob_sha256": "sha256:3c416a905379c95d186d6d81cd391c8ed1204302ccdae80aaafb7e060adf3fc2",
+      "mime": "application/pdf",
+      "page": 1,
+      "bbox": [
+        60.0,
+        300.0,
+        540.0,
+        318.0
+      ]
+    },
+    "valid_from": "2025-01-01",
+    "valid_until": "2025-12-31",
+    "confidence": 0.82,
+    "verification": {
+      "method": "closed_question",
+      "cq_ref": "cq_01JD8Z9A0B1C2D3E4F5G6H7J8K#v2",
+      "by": "user:u_compliance01"
+    },
+    "status": "verified",
+    "content_hash": "sha256:e23e1338bebb7a245ce1d54a9e02ec7dfae03378b90c5996a355abddd7baf071"
+  },
+  "calculation": {
+    "id": "calc_01JD9A7B8C9D0E1F2G3H4J5K6M",
+    "org_id": "org_01JC0A1B2C3D4E5F6G7H8J9K0M",
+    "version": 1,
+    "created_at": "2026-11-03T09:03:20Z",
+    "created_by": "agent:calc-service",
+    "trust_zone": "trusted",
+    "provenance": "trc_01JD8Y3K5M2N4P6Q8R0S2T4V74",
+    "supersedes": null,
+    "schema_version": "belegt.graph/2026-10",
+    "method_id": "ghg.scope2.market_based",
+    "methodology_version": "ghg-scope2-market@1.0.0",
+    "factor_set_version": "fs:aib-residual-mix@2025.1",
+    "engine_version": "belegt-calc@0.3.0",
+    "inputs": [
+      {
+        "name": "electricity_contractual_renewable",
+        "ref": "ev_01JD8Z4M5N6P7Q8R9S0T1V2W3X#v2",
+        "value": "1200",
+        "unit": "MWh"
+      },
+      {
+        "name": "electricity_purchased",
+        "ref": "ev_01JD8Z1A2B3C4D5E6F7G8H9J0K#v2",
+        "value": "4820",
+        "unit": "MWh"
+      }
+    ],
+    "factors_used": [
+      {
+        "factor_key": "residual_mix.electricity.DE",
+        "value": "0.56",
+        "unit": "tCO2e/MWh",
+        "source_row_id": "DE-2024-RM"
+      },
+      {
+        "factor_key": "contractual.electricity.goo",
+        "value": "0",
+        "unit": "tCO2e/MWh",
+        "source_row_id": "GOO-ZERO"
+      }
+    ],
+    "params": {
+      "consolidation": "operational_control",
+      "grid_region": "DE"
+    },
+    "result": {
+      "value": "2027.2",
+      "unit": "tCO2e",
+      "rounding": {
+        "mode": "half_even",
+        "digits": 1
+      }
+    },
+    "breakdown": [
+      {
+        "name": "residual_mix_consumption",
+        "value": "3620",
+        "unit": "MWh"
+      },
+      {
+        "name": "emissions_unrounded",
+        "value": "2027.2",
+        "unit": "tCO2e"
+      }
+    ],
+    "input_hash": "sha256:fa52b131cff377ebdaec89df24a2a00382ad4837e8dc577c3989a7a302ede446",
+    "output_hash": "sha256:12a0337f066e03cf2dfa6be6bc7263bf2d5ac3b4a476a1997464a7b24ae7611c",
+    "boundary": "organization",
+    "period": {
+      "start": "2025-01-01",
+      "end": "2025-12-31"
+    },
+    "customer_scope": "all",
+    "status": "computed",
+    "content_hash": "sha256:64ad3db0cb73c01c3b0f8d49bfee5217e198c6a24e2b4f0669cd9f0f17802a12"
+  },
+  "answer": {
+    "id": "ans_01JD9B1C2D3E4F5G6H7J8K9M0N",
+    "org_id": "org_01JC0A1B2C3D4E5F6G7H8J9K0M",
+    "version": 3,
+    "created_at": "2026-11-04T07:45:10Z",
+    "created_by": "agent:approval-router",
+    "trust_zone": "trusted",
+    "provenance": "trc_01JD8Y3K5M2N4P6Q8R0S2T4V76",
+    "supersedes": "ans_01JD9B1C2D3E4F5G6H7J8K9M0N#v2",
+    "schema_version": "belegt.graph/2026-10",
+    "datapoint_id": "dp:env.ghg.scope2_market_based@1.1.0",
+    "value": "2027.2",
+    "value_type": "number",
+    "unit": "tCO2e",
+    "period": {
+      "start": "2025-01-01",
+      "end": "2025-12-31"
+    },
+    "boundary": "organization",
+    "consolidation": "operational_control",
+    "customer_scope": "all",
+    "question_refs": [
+      "q_01JD8YA0B1C2D3E4F5G6H7J8K9"
+    ],
+    "evidence_refs": [
+      "ev_01JD8Z1A2B3C4D5E6F7G8H9J0K#v2",
+      "ev_01JD8Z4M5N6P7Q8R9S0T1V2W3X#v2"
+    ],
+    "calculation_ref": "calc_01JD9A7B8C9D0E1F2G3H4J5K6M#v1",
+    "origin": "generated",
+    "answer_key": "sha256:267504cea4fdb3dee09c93bd2312b2587e2e845febb1b0857999ba809c5034b4",
+    "status": "approved",
+    "risk_level": "L3",
+    "is_estimate": false,
+    "legal_commitment": false,
+    "approval_ref": "apr_01JD9C3D4E5F6G7H8J9K0M1N2P#v2",
+    "content_hash": "sha256:9ccc06b71bc62af5cc83959d7d5670fc76b04248bb8d3ac98d4130f66b48b14b"
+  },
+  "approval": {
+    "id": "apr_01JD9C3D4E5F6G7H8J9K0M1N2P",
+    "org_id": "org_01JC0A1B2C3D4E5F6G7H8J9K0M",
+    "version": 2,
+    "created_at": "2026-11-04T07:45:10Z",
+    "created_by": "user:u_compliance01",
+    "trust_zone": "trusted",
+    "provenance": "trc_01JD8Y3K5M2N4P6Q8R0S2T4V76",
+    "supersedes": "apr_01JD9C3D4E5F6G7H8J9K0M1N2P#v1",
+    "schema_version": "belegt.graph/2026-10",
+    "subject_ref": "ans_01JD9B1C2D3E4F5G6H7J8K9M0N#v2",
+    "request_id": "req_01JD8Y3K5M2N4P6Q8R0S2T4V6W",
+    "risk_level": "L3",
+    "required_role": [
+      "compliance_owner",
+      "executive"
+    ],
+    "assignee": "user:u_compliance01",
+    "decision": "approved",
+    "decided_by": "user:u_compliance01",
+    "decided_at": "2026-11-04T07:45:10Z",
+    "comment": "Erstmalige Angabe Scope 2 market-based; HKN geprüft.",
+    "policy_version": "approval-policy@1.0.0",
+    "status": "approved",
+    "content_hash": "sha256:caf12c0761ac2bdb75f32b8562fecfd335b77966db7bcaf757e8ed91b8cc18c2"
+  },
+  "_source": "docs/03-数据模型与证据图.md §5.6（逐字摘录，2026-10-18 版）"
+}

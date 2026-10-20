@@ -1,0 +1,124 @@
+schema: belegt.abbreviations/1
+note: 02 §2.2 第 5 条：whitelist 为规范白名单；registered 为经 RFC 登记的其它缩写；short_words 为允许的普通短词（≤4 个字母，非缩写）
+whitelist:
+  - ghg
+  - pcf
+  - see
+  - svhc
+  - eac
+  - dds
+  - cn_code
+registered:
+  - abbr: cbam
+    expansion: Carbon Border Adjustment Mechanism
+    rfc: RFC-0000
+  - abbr: eudr
+    expansion: EU Deforestation Regulation
+    rfc: RFC-0000
+  - abbr: scip
+    expansion: Substances of Concern In articles as such or in complex objects (Products)
+    rfc: RFC-0000
+  - abbr: rohs
+    expansion: Restriction of Hazardous Substances
+    rfc: RFC-0000
+  - abbr: eori
+    expansion: Economic Operators Registration and Identification
+    rfc: RFC-0000
+  - abbr: nace
+    expansion: Statistical classification of economic activities in the EC
+    rfc: RFC-0000
+  - abbr: fte
+    expansion: full-time equivalent
+    rfc: RFC-0000
+  - abbr: hq
+    expansion: headquarters
+    rfc: RFC-0000
+  - abbr: id
+    expansion: identifier
+    rfc: RFC-0000
+  - abbr: url
+    expansion: uniform resource locator
+    rfc: RFC-0000
+  - abbr: pct
+    expansion: percent
+    rfc: RFC-0000
+  - abbr: coc
+    expansion: code of conduct
+    rfc: RFC-0000
+  - abbr: iso
+    expansion: International Organization for Standardization
+    rfc: RFC-0000
+  - abbr: iatf
+    expansion: International Automotive Task Force
+    rfc: RFC-0000
+  - abbr: kwh
+    expansion: kilowatt hour (functional unit descriptor only)
+    rfc: RFC-0000
+short_words:
+  - area
+  - code
+  - date
+  - file
+  - gold
+  - lead
+  - list
+  - male
+  - mass
+  - name
+  - net
+  - per
+  - rate
+  - tin
+  - year
+  - wage
+  - min
+  - all
+  - has
+  - avg
+  - use
+  - type
+  - site
+  - unit
+  - plan
+  - risk
+  - time
+  - role
+  - data
+  - reach
+  - water
+  - waste
+  - fuel
+  - gas
+  - heat
+  - cost
+  - paid
+  - near
+  - gate
+  - base
+  - flow
+  - land
+  - plot
+  - item
+  - part
+  - zone
+  - fine
+  - loss
+  - goal
+  - high
+  - low
+  - new
+  - old
+  - top
+  - sum
+  - own
+  - air
+  - soil
+  - ore
+  - in
+  - of
+  - to
+  - by
+  - 'on'
+  - at
+  - and
+  - or

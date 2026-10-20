@@ -1,0 +1,40 @@
+id: dp:mat.conflict_minerals.policy_url
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Link zur Konfliktmineralien-Richtlinie
+  en: Conflict minerals policy URL
+  zh: 冲突矿产政策链接
+definition:
+  en: Public URL of the undertaking's conflict minerals sourcing policy. Excludes internal documents not publicly accessible, which are evidence rather than the value.
+  de: Öffentliche URL der Konfliktmineralien-Beschaffungsrichtlinie des Unternehmens. Interne, nicht öffentliche Dokumente sind Nachweise, nicht der Wert.
+  zh: 企业冲突矿产采购政策的公开网址；非公开内部文件属于证据而非值。
+value_type: text
+period_type: point_in_time
+boundary:
+  - organization
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: rmi_cmrt
+    clause: Company Questions
+sensitivity: public
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - public_source
+    - human_confirmation
+    - historical_answer
+  min_sources: 1
+  max_age_days: 730
+  requires_calculation: false
+  human_confirmation_allowed: true
+validity_rule:
+  regex: ^https?://\S+$
+  expires_by: evidence_valid_until
+tags:
+  - cmrt
+  - conflict_minerals

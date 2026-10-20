@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "belegt-core"
+version = "0.1.0"
+description = "Belegt 核心：证据图对象模型、写入校验规则、GraphStore、审计哈希链、审计包与 Graph API（Spec: 03、04 §3、07 §2/§4/§7）"
+readme = "README.md"
+license = { text = "AGPL-3.0-only" }
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi>=0.110",
+  "sqlalchemy>=2.0",
+  "pydantic>=2.5",
+  "jsonschema>=4.20",
+  "python-ulid>=2.0",
+  "httpx>=0.27",
+  "pyyaml>=6.0",
+  "cel-python>=0.5",  # 06 §1.2 规则 DSL（consistency/）
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8", "python-multipart>=0.0.9", "pytest-xdist>=3.5"]  # xdist 可选：pytest -n auto
+server = ["uvicorn>=0.29", "python-multipart>=0.0.9"]
+temporal = ["temporalio>=1.7"]
+mcp = ["mcp>=1.2"]
+llm = ["httpx>=0.27", "langgraph>=0.2"]
+all = ["uvicorn>=0.29", "python-multipart>=0.0.9", "temporalio>=1.7", "mcp>=1.2", "langgraph>=0.2", "psycopg[binary]>=3.1",
+       "alembic>=1.13", "cryptography>=42"]
+postgres = ["psycopg[binary]>=3.1"]
+migrations = ["alembic>=1.13"]
+sign = ["cryptography>=42"]
+
+[project.scripts]
+belegt = "belegt_core.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+# 全部随包数据（tests/test_app_factory.py 校验 src 下每个 YAML/JSON 都被这里的模式覆盖）
+belegt_core = ["py.typed", "schemas/*.json", "consistency/rules/*.yaml", "approval/*.yaml", "legal/*.yaml",
+               "agents/prompts/*.yaml", "agents/data/*.yaml", "agents/data/*.json", "demo/*.yaml", "demo/*.json",
+               "rules/*.yaml", "rules/*.json", "guard/*.yaml", "egress/*.yaml", "egress/templates/*", "llm/*.yaml"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

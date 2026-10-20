@@ -1,0 +1,32 @@
+{% set spec = card.spec %}{% set key = card.key %}{% set cur = values.get(key, {}) %}
+{% set label = spec.label.get(lang) or spec.label.get('en') or spec.datapoint_id %}
+<div class="field{% if issues.get(key) %} invalid{% endif %}" data-key="{{ key }}">
+  <label for="v__{{ key }}">{{ label }} {% if not spec.required %}<small>({{ t('optional') }})</small>{% endif %}</label>
+  <code class="dp">{{ spec.datapoint_id }}</code>
+  <div class="row">
+  {% if spec.value_type == 'enum' and spec.enum_values %}
+    <select id="v__{{ key }}" name="v__{{ key }}" {% if readonly %}disabled{% endif %}>
+      <option value="">{{ t('choose') }}</option>
+      {% for e in spec.enum_values %}<option value="{{ e }}" {% if cur.value == e %}selected{% endif %}>{{ e }}</option>{% endfor %}
+    </select>
+  {% elif spec.value_type == 'geo' %}
+    <textarea id="v__{{ key }}" name="v__{{ key }}" rows="4" placeholder='{"type":"Point","coordinates":[-55.123456,-12.123456]}' {% if readonly %}disabled{% endif %}>{{ cur.value or '' }}</textarea>
+  {% elif spec.value_type == 'date' %}
+    <input id="v__{{ key }}" name="v__{{ key }}" value="{{ cur.value or '' }}" placeholder="YYYY-MM-DD" pattern="\d{4}-\d{2}-\d{2}(/\d{4}-\d{2}-\d{2})?" {% if readonly %}disabled{% endif %}>
+  {% else %}
+    <input id="v__{{ key }}" name="v__{{ key }}" value="{{ cur.value or '' }}" {% if spec.value_type == 'number' %}inputmode="decimal"{% endif %} {% if spec.example %}placeholder="{{ spec.example }}"{% endif %} {% if readonly %}disabled{% endif %}>
+  {% endif %}
+  {% if spec.allowed_units %}
+    <select name="u__{{ key }}" aria-label="{{ t('unit') }}" {% if readonly %}disabled{% endif %}>
+      {% for u in spec.allowed_units %}<option value="{{ u }}" {% if (cur.unit or spec.unit) == u %}selected{% endif %}>{{ u }}</option>{% endfor %}
+    </select>
+  {% endif %}
+  </div>
+  {% if issues.get(key) == 'INVALID_NUMBER' %}<p class="err">{{ t('invalid_number') }}</p>
+  {% elif issues.get(key) == 'UNIT_NOT_ALLOWED' %}<p class="err">{{ t('unit_not_allowed') }}</p>
+  {% elif issues.get(key) %}<p class="err">{{ t('invalid_choice') }}</p>{% endif %}
+  {% for h in hints if h.field == key %}<p class="hint {{ h.severity }}">⚠ {{ h.message }}</p>{% endfor %}
+  <p class="js-hints" data-for="{{ key }}"></p>
+  <input class="note" name="n__{{ key }}" value="{{ cur.note or '' }}" placeholder="{{ t('note') }}" maxlength="2000" {% if readonly %}disabled{% endif %}>
+  {% set h = spec.help.get(lang) or spec.help.get('en') %}{% if h %}<details class="help"><summary>?</summary>{{ h }}</details>{% endif %}
+</div>

@@ -1,0 +1,19 @@
+# Spec: 06 §2.2 CR-034
+rule_id: CR-034
+rule_version: 1.0.0
+category: reference_integrity
+severity: block
+title:
+  de: Zahl ohne gültige Referenz
+  en: Number without valid reference
+scope: answer
+triggers:
+- answer_write
+- pre_submit_gate
+- daily_batch
+- context_change
+plugin: cr_034
+assert: has_refs && !bad_ref && value_matches
+default_action: open_conflict
+explain_template: cr-034
+tests: tests/test_consistency_rules.py::test_cr_034

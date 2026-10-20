@@ -1,0 +1,38 @@
+id: dp:social.remuneration.min_wage_compliance
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Vergütung nicht unter Mindestlohn
+  en: Pay at or above minimum wage
+  zh: 是否不低于最低工资
+definition:
+  en: Whether all employees receive pay equal to or above the applicable minimum wage (statutory or collectively agreed) in the countries of operation.
+  de: Ob alle Beschäftigten mindestens den geltenden (gesetzlichen oder tariflichen) Mindestlohn in den Tätigkeitsländern erhalten.
+  zh: 所有员工所获报酬是否不低于经营所在国适用的最低工资（法定或集体协议约定）。
+value_type: bool
+period_type: point_in_time
+boundary:
+  - organization
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: eu_2026_1560_vcs
+    clause: B10
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - human_confirmation
+    - historical_answer
+  min_sources: 1
+  max_age_days: 365
+  requires_calculation: false
+  human_confirmation_allowed: true
+validity_rule:
+  expires_by: evidence_valid_until
+tags:
+  - vsme
+  - remuneration

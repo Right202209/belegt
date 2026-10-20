@@ -1,0 +1,91 @@
+{{- /* Spec: 04 §1.3、§4.3（Temporal worker）、10 §3.3（扩缩）；07 §2.2（可信区 worker）；deploy/docker/entry/belegt_worker.py */ -}}
+{{- $ns := include "belegt.ns" (list . "trusted") }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "belegt.fullname" . }}-worker
+  namespace: {{ $ns }}
+  labels:
+    {{- include "belegt.labels" . | nindent 4 }}
+    {{- include "belegt.selector" (list . "worker" "trusted") | nindent 4 }}
+spec:
+  {{- if not .Values.worker.hpa.enabled }}
+  replicas: {{ .Values.worker.replicas }}
+  {{- end }}
+  revisionHistoryLimit: 5
+  selector:
+    matchLabels:
+      {{- include "belegt.selector" (list . "worker" "trusted") | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "belegt.labels" . | nindent 8 }}
+        {{- include "belegt.selector" (list . "worker" "trusted") | nindent 8 }}
+        belegt.io/egress-client: "true"
+        {{- with .Values.global.podLabels }}{{ toYaml . | nindent 8 }}{{ end }}
+    spec:
+      automountServiceAccountToken: false
+      terminationGracePeriodSeconds: {{ .Values.worker.terminationGracePeriodSeconds }}
+      securityContext:
+        {{- include "belegt.podSecurityContext" . | nindent 8 }}
+      {{- with .Values.global.imagePullSecrets }}
+      imagePullSecrets: {{ toYaml . | nindent 8 }}
+      {{- end }}
+      {{- include "belegt.scheduling" (list . "trusted") | nindent 6 }}
+      containers:
+        - name: worker
+          image: {{ include "belegt.image" (list . .Values.image.worker) }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - { name: metrics, containerPort: 9464, protocol: TCP }
+          env:
+            {{- include "belegt.commonEnv" . | nindent 12 }}
+            {{- include "belegt.trustedEnv" . | nindent 12 }}
+            {{- include "belegt.proxyEnv" . | nindent 12 }}
+            - name: OTEL_SERVICE_NAME
+              value: belegt-worker-trusted
+            - name: BELEGT_TEMPORAL_ADDRESS
+              value: {{ .Values.temporal.address | quote }}
+            - name: BELEGT_TEMPORAL_NAMESPACE
+              value: {{ .Values.temporal.namespace | quote }}
+            - name: BELEGT_TEMPORAL_TASK_QUEUE
+              value: {{ .Values.temporal.taskQueue | quote }}
+            - name: BELEGT_SERVICES_FACTORY
+              value: {{ .Values.worker.servicesFactory | quote }}
+            - name: BELEGT_LLM_BASE_URL
+              value: {{ .Values.llm.baseUrl | quote }}
+            - name: BELEGT_LLM_MODEL
+              value: {{ .Values.llm.model | quote }}
+            - name: BELEGT_LLM_API_KEY
+              valueFrom: { secretKeyRef: { name: {{ include "belegt.secretName" . }}, key: llm-api-key, optional: true } }
+          readinessProbe:
+            httpGet: { path: /healthz, port: metrics }
+            periodSeconds: 15
+          livenessProbe:
+            httpGet: { path: /healthz, port: metrics }
+            periodSeconds: 20
+            failureThreshold: 3
+          resources:
+            {{- toYaml .Values.worker.resources | nindent 12 }}
+          securityContext:
+            {{- include "belegt.containerSecurityContext" . | nindent 12 }}
+          volumeMounts:
+            - { name: tmp, mountPath: /tmp }
+      volumes:
+        {{- include "belegt.tmpVolume" . | nindent 8 }}
+---
+# 仅供 ServiceMonitor 抓取 :9464/metrics
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "belegt.fullname" . }}-worker-metrics
+  namespace: {{ $ns }}
+  labels:
+    {{- include "belegt.labels" . | nindent 4 }}
+    {{- include "belegt.selector" (list . "worker" "trusted") | nindent 4 }}
+spec:
+  clusterIP: None
+  selector:
+    {{- include "belegt.selector" (list . "worker" "trusted") | nindent 4 }}
+  ports:
+    - { name: metrics, port: 9464, targetPort: metrics, protocol: TCP }

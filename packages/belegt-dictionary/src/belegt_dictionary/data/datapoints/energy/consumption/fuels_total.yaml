@@ -1,0 +1,52 @@
+id: dp:energy.consumption.fuels_total
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Brennstoffverbrauch gesamt
+  en: Total fuel consumption
+  zh: 燃料消耗
+definition:
+  en: Energy content of all fuels combusted within the boundary (natural gas, oil, diesel, LPG, coal, biomass) during the period, converted from physical quantities by calc-service with documented calorific values. Excludes fuels used as feedstock. Component of dp:energy.consumption.total.
+  de: Energiegehalt aller innerhalb der Grenze verbrannten Brennstoffe im Zeitraum, aus physischen Mengen über calc-service mit dokumentierten Heizwerten umgerechnet. Stoffliche Nutzung ausgeschlossen.
+  zh: 报告期内边界内燃烧的全部燃料（天然气、燃油、柴油、液化石油气、煤、生物质）的能量含量，由 calc-service 按记录的热值从实物量换算；不含原料用途。是 dp:energy.consumption.total 的组成部分。
+value_type: number
+unit: MWh
+allowed_units:
+  - kWh
+  - MWh
+  - GJ
+period_type: reporting_period
+boundary:
+  - organization
+  - site
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: eu_2026_1560_vcs
+    clause: B3 Para 32
+sensitivity: confidential
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - erp
+    - historical_answer
+  min_sources: 1
+  max_age_days: 550
+  requires_calculation: true
+  human_confirmation_allowed: false
+validity_rule:
+  min: 0
+  expires_by: period_end_plus_days
+  expires_after_days: 550
+related_datapoints:
+  - id: dp:energy.consumption.total
+    relation: component_of
+  - id: dp:energy.consumption.natural_gas
+    relation: see_also
+tags:
+  - vsme
+  - cdp_climate
+  - energy

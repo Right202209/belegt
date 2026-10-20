@@ -1,0 +1,116 @@
+{{- /*
+Spec: 07 §2.2（egress-gateway 是唯一允许访问公网的工作负载，独立命名空间/节点池）、10 §6.2（llm-proxy、mail-fetcher、
+mcp-broker 访问外部一律经 egress-gateway 的 CONNECT 代理 + FQDN 白名单）、§6.1 private-airgap（白名单为空）。
+这里是网络层的转发代理；消息级出口策略（模板/收件人白名单/DLP，04 §2.15）在 belegt_core.egress / belegt_supplier.egress。
+*/ -}}
+{{- if .Values.egressGateway.enabled }}
+{{- $ns := include "belegt.ns" (list . "guard") }}
+{{- $name := printf "%s-egress-gateway" (include "belegt.fullname" .) }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ $name }}
+  namespace: {{ $ns }}
+  labels:
+    {{- include "belegt.metaLabels" . | nindent 4 }}
+data:
+  allowlist.txt: |
+    {{- range .Values.egressGateway.allowlist }}
+    {{ . }}
+    {{- end }}
+  squid.conf: |
+    http_port {{ .Values.egressGateway.port }}
+    acl CONNECT method CONNECT
+    acl allowed_ports port {{ join " " .Values.egressGateway.allowedPorts }}
+    acl belegt_clients src 10.0.0.0/8 172.16.0.0/12 192.168.0.0/16 100.64.0.0/10 fc00::/7
+    {{- if .Values.egressGateway.allowlist }}
+    acl allowed_domains dstdomain "/etc/squid/allowlist.txt"
+    {{- end }}
+    http_access deny !belegt_clients
+    http_access deny CONNECT !allowed_ports
+    {{- if .Values.egressGateway.allowlist }}
+    http_access allow CONNECT allowed_domains
+    {{- end }}
+    http_access deny all
+    cache deny all
+    forwarded_for delete
+    via off
+    logformat belegt %ts.%03tu %>a %Ss/%03>Hs %rm %ssl::>sni %<A
+    access_log stdio:/dev/stdout belegt
+    cache_log stdio:/dev/stderr
+    pid_filename /tmp/squid.pid
+    coredump_dir /tmp
+    shutdown_lifetime 3 seconds
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $name }}
+  namespace: {{ $ns }}
+  labels:
+    {{- include "belegt.labels" . | nindent 4 }}
+    {{- include "belegt.selector" (list . "egress-gateway" "guard") | nindent 4 }}
+spec:
+  replicas: {{ .Values.egressGateway.replicas }}
+  selector:
+    matchLabels:
+      {{- include "belegt.selector" (list . "egress-gateway" "guard") | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "belegt.labels" . | nindent 8 }}
+        {{- include "belegt.selector" (list . "egress-gateway" "guard") | nindent 8 }}
+      annotations:
+        checksum/config: {{ printf "%v%v%v" .Values.egressGateway.allowlist .Values.egressGateway.allowedPorts .Values.egressGateway.port | sha256sum }}
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 13       # Debian/Ubuntu 的 proxy 用户
+        runAsGroup: 13
+        fsGroup: 13
+        seccompProfile: { type: RuntimeDefault }
+      {{- include "belegt.scheduling" (list . "guard") | nindent 6 }}
+      containers:
+        - name: squid
+          image: {{ .Values.image.squid }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["squid", "-N", "-d", "1", "-f", "/etc/squid/squid.conf"]
+          ports:
+            - { name: proxy, containerPort: {{ .Values.egressGateway.port }}, protocol: TCP }
+          readinessProbe:
+            tcpSocket: { port: proxy }
+          livenessProbe:
+            tcpSocket: { port: proxy }
+            periodSeconds: 20
+          resources:
+            {{- toYaml .Values.egressGateway.resources | nindent 12 }}
+          securityContext:
+            {{- include "belegt.containerSecurityContext" . | nindent 12 }}
+          volumeMounts:
+            - { name: config, mountPath: /etc/squid, readOnly: true }
+            - { name: tmp, mountPath: /tmp }
+            - { name: spool, mountPath: /var/spool/squid }
+            - { name: run, mountPath: /run }
+            - { name: logs, mountPath: /var/log/squid }
+      volumes:
+        - name: config
+          configMap: { name: {{ $name }} }
+        {{- include "belegt.tmpVolume" . | nindent 8 }}
+        - { name: spool, emptyDir: { sizeLimit: 64Mi } }
+        - { name: run, emptyDir: { medium: Memory, sizeLimit: 1Mi } }
+        - { name: logs, emptyDir: { sizeLimit: 64Mi } }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $name }}
+  namespace: {{ $ns }}
+  labels:
+    {{- include "belegt.metaLabels" . | nindent 4 }}
+spec:
+  selector:
+    {{- include "belegt.selector" (list . "egress-gateway" "guard") | nindent 4 }}
+  ports:
+    - { name: proxy, port: {{ .Values.egressGateway.port }}, targetPort: proxy, protocol: TCP }
+{{- end }}

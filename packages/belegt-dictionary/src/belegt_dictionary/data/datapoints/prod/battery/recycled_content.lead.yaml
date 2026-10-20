@@ -1,0 +1,38 @@
+id: dp:prod.battery.recycled_content.lead
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Rezyklatanteil Blei
+  en: Recycled content share, lead
+  zh: 再生铅含量占比
+definition:
+  en: Share of lead recovered from manufacturing or post-consumer waste in the total lead present in active materials of the battery model, per battery model and manufacturing plant, as percentage calculated per the Battery Regulation methodology.
+  de: Anteil des aus Produktions- oder Altbatterieabfällen zurückgewonnenen Bleis am gesamten Blei in den Aktivmaterialien des Batteriemodells, je Modell und Werk, in Prozent.
+  zh: 电池型号活性材料中来自生产废料或消费后废料回收的铅占铅总量的百分比，按电池型号与生产工厂、依电池法规方法学计算。
+value_type: number
+unit: '%'
+period_type: reporting_period
+boundary:
+  - product
+methodology_refs:
+  - ref: eu_2023_1542_battery
+    clause: Art. 8
+sensitivity: public
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - supplier_response
+    - historical_answer
+  min_sources: 1
+  max_age_days: 1095
+  requires_calculation: true
+  human_confirmation_allowed: false
+validity_rule:
+  min: 0
+  max: 100
+  expires_by: evidence_valid_until
+tags:
+  - eu_battery_passport
+  - battery
+  - recycled_content

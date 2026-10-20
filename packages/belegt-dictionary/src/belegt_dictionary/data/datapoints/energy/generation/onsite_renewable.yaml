@@ -1,0 +1,48 @@
+id: dp:energy.generation.onsite_renewable
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Eigenerzeugter erneuerbarer Strom
+  en: On-site renewable electricity generation
+  zh: 自发可再生电力
+definition:
+  en: Electricity generated from renewable sources (PV, wind, hydro, biomass CHP) by installations within the boundary during the period, whether self-consumed or exported, from generation meter readings.
+  de: Im Zeitraum von Anlagen innerhalb der Grenze aus erneuerbaren Quellen erzeugter Strom (PV, Wind, Wasser, Biomasse-KWK), selbst verbraucht oder eingespeist, laut Erzeugungszähler.
+  zh: 报告期内边界内设施利用可再生来源（光伏、风电、水电、生物质热电联产）发出的电量，无论自用或上网，以发电计量表为准。
+value_type: number
+unit: MWh
+allowed_units:
+  - kWh
+  - MWh
+  - GJ
+period_type: reporting_period
+boundary:
+  - organization
+  - site
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: ghg_protocol_scope2_guidance
+sensitivity: confidential
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - erp
+    - historical_answer
+  min_sources: 1
+  max_age_days: 550
+  requires_calculation: false
+  human_confirmation_allowed: false
+validity_rule:
+  min: 0
+  expires_by: period_end_plus_days
+  expires_after_days: 550
+related_datapoints:
+  - id: dp:energy.consumption.renewable_share
+    relation: see_also
+tags:
+  - cdp_climate
+  - energy

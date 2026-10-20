@@ -1,0 +1,26 @@
+# 示例库（EX），rows_hash 为 03 §5.6 的占位值（见 note）。
+id: fs:aib-residual-mix@2025.1
+source: aib-residual-mix
+license: '[需法务确认]'
+published_at: '2025-06-01'
+valid_from: '2024-01-01'
+valid_until: '2025-12-31'
+note: 03 §5.6 串联实例与 05 TV-04 使用的示例库：残余组合 0.56 为 EX 示例值，非 AIB 实际发布值。声明的 rows_hash 沿用 03 §5.6（work/gen_example.py 中为 sha256(b'example-aib-residual-mix-2025.1-rows')
+  的占位值），并非本库行的 JCS 哈希；为复现 03/05 的 input_hash 而保留，加载时给出警告。
+rows_hash_placeholder: 'true'
+rows:
+- factor_key: residual_mix.electricity.DE
+  geography: DE
+  year: '2024'
+  value: '0.56'
+  unit: tCO2e/MWh
+  source_row_id: DE-2024-RM
+- factor_key: contractual.electricity.goo
+  geography: EU
+  year: '-'
+  value: '0'
+  unit: tCO2e/MWh
+  source_row_id: GOO-ZERO
+row_count: 2
+rows_hash: sha256:35f78fd009ad6f51b4973c5a50e77fdf25d81dfaa58395010609c6a7e3b1b460
+status: active

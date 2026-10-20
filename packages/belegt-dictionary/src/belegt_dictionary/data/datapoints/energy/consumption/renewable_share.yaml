@@ -1,0 +1,54 @@
+id: dp:energy.consumption.renewable_share
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Anteil erneuerbarer Energie
+  en: Renewable energy share
+  zh: 可再生能源占比
+definition:
+  en: Share of total energy consumption (dp:energy.consumption.total) that comes from renewable sources, including self-generated renewables and purchased renewable energy backed by contractual instruments, as percentage. The answer states whether the basis is electricity only or all energy.
+  de: Anteil erneuerbarer Quellen am Gesamtenergieverbrauch (dp:energy.consumption.total) in Prozent, einschließlich Eigenerzeugung und vertraglich nachgewiesenem Ökostrom. Basis (nur Strom oder gesamte Energie) ist anzugeben.
+  zh: 总能耗（dp:energy.consumption.total）中来自可再生来源的百分比，含自发可再生能源及有合同工具支撑的外购可再生能源；答案须注明基数是仅电力还是全部能源。
+value_type: number
+unit: '%'
+period_type: reporting_period
+boundary:
+  - organization
+  - site
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: eu_2026_1560_vcs
+    clause: B3 Para 32
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - erp
+    - historical_answer
+  min_sources: 1
+  max_age_days: 550
+  requires_calculation: true
+  human_confirmation_allowed: false
+validity_rule:
+  min: 0
+  max: 100
+  expires_by: period_end_plus_days
+  expires_after_days: 550
+related_datapoints:
+  - id: dp:energy.consumption.total
+    relation: derived_from
+  - id: dp:energy.generation.onsite_renewable
+    relation: derived_from
+  - id: dp:energy.procurement.eac_volume
+    relation: derived_from
+aliases:
+  - dp:energy.consumption.green_power_share
+tags:
+  - vsme
+  - cdp_climate
+  - oem_custom
+  - energy

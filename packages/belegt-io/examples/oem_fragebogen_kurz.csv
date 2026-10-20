@@ -1,0 +1,16 @@
+﻿Nr.;Frage;Antwort;Einheit;Kommentar
+1;Firmenname;;;
+2;Anzahl Mitarbeitende zum 31.12.2025;;Anzahl;
+3;Scope-1-Emissionen im Berichtsjahr 2025;;tCO2e;
+4;Scope-2-Emissionen (marktbasiert) im Berichtsjahr 2025;;tCO2e;
+5;Stromverbrauch im Berichtsjahr 2025;;MWh;
+6;Anteil erneuerbarer Energien am Stromverbrauch;;%;
+7;Ist Ihr Standort nach ISO 14001 zertifiziert?;;;
+8;ISO 14001: gültig bis;;;
+9;Enthält das Produkt SVHC-Stoffe über 0,1 Massen-%?;;;
+10;PCF des gelieferten Produkts (cradle-to-gate);;kgCO2e/kg;
+11;Wasserentnahme gesamt im Berichtsjahr 2025;;m³;
+12;Abfallaufkommen gesamt im Berichtsjahr 2025;;t;
+13;Liefern Sie Waren, die unter den CBAM fallen?;;;
+14;Spezifische direkte graue Emissionen (SEE direkt);;tCO2e/t;
+15;Link zum aktuellen Nachhaltigkeitsbericht;;;

@@ -1,0 +1,22 @@
+{{- /* Spec: 10 §6.2 命名空间（belegt-app / belegt-trusted / belegt-quarantine / belegt-guard / belegt-data） */ -}}
+{{- if .Values.zones.createNamespaces }}
+{{- $seen := dict }}
+{{- range $zone := list "app" "trusted" "quarantine" "guard" "data" }}
+{{- $ns := include "belegt.ns" (list $ $zone) }}
+{{- if and (ne $ns $.Release.Namespace) (not (hasKey $seen $ns)) }}
+{{- $_ := set $seen $ns true }}
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ $ns }}
+  labels:
+    belegt.io/zone: {{ $zone }}
+    # Pod Security Admission：restricted（非 root、只读根文件系统、无特权）
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/audit: restricted
+  annotations:
+    helm.sh/resource-policy: keep
+{{- end }}
+{{- end }}
+{{- end }}

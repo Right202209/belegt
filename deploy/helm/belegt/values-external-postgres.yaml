@@ -1,0 +1,24 @@
+# Spec: 03 §6（PostgreSQL 16 物理设计）、10 §6.3（private-k8s：客户托管 PG 16）、§6.6（主 + 同步备、PITR 35 天）
+# 前置：托管 PG 已安装 pgvector（CREATE EXTENSION vector 需要 rds_superuser / cloudsqlsuperuser 等价权限），
+# 迁移账号为 belegt_owner 成员且有 CREATEROLE（迁移 Job 创建登录角色）。
+postgresql:
+  external: { enabled: true }
+  bundled: { enabled: false }
+  host: belegt-pg.example.internal
+  port: 5432
+  database: belegt
+  sslmode: verify-full
+  adminUser: belegt_migrator
+  appUser: belegt_app
+  quarantineUser: belegt_quarantine
+  auditorUser: belegt_auditor_ro
+
+secrets:
+  create: false
+  existingSecret: belegt-secrets               # 由 External Secrets Operator 从 Vault 同步（07 §4.5、10 §8.5）
+  existingQuarantineSecret: belegt-quarantine-secrets
+
+networkPolicy:
+  peers:
+    postgres:
+      - ipBlock: { cidr: 10.20.0.0/24 }        # 托管 PG 私网段（按实际填写，不要用 0.0.0.0/0）

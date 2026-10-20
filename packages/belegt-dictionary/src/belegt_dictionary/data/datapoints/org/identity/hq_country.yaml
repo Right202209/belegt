@@ -1,0 +1,39 @@
+id: dp:org.identity.hq_country
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Land des Hauptsitzes
+  en: Country of headquarters
+  zh: 总部所在国
+definition:
+  en: Country in which the registered office of the reporting undertaking is located, as ISO 3166-1 alpha-2 code. Excludes countries of production sites (site master data) and of production of goods (dp:supply.eudr.country_of_production).
+  de: Land des satzungsmäßigen Sitzes des berichtenden Unternehmens als ISO-3166-1-alpha-2-Code. Länder von Produktionsstandorten sind nicht gemeint.
+  zh: 报告企业注册办公地所在国家（ISO 3166-1 alpha-2）；不含生产场址所在国或商品生产国（dp:supply.eudr.country_of_production）。
+value_type: enum
+enum_ref: enums/iso3166_alpha2.yaml
+period_type: point_in_time
+boundary:
+  - organization
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+sensitivity: public
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - public_source
+    - human_confirmation
+    - historical_answer
+  min_sources: 1
+  max_age_days: 730
+  requires_calculation: false
+  human_confirmation_allowed: true
+validity_rule:
+  expires_by: evidence_valid_until
+tags:
+  - vsme
+  - cdp_climate
+  - cmrt
+  - identity

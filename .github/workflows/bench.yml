@@ -1,0 +1,158 @@
+# Spec: docs/11-评测与质量.md §5（CI 回归门禁 QG-01…QG-07）、§4.4（PR 冒烟子集 / 夜间全量）、§5.1（触发条件）；
+#       docs/10-非功能与运维.md §8（ci 环境：belegt-bench 公开集、固定 model-routing、录制/回放）
+#
+# 两个作业：
+#   bench-offline  确定性参考基线 + 两个新包的单元测试；与随包分发的基线报告（bench-v2027.1/test）比较。必须全绿。
+#   bench-core     belegt-core 的真实组件（question-parser 端到端 + guard 注入扫描），默认 MockLLM（无 key、离线）；
+#                  基线 = main 分支最近一次结果（actions/cache）。夜间若配置了 BELEGT_LLM_* 机密则改用真实模型。
+# 门禁失败 → `belegt-bench gate` 退出 1 → 作业失败（block）；warn 只在 PR 评论中提示。
+name: belegt-bench
+
+on:
+  pull_request:
+    paths:
+      - "prompts/**"
+      - "packages/belegt-dictionary/**"
+      - "packages/belegt-io/**"
+      - "packages/belegt-calc/**"
+      - "packages/belegt-core/src/belegt_core/agents/**"
+      - "packages/belegt-core/src/belegt_core/llm/**"
+      - "packages/belegt-core/src/belegt_core/guard/**"
+      - "packages/belegt-core/src/belegt_core/consistency/**"
+      - "packages/belegt-core/src/belegt_core/rules/**"
+      - "packages/belegt-connectors/**"
+      - "packages/belegt-bench/**"
+      - ".github/workflows/bench.yml"
+  push:
+    branches: [main]
+  schedule:
+    - cron: "17 2 * * *"      # 每晚全量（UTC）
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: "门禁阶段（pr | merge | release）"
+        default: "merge"
+
+concurrency:
+  group: bench-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PYTHON_VERSION: "3.12"
+  # PR 跑冒烟子集（约 10%，每单元格 ≥ 5，★ 相关用例全量）；main/夜间/手动跑全量 test
+  SMOKE_FLAG: ${{ github.event_name == 'pull_request' && '--smoke' || '' }}
+  GATE_STAGE: ${{ github.event.inputs.stage || (github.event_name == 'pull_request' && 'pr' || 'merge') }}
+
+jobs:
+  bench-offline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+      - name: Install packages (editable)
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e packages/belegt-dictionary -e packages/belegt-calc -e packages/belegt-io \
+                      -e "packages/belegt-core[test]" -e "packages/belegt-connectors[mcp,pdf,test]" \
+                      -e "packages/belegt-bench[test]"
+          pip install langgraph   # belegt_core.agents 运行期依赖
+      - name: Unit tests (offline)
+        run: |
+          pytest -q packages/belegt-connectors
+          pytest -q packages/belegt-bench
+      - name: Connector compliance suite (belegt-connector/1)
+        run: |
+          belegt-connector samples /tmp/samples
+          belegt-connector check erp-mock
+          belegt-connector check files --root /tmp/samples/files
+          belegt-connector check mailbox --path /tmp/samples/mail/mailbox.mbox
+          belegt-connector check utility-bills --root /tmp/samples/bills
+      - name: Dataset manifest + leak checks (QG-07 input)
+        run: belegt-bench validate
+      - name: Run deterministic baselines
+        run: |
+          for agent in question-parser evidence-miner consistency-auditor supplier-reply-reviewer answer-drafter; do
+            belegt-bench run --agent "$agent" --predictor baseline $SMOKE_FLAG --out bench-results/offline
+          done
+      - name: Gate (vs shipped baseline reports)
+        run: |
+          belegt-bench gate --results bench-results/offline --baseline builtin --stage "$GATE_STAGE" \
+                            --json bench-results/offline/gate.json | tee bench-results/offline/gate.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bench-offline-${{ github.run_id }}
+          path: bench-results/offline
+
+  bench-core:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    needs: bench-offline
+    env:
+      # 夜间：若仓库配置了模型机密则用真实模型（固定带日期的模型快照，temperature=0，11 §4.3）；否则 MockLLM
+      BELEGT_LLM_BASE_URL: ${{ github.event_name == 'schedule' && secrets.BELEGT_LLM_BASE_URL || '' }}
+      BELEGT_LLM_API_KEY: ${{ github.event_name == 'schedule' && secrets.BELEGT_LLM_API_KEY || '' }}
+      BELEGT_LLM_MODEL: ${{ github.event_name == 'schedule' && secrets.BELEGT_LLM_MODEL || '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+      - name: Install packages (editable)
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e packages/belegt-dictionary -e packages/belegt-calc -e packages/belegt-io \
+                      -e packages/belegt-core -e "packages/belegt-connectors[pdf]" -e packages/belegt-bench
+          pip install langgraph
+      - name: Restore main-branch baseline
+        if: github.event_name == 'pull_request'
+        uses: actions/cache/restore@v4
+        with:
+          path: bench-baseline/core
+          key: bench-core-baseline-${{ github.base_ref }}-${{ github.sha }}
+          restore-keys: bench-core-baseline-${{ github.base_ref }}-
+      - name: Run real components (question-parser e2e, guard injection scan)
+        run: |
+          # belegt_core.agents 不可导入时 run 会打印“跳过”并写出 status=skipped 的报告（release 阶段门禁会 block）
+          belegt-bench run --agent question-parser --predictor auto $SMOKE_FLAG --out bench-results/core
+          belegt-bench run --agent supplier-reply-reviewer --predictor auto $SMOKE_FLAG --out bench-results/core
+      - name: Gate
+        run: |
+          BASE_ARG=""
+          if [ -d bench-baseline/core ] && ls bench-baseline/core/eval-report.*.json >/dev/null 2>&1; then
+            BASE_ARG="--baseline bench-baseline/core"
+          fi
+          belegt-bench gate --results bench-results/core $BASE_ARG --stage "$GATE_STAGE" \
+                            --json bench-results/core/gate.json | tee bench-results/core/gate.txt
+      - name: Save as new baseline (main only, gate passed)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: mkdir -p bench-baseline && cp -r bench-results/core bench-baseline/core
+      - uses: actions/cache/save@v4
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        with:
+          path: bench-baseline/core
+          key: bench-core-baseline-main-${{ github.sha }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: bench-core-${{ github.run_id }}
+          path: bench-results/core
+      - name: PR comment (gate summary)
+        if: always() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const parts = ['bench-results/offline/gate.txt', 'bench-results/core/gate.txt']
+              .filter(p => fs.existsSync(p)).map(p => '```text\n' + fs.readFileSync(p, 'utf8') + '\n```');
+            if (parts.length) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo, issue_number: context.issue.number,
+                body: '### belegt-bench gate\n' + parts.join('\n'),
+              });
+            }

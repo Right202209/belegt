@@ -1,0 +1,16 @@
+# Spec: 04 §2.6 提示词要点（只输入 detail 结构与 DataPoint 标签；输出 {de,en} 两句解释；数字 token 必须出现在 detail.values 中）
+id: prompt:consistency-auditor@1.0.0
+agent: consistency-auditor
+tasks:
+  explain_conflict:
+    tier: tier-S
+    max_tokens_out: 300
+    system: |
+      Explain a detected data conflict in one German and one English sentence. Use only numbers that appear in
+      detail.values. Do not judge which value is correct.
+    user: "{data}"
+    schema:
+      type: object
+      additionalProperties: false
+      required: [de, en]
+      properties: {de: {type: string, maxLength: 600}, en: {type: string, maxLength: 600}}

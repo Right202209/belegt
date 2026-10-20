@@ -1,0 +1,47 @@
+{
+  "id": "3f2b6c1e-7d4a-4e8b-9a10-2c5d7e9f1a3b",
+  "specVersion": "3.0.3",
+  "created": "2026-10-19T00:00:00Z",
+  "status": "Active",
+  "validityPeriodStart": "2026-01-01T00:00:00Z",
+  "validityPeriodEnd": "2028-01-01T00:00:00Z",
+  "companyName": "Musterfirma Präzisionsteile GmbH",
+  "companyIds": [
+    "urn:pact:company:customcode:buyer-assigned:MUSTER-0042"
+  ],
+  "productDescription": "Kaltgewalztes Stahlblech, verzinkt, 1,5 mm",
+  "productIds": [
+    "urn:pact:product-id:customcode:vendor-assigned:BLECH-150-ZN"
+  ],
+  "productNameCompany": "Stahlblech DX51D+Z 1,5 mm",
+  "pcf": {
+    "declaredUnitOfMeasurement": "kilogram",
+    "declaredUnitAmount": "1",
+    "productMassPerDeclaredUnit": "1",
+    "referencePeriodStart": "2025-01-01T00:00:00Z",
+    "referencePeriodEnd": "2026-01-01T00:00:00Z",
+    "geographyCountry": "DE",
+    "pcfExcludingBiogenicUptake": "2.4137",
+    "pcfIncludingBiogenicUptake": "2.4137",
+    "fossilCarbonContent": "0",
+    "biogenicCarbonContent": "0",
+    "fossilGhgEmissions": "2.4137",
+    "packagingEmissionsIncluded": false,
+    "ccsTechnologicalCO2CaptureIncluded": false,
+    "ipccCharacterizationFactors": [
+      "AR6"
+    ],
+    "crossSectoralStandards": [
+      "ISO14067"
+    ],
+    "exemptedEmissionsPercent": "1.2",
+    "exemptedEmissionsDescription": "Hilfsstoffe < 1 % Masse",
+    "allocationRulesDescription": "Physikalische Allokation nach Maschinenstunden (template text)",
+    "primaryDataShare": "38.5",
+    "dqi": {
+      "technologicalDQR": "2.1",
+      "geographicalDQR": "1.6",
+      "temporalDQR": "1.4"
+    }
+  }
+}

@@ -1,0 +1,86 @@
+{{- /* Spec: 10 §6.4（gpu-profile、vLLM 生产推理、离线权重）、FR-704、NFR-16；07 §5.3 敏感租户自托管模型 */ -}}
+{{- if .Values.llm.vllm.enabled }}
+{{- $ns := include "belegt.ns" (list . "trusted") }}
+{{- $name := printf "%s-vllm" (include "belegt.fullname" .) }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $name }}
+  namespace: {{ $ns }}
+  labels:
+    {{- include "belegt.labels" . | nindent 4 }}
+    {{- include "belegt.selector" (list . "vllm" "trusted") | nindent 4 }}
+spec:
+  replicas: 1
+  strategy: { type: Recreate }
+  selector:
+    matchLabels:
+      {{- include "belegt.selector" (list . "vllm" "trusted") | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "belegt.labels" . | nindent 8 }}
+        {{- include "belegt.selector" (list . "vllm" "trusted") | nindent 8 }}
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        seccompProfile: { type: RuntimeDefault }
+      {{- with .Values.llm.vllm.nodeSelector }}
+      nodeSelector: {{ toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.llm.vllm.tolerations }}
+      tolerations: {{ toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: vllm
+          image: {{ .Values.image.vllm }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - --model={{ .Values.llm.vllm.model }}
+            - --served-model-name={{ .Values.llm.vllm.servedModelName }}
+            - --max-model-len={{ .Values.llm.vllm.maxModelLen }}
+            - --tensor-parallel-size={{ .Values.llm.vllm.gpuCount }}
+            - --enable-prefix-caching
+            - --port=8000
+          env:
+            - { name: HF_HOME, value: /models }
+            - { name: HF_HUB_OFFLINE, value: "1" }
+            - { name: VLLM_NO_USAGE_STATS, value: "1" }
+            - { name: DO_NOT_TRACK, value: "1" }
+          ports:
+            - { name: http, containerPort: 8000, protocol: TCP }
+          readinessProbe:
+            httpGet: { path: /health, port: http }
+            periodSeconds: 10
+            failureThreshold: 60
+          resources:
+            {{- toYaml .Values.llm.vllm.resources | nindent 12 }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities: { drop: ["ALL"] }
+          volumeMounts:
+            - { name: models, mountPath: /models }
+            - { name: shm, mountPath: /dev/shm }
+      volumes:
+        - name: models
+          {{- if .Values.llm.vllm.modelsPvc }}
+          persistentVolumeClaim: { claimName: {{ .Values.llm.vllm.modelsPvc }} }
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+        - name: shm
+          emptyDir: { medium: Memory, sizeLimit: 8Gi }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $name }}
+  namespace: {{ $ns }}
+  labels:
+    {{- include "belegt.metaLabels" . | nindent 4 }}
+spec:
+  selector:
+    {{- include "belegt.selector" (list . "vllm" "trusted") | nindent 4 }}
+  ports:
+    - { name: http, port: 8000, targetPort: http, protocol: TCP }
+{{- end }}

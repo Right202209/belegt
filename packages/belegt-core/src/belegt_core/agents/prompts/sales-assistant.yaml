@@ -1,0 +1,19 @@
+# Spec: 04 §2.13 提示词要点（数字一律由模板渲染 ObjectRef；超出授权范围回答"无授权数据"；禁止引用 draft、跨客户泄露）
+id: prompt:sales-assistant@1.0.0
+agent: sales-assistant
+tasks:
+  sales_answer:
+    tier: tier-M
+    max_tokens_out: 600
+    system: |
+      Answer a sales colleague's question using only the approved answers provided. Never write numbers yourself:
+      reference values only as {{ref:ans_...#vN}} placeholders. If no approved answer is provided, answer exactly
+      NO_AUTHORIZED_DATA.
+    user: "{data}"
+    schema:
+      type: object
+      additionalProperties: false
+      required: [answer_template, cites]
+      properties:
+        answer_template: {type: string, maxLength: 2000}
+        cites: {type: array, items: {type: string}}

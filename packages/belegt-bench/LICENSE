@@ -1,0 +1,15 @@
+belegt-bench is dual-licensed:
+
+  * Source code (src/belegt_bench/*.py, src/belegt_bench/config/, tests/, pyproject.toml):
+      Apache License 2.0 — see LICENSES/Apache-2.0.txt
+
+  * Dataset (src/belegt_bench/data/** — questionnaires, documents, labels, manifest, JSON Schemas —
+    the rewrite lexicon src/belegt_bench/synth_lexicon.py, the sample sets in src/belegt_bench/build_sets.py
+    and src/belegt_bench/build_evidence.py, and the baseline reports in src/belegt_bench/baselines/**):
+      Creative Commons Attribution 4.0 International (CC BY 4.0) — see LICENSES/CC-BY-4.0.txt
+      Attribution: "belegt-bench, (c) Belegt contributors, CC BY 4.0"
+
+All data is synthetic or written by the Belegt contributors. It contains no customer data and no text copied
+from copyrighted questionnaire templates (only public item numbers and our own short labels).
+
+SPDX-License-Identifier: Apache-2.0 AND CC-BY-4.0

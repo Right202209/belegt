@@ -1,0 +1,70 @@
+{{- /*
+Spec: 10 §6.5（升级步骤②：以 belegt_owner 执行 expand 迁移；Helm pre-upgrade Hook）、§8.4；03 §6.1
+执行 migrations/postgres/*.sql（含 RLS、graph.commit_version()）、建可移植表、建登录角色（deploy/docker/entry/belegt_migrate.py）。
+外部 PG：pre-install,pre-upgrade（先迁移再起应用）；内置 PG：post-install,pre-upgrade（首次安装时数据库在 Hook 之后才存在）。
+*/ -}}
+{{- if .Values.migrations.enabled }}
+{{- $ns := include "belegt.ns" (list . "app") }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "belegt.fullname" . }}-migrate-{{ .Release.Revision }}
+  namespace: {{ $ns }}
+  labels:
+    {{- include "belegt.labels" . | nindent 4 }}
+    {{- include "belegt.selector" (list . "migrate" "app") | nindent 4 }}
+  annotations:
+    helm.sh/hook: {{ ternary "post-install,pre-upgrade" "pre-install,pre-upgrade" .Values.postgresql.bundled.enabled }}
+    helm.sh/hook-weight: "-5"
+    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
+spec:
+  backoffLimit: {{ .Values.migrations.backoffLimit }}
+  activeDeadlineSeconds: {{ .Values.migrations.activeDeadlineSeconds }}
+  ttlSecondsAfterFinished: 86400
+  template:
+    metadata:
+      labels:
+        {{- include "belegt.labels" . | nindent 8 }}
+        {{- include "belegt.selector" (list . "migrate" "app") | nindent 8 }}
+    spec:
+      restartPolicy: Never
+      automountServiceAccountToken: false
+      securityContext:
+        {{- include "belegt.podSecurityContext" . | nindent 8 }}
+      {{- with .Values.global.imagePullSecrets }}
+      imagePullSecrets: {{ toYaml . | nindent 8 }}
+      {{- end }}
+      {{- include "belegt.scheduling" (list . "app") | nindent 6 }}
+      containers:
+        - name: migrate
+          image: {{ include "belegt.image" (list . .Values.image.migrate) }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: PGADMIN_PASSWORD
+              valueFrom: { secretKeyRef: { name: {{ include "belegt.secretName" . }}, key: postgres-admin-password } }
+            - name: BELEGT_MIGRATE_ADMIN_URL
+              value: {{ printf "postgresql://%s:$(PGADMIN_PASSWORD)@%s:%v/%s?sslmode=%s" .Values.postgresql.adminUser (include "belegt.pgHost" .) .Values.postgresql.port .Values.postgresql.database (include "belegt.pgSslmode" .) | quote }}
+            - name: BELEGT_PG_HASH_MODULUS
+              value: {{ .Values.postgresql.hashModulus | quote }}
+            - name: BELEGT_DB_APP_USER
+              value: {{ .Values.postgresql.appUser | quote }}
+            - name: BELEGT_DB_APP_PASSWORD
+              valueFrom: { secretKeyRef: { name: {{ include "belegt.secretName" . }}, key: app-db-password } }
+            - name: BELEGT_DB_QUARANTINE_USER
+              value: {{ .Values.postgresql.quarantineUser | quote }}
+            - name: BELEGT_DB_QUARANTINE_PASSWORD
+              valueFrom: { secretKeyRef: { name: {{ include "belegt.secretName" . }}, key: quarantine-db-password } }
+            - name: BELEGT_DB_AUDITOR_USER
+              value: {{ .Values.postgresql.auditorUser | quote }}
+            - name: BELEGT_DB_AUDITOR_PASSWORD
+              valueFrom: { secretKeyRef: { name: {{ include "belegt.secretName" . }}, key: auditor-db-password } }
+          resources:
+            requests: { cpu: 100m, memory: 256Mi }
+            limits: { memory: 512Mi }
+          securityContext:
+            {{- include "belegt.containerSecurityContext" . | nindent 12 }}
+          volumeMounts:
+            - { name: tmp, mountPath: /tmp }
+      volumes:
+        {{- include "belegt.tmpVolume" . | nindent 8 }}
+{{- end }}

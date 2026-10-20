@@ -1,0 +1,511 @@
+{
+ "$defs": {
+  "Annotation": {
+   "additionalProperties": false,
+   "description": "双人标注的一份原始标注（裁决前）。`label` 为该类型的判定值（分类类直接比较；值类比较规范化键）。",
+   "properties": {
+    "annotated_at": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Annotated At"
+    },
+    "annotator": {
+     "title": "Annotator",
+     "type": "string"
+    },
+    "label": {
+     "title": "Label"
+    },
+    "note": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Note"
+    }
+   },
+   "required": [
+    "annotator",
+    "label"
+   ],
+   "title": "Annotation",
+   "type": "object"
+  },
+  "AnswerLite": {
+   "additionalProperties": false,
+   "description": "一致性审计用的答案（03 Answer 的子集）。",
+   "properties": {
+    "answer_id": {
+     "title": "Answer Id",
+     "type": "string"
+    },
+    "boundary": {
+     "default": "organization",
+     "title": "Boundary",
+     "type": "string"
+    },
+    "consolidation": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Consolidation"
+    },
+    "customer_scope": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Customer Scope"
+    },
+    "datapoint_id": {
+     "title": "Datapoint Id",
+     "type": "string"
+    },
+    "divergence_note": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Divergence Note"
+    },
+    "evidence_refs": {
+     "items": {
+      "type": "string"
+     },
+     "title": "Evidence Refs",
+     "type": "array"
+    },
+    "is_estimate": {
+     "default": false,
+     "title": "Is Estimate",
+     "type": "boolean"
+    },
+    "period": {
+     "anyOf": [
+      {
+       "$ref": "#/$defs/Period"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null
+    },
+    "question_refs": {
+     "items": {
+      "type": "string"
+     },
+     "title": "Question Refs",
+     "type": "array"
+    },
+    "request_id": {
+     "default": "req_A",
+     "title": "Request Id",
+     "type": "string"
+    },
+    "scope2_method": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Scope2 Method"
+    },
+    "status": {
+     "default": "approved",
+     "enum": [
+      "draft",
+      "in_review",
+      "approved",
+      "submitted"
+     ],
+     "title": "Status",
+     "type": "string"
+    },
+    "submitted_at": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Submitted At"
+    },
+    "unit": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Unit"
+    },
+    "value": {
+     "title": "Value"
+    }
+   },
+   "required": [
+    "answer_id",
+    "datapoint_id",
+    "value"
+   ],
+   "title": "AnswerLite",
+   "type": "object"
+  },
+  "EvidenceLite": {
+   "additionalProperties": false,
+   "properties": {
+    "boundary": {
+     "default": "organization",
+     "title": "Boundary",
+     "type": "string"
+    },
+    "evidence_id": {
+     "title": "Evidence Id",
+     "type": "string"
+    },
+    "fact_key": {
+     "title": "Fact Key",
+     "type": "string"
+    },
+    "period": {
+     "anyOf": [
+      {
+       "$ref": "#/$defs/Period"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null
+    },
+    "source_type": {
+     "default": "document",
+     "title": "Source Type",
+     "type": "string"
+    },
+    "status": {
+     "default": "verified",
+     "title": "Status",
+     "type": "string"
+    },
+    "unit": {
+     "title": "Unit",
+     "type": "string"
+    },
+    "valid_until": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Valid Until"
+    },
+    "value": {
+     "title": "Value",
+     "type": "string"
+    }
+   },
+   "required": [
+    "evidence_id",
+    "fact_key",
+    "value",
+    "unit"
+   ],
+   "title": "EvidenceLite",
+   "type": "object"
+  },
+  "ExpectedConflict": {
+   "additionalProperties": false,
+   "properties": {
+    "objects": {
+     "items": {
+      "type": "string"
+     },
+     "title": "Objects",
+     "type": "array"
+    },
+    "rule_id": {
+     "title": "Rule Id",
+     "type": "string"
+    },
+    "severity": {
+     "default": "block",
+     "enum": [
+      "block",
+      "warn",
+      "info"
+     ],
+     "title": "Severity",
+     "type": "string"
+    }
+   },
+   "required": [
+    "rule_id",
+    "objects"
+   ],
+   "title": "ExpectedConflict",
+   "type": "object"
+  },
+  "Period": {
+   "additionalProperties": false,
+   "properties": {
+    "end": {
+     "title": "End",
+     "type": "string"
+    },
+    "start": {
+     "title": "Start",
+     "type": "string"
+    }
+   },
+   "required": [
+    "start",
+    "end"
+   ],
+   "title": "Period",
+   "type": "object"
+  },
+  "Strata": {
+   "additionalProperties": false,
+   "properties": {
+    "format": {
+     "title": "Format",
+     "type": "string"
+    },
+    "lang": {
+     "title": "Lang",
+     "type": "string"
+    },
+    "template": {
+     "title": "Template",
+     "type": "string"
+    }
+   },
+   "required": [
+    "template",
+    "lang",
+    "format"
+   ],
+   "title": "Strata",
+   "type": "object"
+  }
+ },
+ "additionalProperties": false,
+ "description": "LBL-CONFLICT：答案集 + 应被检出的冲突（空 = 不应报任何冲突，用于误报率）。",
+ "properties": {
+  "_canary": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ],
+   "default": null,
+   "title": "Canary"
+  },
+  "adjudicated_by": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ],
+   "default": null,
+   "title": "Adjudicated By"
+  },
+  "annotation_version": {
+   "default": "lbl-2026.10",
+   "title": "Annotation Version",
+   "type": "string"
+  },
+  "annotations": {
+   "items": {
+    "$ref": "#/$defs/Annotation"
+   },
+   "title": "Annotations",
+   "type": "array"
+  },
+  "answers": {
+   "items": {
+    "$ref": "#/$defs/AnswerLite"
+   },
+   "title": "Answers",
+   "type": "array"
+  },
+  "cluster_id": {
+   "title": "Cluster Id",
+   "type": "string"
+  },
+  "context": {
+   "additionalProperties": true,
+   "title": "Context",
+   "type": "object"
+  },
+  "difficulty": {
+   "default": "medium",
+   "enum": [
+    "easy",
+    "medium",
+    "hard"
+   ],
+   "title": "Difficulty",
+   "type": "string"
+  },
+  "evidence": {
+   "items": {
+    "$ref": "#/$defs/EvidenceLite"
+   },
+   "title": "Evidence",
+   "type": "array"
+  },
+  "expected": {
+   "items": {
+    "$ref": "#/$defs/ExpectedConflict"
+   },
+   "title": "Expected",
+   "type": "array"
+  },
+  "flags": {
+   "items": {
+    "type": "string"
+   },
+   "title": "Flags",
+   "type": "array"
+  },
+  "history_refs": {
+   "items": {
+    "additionalProperties": {
+     "type": "string"
+    },
+    "type": "object"
+   },
+   "title": "History Refs",
+   "type": "array"
+  },
+  "label_type": {
+   "const": "LBL-CONFLICT",
+   "default": "LBL-CONFLICT",
+   "title": "Label Type",
+   "type": "string"
+  },
+  "negative_reason": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ],
+   "default": null,
+   "title": "Negative Reason"
+  },
+  "notes": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ],
+   "default": null,
+   "title": "Notes"
+  },
+  "org": {
+   "title": "Org",
+   "type": "string"
+  },
+  "partition": {
+   "enum": [
+    "fewshot",
+    "dev",
+    "test",
+    "holdout"
+   ],
+   "title": "Partition",
+   "type": "string"
+  },
+  "received_at": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ],
+   "default": null,
+   "title": "Received At"
+  },
+  "sample_id": {
+   "title": "Sample Id",
+   "type": "string"
+  },
+  "strata": {
+   "$ref": "#/$defs/Strata"
+  },
+  "synthetic": {
+   "default": true,
+   "title": "Synthetic",
+   "type": "boolean"
+  }
+ },
+ "required": [
+  "sample_id",
+  "partition",
+  "strata",
+  "cluster_id",
+  "org",
+  "answers"
+ ],
+ "title": "ConflictSample",
+ "type": "object"
+}

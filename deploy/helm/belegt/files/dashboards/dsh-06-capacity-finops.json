@@ -1,0 +1,247 @@
+{
+  "uid": "dsh-06",
+  "title": "DSH-06 容量与 FinOps",
+  "description": "DB/对象存储增长、provider TPM 余量、GPU 利用率、每租户基础设施成本（NFR-20）",
+  "tags": [
+    "belegt",
+    "dsh-06"
+  ],
+  "timezone": "Europe/Berlin",
+  "schemaVersion": 39,
+  "version": 1,
+  "editable": false,
+  "time": {
+    "from": "now-24h",
+    "to": "now"
+  },
+  "refresh": "1m",
+  "templating": {
+    "list": [
+      {
+        "name": "datasource",
+        "type": "datasource",
+        "query": "prometheus",
+        "current": {
+          "text": "Prometheus",
+          "value": "belegt-prom"
+        },
+        "hide": 2
+      }
+    ]
+  },
+  "annotations": {
+    "list": []
+  },
+  "links": [
+    {
+      "title": "Runbooks",
+      "type": "link",
+      "url": "deploy/ops/alerts-runbook.md",
+      "targetBlank": true
+    }
+  ],
+  "panels": [
+    {
+      "id": 1,
+      "type": "timeseries",
+      "title": "PG 数据库大小",
+      "description": "",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "belegt-prom"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "belegt-prom"
+          },
+          "expr": "sum by (datname) (pg_database_size_bytes)",
+          "legendFormat": "{{datname}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "options": {}
+    },
+    {
+      "id": 2,
+      "type": "timeseries",
+      "title": "PG 存储增长（7 d 线性外推 30 d）",
+      "description": "10 §8.6：PG 存储 > 70% 触发扩容",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "belegt-prom"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 0,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "belegt-prom"
+          },
+          "expr": "predict_linear(sum(pg_database_size_bytes)[7d:1h], 30 * 86400)",
+          "legendFormat": "30 d 后"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "options": {}
+    },
+    {
+      "id": 3,
+      "type": "timeseries",
+      "title": "provider TPM 使用（入+出）",
+      "description": "峰值 > 配额 60% 触发扩容（10 §8.6）",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "belegt-prom"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "belegt-prom"
+          },
+          "expr": "sum by (model) (rate(belegt_llm_tokens_total[1m])) * 60",
+          "legendFormat": "{{model}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {}
+    },
+    {
+      "id": 4,
+      "type": "timeseries",
+      "title": "GPU 利用率（DCGM，可选）",
+      "description": "> 70% 扩卡，< 20% 缩卡；NFR-20 V2 目标 ≥ 40%",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "belegt-prom"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 8,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "belegt-prom"
+          },
+          "expr": "avg by (gpu) (DCGM_FI_DEV_GPU_UTIL)",
+          "legendFormat": "GPU {{gpu}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "orange",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 20
+              },
+              {
+                "color": "red",
+                "value": 70
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {}
+    },
+    {
+      "id": 5,
+      "type": "timeseries",
+      "title": "Temporal 积压（ALR-07 预警 > 5 s）",
+      "description": "",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "belegt-prom"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 16,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "belegt-prom"
+          },
+          "expr": "histogram_quantile(0.95, sum by (le) (rate(task_schedule_to_start_latency_bucket[1h])))",
+          "legendFormat": "P95"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "options": {}
+    },
+    {
+      "id": 6,
+      "type": "text",
+      "title": "FinOps",
+      "gridPos": {
+        "x": 12,
+        "y": 16,
+        "w": 12,
+        "h": 8
+      },
+      "options": {
+        "mode": "markdown",
+        "content": "每活跃租户基础设施成本 = 云账单 ÷ 活跃租户（月报，NFR-20：MVP ≤ €150，V1 ≤ €60，V2 ≤ €40）。账单不进 Prometheus，见 deploy/ops/cost-dashboard.md 的月报口径。"
+      }
+    }
+  ]
+}

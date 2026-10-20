@@ -1,0 +1,35 @@
+# Spec: 02 §4.3.5（字段名据 EU 信息系统公开文档 [需核对]）
+template_mapping: tm:eudr_dds@2023-1115
+template_id: eudr_dds
+template_version: "2023-1115"
+template_source: "Reg. (EU) 2023/1115 Art. 9 & Annex II, amended by Reg. (EU) 2025/2650"
+license_note: "仅字段名与短标签"
+fingerprint:
+  threshold: 0.85
+  markers:
+    - { text: "Due Diligence Statement", weight: 3 }
+    - { text: "EUDR", weight: 2 }
+    - { text: "geolocation", weight: 1 }
+entries:
+  - entry_id: geolocation
+    locator: { kind: field, ref: "geolocation" }
+    short_label: "Plot geolocation"
+    datapoint_id: dp:supply.eudr.geolocation
+    direction: both
+    transform: { type: format, pattern: "GeoJSON RFC7946" }
+  - entry_id: production_date
+    locator: { kind: field, ref: "date or time range of production" }
+    short_label: "Production date / range"
+    datapoint_id: dp:supply.eudr.production_date
+    direction: both
+    transform: { type: format, pattern: "YYYY-MM-DD" }
+  - entry_id: dds_reference
+    locator: { kind: field, ref: "reference number" }
+    short_label: "DDS reference number"
+    datapoint_id: dp:supply.eudr.dds_reference
+    direction: both
+  - entry_id: country_of_production
+    locator: { kind: field, ref: "country of production" }
+    short_label: "Country of production (ISO 3166)"
+    datapoint_id: dp:supply.eudr.country_of_production
+    direction: both

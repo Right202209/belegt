@@ -1,0 +1,21 @@
+# Spec: 06 §2.2 CR-013
+rule_id: CR-013
+rule_version: 1.0.0
+category: validity
+severity: warn
+title:
+  de: Zertifikat läuft vor Frist/Abdeckungszeitraum ab
+  en: Certificate expires before due date/coverage
+scope: answer
+triggers:
+- answer_write
+- pre_submit_gate
+- daily_batch
+- context_change
+plugin: cr_013
+assert: valid_until >= required_until
+tolerance:
+  days: 0
+default_action: open_conflict
+explain_template: cr-013
+tests: tests/test_consistency_rules.py::test_cr_013

@@ -1,0 +1,93 @@
+template_mapping: tm:catenax_pcf@cx-0136
+template_id: catenax_pcf
+template_version: cx-0136
+template_source: Catena-X standard CX-0136 PCF exchange (PACT data model + Catena-X extensions), Rulebook v4.0
+dictionary_min_version: v2027.1
+license_note: 仅题号与短标签；原文请查阅官方来源
+maintainers:
+  - '@belegt/dict-maintainers'
+notes: 标准号 CX-0136 待核对；扩展字段（extWBCSD_/extTFS_）v0.1 不强制映射
+entries:
+  - entry_id: company_name
+    locator:
+      kind: json_path
+      ref: $.companyName
+    short_label: Company name
+    datapoint_id: dp:org.identity.legal_name
+    direction: both
+    transform:
+      type: identity
+  - entry_id: product_ids
+    locator:
+      kind: json_path
+      ref: $.productIds[*]
+    short_label: Product IDs (URN)
+    datapoint_id: dp:prod.identity.product_id
+    direction: both
+    transform:
+      type: identity
+  - entry_id: pcf_incl_biogenic
+    locator:
+      kind: json_path
+      ref: $.pcf.pCfIncludingBiogenic
+      verify: true
+    short_label: PCF incl. biogenic, kgCO2e per declared unit
+    datapoint_id: dp:prod.pcf.cradle_to_gate
+    direction: both
+    unit_hint: kgCO2e/kg
+    boundary_hint: product_per_unit
+    transform:
+      type: identity
+  - entry_id: pcf_excl_biogenic
+    locator:
+      kind: json_path
+      ref: $.pcf.pCfExcludingBiogenic
+      verify: true
+    short_label: PCF excl. biogenic, kgCO2e per declared unit
+    datapoint_id: dp:prod.pcf.cradle_to_gate.excluding_biogenic
+    direction: both
+    unit_hint: kgCO2e/kg
+    boundary_hint: product_per_unit
+    transform:
+      type: identity
+  - entry_id: declared_unit
+    locator:
+      kind: json_path
+      ref: $.pcf.declaredUnit
+      verify: true
+    short_label: Declared unit
+    datapoint_id: dp:prod.pcf.declared_unit
+    direction: both
+    transform:
+      type: enum_map
+      map:
+        kilogram: kg
+        liter: L
+        kilowatt hour: kWh
+        cubic meter: m3
+        square meter: m2
+        megajoule: MJ
+        ton kilometer: tkm
+  - entry_id: primary_data_share
+    locator:
+      kind: json_path
+      ref: $.pcf.primaryDataShare
+      verify: true
+    short_label: Primary data share, %
+    datapoint_id: dp:prod.pcf.primary_data_share
+    direction: both
+    unit_hint: '%'
+    transform:
+      type: identity
+  - entry_id: reference_period
+    locator:
+      kind: json_path
+      ref: $.pcf.referencePeriodStart|$.pcf.referencePeriodEnd
+      verify: true
+    short_label: Reference period
+    datapoint_id: dp:prod.pcf.reference_period
+    direction: both
+    period_hint: validity_range
+    transform:
+      type: format
+      pattern: RFC3339

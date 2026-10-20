@@ -1,0 +1,45 @@
+id: dp:org.identity.legal_name
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Rechtsform-Firmenname
+  en: Legal entity name
+  zh: 法定名称
+definition:
+  en: Registered legal name of the reporting undertaking exactly as entered in the commercial or company register, including the legal form suffix. Excludes trade names and brand names; for sites use the site master data instead.
+  de: Eingetragener Name des berichtenden Unternehmens wie im Handels- bzw. Unternehmensregister, einschließlich Rechtsformzusatz. Handelsnamen und Marken sind nicht gemeint.
+  zh: 报告企业在商业登记/公司登记中登记的完整法定名称，含法律形式后缀；不含商号或品牌名。
+value_type: text
+period_type: point_in_time
+boundary:
+  - organization
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: eu_2026_1560_vcs
+    clause: B1
+sensitivity: public
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - public_source
+    - human_confirmation
+    - historical_answer
+  min_sources: 1
+  max_age_days: 730
+  requires_calculation: false
+  human_confirmation_allowed: true
+validity_rule:
+  regex: ^\S.{0,254}$
+  expires_by: evidence_valid_until
+tags:
+  - vsme
+  - cdp_climate
+  - pact_pcf
+  - cbam_communication
+  - eudr_dds
+  - cmrt
+  - identity

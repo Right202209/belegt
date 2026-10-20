@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block main %}
+<section class="card">
+  <h1>{{ t('otp_title') }}</h1>
+  <p>{{ t('otp_text') }}</p>
+  {% if sent %}<p class="ok">{{ t('otp_sent') }}</p>{% endif %}
+  {% if error %}<p class="err">{{ t('otp_wrong') }}</p>{% endif %}
+  <form method="post" action="/r/{{ token }}/verify/send"><button type="submit" class="secondary">{{ t('otp_send') }}</button></form>
+  <form method="post" action="/r/{{ token }}/verify">
+    <label>{{ t('otp_code') }} <input name="code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required autocomplete="one-time-code"></label>
+    <button type="submit">{{ t('otp_verify') }}</button>
+  </form>
+</section>
+{% endblock %}

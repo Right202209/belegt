@@ -1,0 +1,36 @@
+id: dp:cert.iatf16949.valid_until
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: IATF 16949 gültig bis
+  en: IATF 16949 valid until
+  zh: IATF 16949 有效期至
+definition:
+  en: Expiry date printed on the valid IATF 16949 (automotive quality management) certificate issued by an accredited certification body for the stated site or organization. Excludes certificates that are suspended or withdrawn; the certificate file is evidence.
+  de: Auf dem gültigen IATF 16949-Zertifikat einer akkreditierten Zertifizierungsstelle angegebenes Ablaufdatum für den genannten Standort bzw. die Organisation. Ausgesetzte oder entzogene Zertifikate zählen nicht.
+  zh: 经认可认证机构为所述场址或组织签发的有效 IATF 16949 证书上的到期日；不含暂停或撤销的证书，证书文件作为证据。
+value_type: date
+period_type: validity_range
+boundary:
+  - organization
+  - site
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: iatf_16949
+sensitivity: public
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - public_source
+  min_sources: 1
+  requires_calculation: false
+  human_confirmation_allowed: false
+validity_rule:
+  expires_by: value
+tags:
+  - oem_custom
+  - certificate

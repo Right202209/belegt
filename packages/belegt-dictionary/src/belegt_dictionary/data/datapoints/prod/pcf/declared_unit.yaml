@@ -1,0 +1,39 @@
+id: dp:prod.pcf.declared_unit
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Deklarierte Einheit (PCF)
+  en: Declared unit of the PCF
+  zh: 声明单位
+definition:
+  en: Unit of analysis to which the product carbon footprint values refer (e.g. kilogram, piece-independent physical units as listed in the enum). Required whenever a per-unit PCF value is exchanged; the amount of product per declared unit is part of the exchange record.
+  de: Bezugseinheit, auf die sich die PCF-Werte beziehen (z. B. Kilogramm). Pflicht, sobald ein PCF-Wert je Einheit ausgetauscht wird.
+  zh: 产品碳足迹值所对应的分析单位（如千克，取值见枚举）；交换每单位 PCF 时必填，每声明单位的产品量属于交换记录的一部分。
+value_type: enum
+enum_ref: enums/pcf_declared_unit.yaml
+period_type: point_in_time
+boundary:
+  - product
+methodology_refs:
+  - ref: pact_tech_spec_v2
+    note: declaredUnit
+  - ref: pact_tech_spec_v3
+    note: declaredUnitOfMeasurement
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - human_confirmation
+    - historical_answer
+  min_sources: 1
+  max_age_days: 365
+  requires_calculation: false
+  human_confirmation_allowed: true
+related_datapoints:
+  - id: dp:prod.pcf.cradle_to_gate
+    relation: see_also
+tags:
+  - pact_pcf
+  - catenax_pcf
+  - pcf

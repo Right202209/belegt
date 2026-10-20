@@ -1,0 +1,61 @@
+{
+ "odata.metadata": "$metadata#business_partners",
+ "value": [
+  {
+   "CardCode": "V10001",
+   "CardName": "Stadtwerke Musterstadt GmbH",
+   "CardType": "cSupplier",
+   "Country": "DE",
+   "GroupCode": 101
+  },
+  {
+   "CardCode": "V10002",
+   "CardName": "Gasversorgung Süd AG",
+   "CardType": "cSupplier",
+   "Country": "DE",
+   "GroupCode": 101
+  },
+  {
+   "CardCode": "V10003",
+   "CardName": "Fernwärme Musterstadt GmbH",
+   "CardType": "cSupplier",
+   "Country": "DE",
+   "GroupCode": 101
+  },
+  {
+   "CardCode": "V10004",
+   "CardName": "Mineralöl Krüger KG",
+   "CardType": "cSupplier",
+   "Country": "DE",
+   "GroupCode": 102
+  },
+  {
+   "CardCode": "V20001",
+   "CardName": "Anadolu Çelik Sanayi A.Ş.",
+   "CardType": "cSupplier",
+   "Country": "TR",
+   "GroupCode": 201
+  },
+  {
+   "CardCode": "V20002",
+   "CardName": "Gulf Aluminium Smelting LLC",
+   "CardType": "cSupplier",
+   "Country": "AE",
+   "GroupCode": 202
+  },
+  {
+   "CardCode": "V20003",
+   "CardName": "Ningbo Profiles Co., Ltd.",
+   "CardType": "cSupplier",
+   "Country": "CN",
+   "GroupCode": 202
+  },
+  {
+   "CardCode": "C30001",
+   "CardName": "OEM Autowerke AG",
+   "CardType": "cCustomer",
+   "Country": "DE",
+   "GroupCode": 300
+  }
+ ]
+}

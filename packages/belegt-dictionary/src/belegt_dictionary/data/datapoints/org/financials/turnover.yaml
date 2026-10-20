@@ -1,0 +1,44 @@
+id: dp:org.financials.turnover
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Umsatzerlöse
+  en: Turnover (net revenue)
+  zh: 营业额
+definition:
+  en: Net turnover of the undertaking for the fiscal year as reported in the financial statements, in euro. Excludes VAT and other sales taxes and intra-group sales within the consolidation boundary. Amounts in other currencies require a calc-service conversion with documented exchange rate.
+  de: Nettoumsatzerlöse des Geschäftsjahres laut Jahresabschluss in Euro, ohne Umsatzsteuer und konzerninterne Umsätze. Fremdwährungen nur über calc-service mit dokumentiertem Kurs.
+  zh: 按财务报表列示的财年净营业额（欧元），不含增值税等销售税及合并边界内的集团内部销售；其他币种须经 calc-service 换算并记录汇率来源。
+value_type: number
+unit: EUR
+period_type: fiscal_year
+boundary:
+  - organization
+consolidation:
+  - financial_control
+  - operational_control
+  - equity_share
+methodology_refs:
+  - ref: eu_2026_1560_vcs
+    clause: B1
+  - ref: eu_2013_34_accounting
+    clause: Art. 2(5)
+sensitivity: confidential
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - erp
+    - historical_answer
+  min_sources: 1
+  max_age_days: 550
+  requires_calculation: false
+  human_confirmation_allowed: false
+validity_rule:
+  min: 0
+  expires_by: period_end_plus_days
+  expires_after_days: 550
+tags:
+  - vsme
+  - cdp_climate
+  - financials

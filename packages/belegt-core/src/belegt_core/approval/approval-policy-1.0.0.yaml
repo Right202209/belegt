@@ -1,0 +1,37 @@
+# Spec: 06 §4.4 approval-policy@1.0.0（原文）
+policy_id: approval-policy
+version: 1.0.0
+ruleset_ref: consistency-rules@1.0.0
+levels:
+  L0: { roles: [compliance_owner], batch: { allowed: true, max_items: 200 }, sla_workdays: 1 }
+  L1: { roles: [compliance_owner], batch: { allowed: true, max_items: 100 }, sla_workdays: 2 }
+  L2: { roles: [compliance_owner], batch: { allowed: true, max_items: 20, same_request: true, require_detail_view: true }, sla_workdays: 3, confirm: [estimate_ack, warn_note] }
+  L3: { roles: [compliance_owner, executive], batch: { allowed: false }, sla_workdays: 3, confirm: [step_up_auth, clause_read_ack] }
+thresholds:
+  amount_l3_eur: "10000"
+  amount_l2_eur: "1000"
+  yoy_change_ratio: "0.30"
+customer_tiers: { tier_a: [], tier_b: [], tier_c: default }
+emission_datapoint_patterns: ["dp:env.ghg.*", "dp:prod.pcf.*", "dp:prod.cbam.see_*", "dp:prod.battery.carbon_footprint_per_kwh"]
+commitment_datapoint_tags: [commitment, legal]
+special:
+  - { when: "legal_commitment && customer_tier == 'tier_a'", roles: [executive] }
+non_answer_subjects:
+  supplier_request_first_send:
+    subject_type: SupplierRequest
+    default_level: L1
+    roles: [compliance_owner, contributor]
+    batch: { allowed: true, max_items: 50, same_template: true }
+    escalate_to_L2_when: ["payload_has_sensitivity_restricted", "supplier_tier == 'A'", "custom_note_present"]
+    L2_roles: [compliance_owner]
+    sla_hours: 48
+    confirm: [rendered_preview_viewed]
+    out_of_scope: [reminders_same_template]
+batch_undo_window_minutes: 10
+escalation: { after_sla_workdays: 1, to: [executive] }
+floors:
+  - "L3.batch.allowed == false"
+  - "legal_commitment => L3"
+  - "first_submission && emission => L3"
+  - "accepted_divergence => L3"
+  - "supplier_request_first_send => approval_required"

@@ -1,0 +1,71 @@
+# Spec: 07 §5（欧盟数据驻留、LLM 仅欧盟端点 + ZDR）、10 §6.1 saas-multi、§6.2 拓扑、§4.5（Hetzner FSN/NBG 主区）
+# helm upgrade --install belegt deploy/helm/belegt -n belegt-app -f values-eu-residency.yaml -f values-external-postgres.yaml
+global:
+  deployProfile: saas-multi
+  environment: prod-eu1
+  dataResidency: eu
+
+zones:
+  createNamespaces: true
+  app:        { namespace: belegt-app }
+  trusted:    { namespace: belegt-trusted }
+  quarantine: { namespace: belegt-quarantine }
+  guard:      { namespace: belegt-guard }
+  nodeSelectors:
+    quarantine: { belegt.io/pool: quarantine }
+    guard: { belegt.io/pool: guard }
+  tolerations:
+    quarantine: [{ key: belegt.io/pool, operator: Equal, value: quarantine, effect: NoSchedule }]
+    guard: [{ key: belegt.io/pool, operator: Equal, value: guard, effect: NoSchedule }]
+
+residency:
+  enforce: true
+  # Hetzner Cloud 区域标签（hcloud CCM：fsn1 / nbg1；灾备 hel1 只在 dr-eu2 集群使用）；AWS 则为 eu-central-1
+  allowedRegions: [fsn1, nbg1, eu-central]
+  extraAllowedEgressDomains: [your-objectstorage.com, outlook.office365.com]
+
+postgresql:
+  hashModulus: 32          # 03 §6.4 多租户
+
+objectStorage:
+  endpoint: https://fsn1.your-objectstorage.com     # 采购前须核实 Object Lock compliance 模式（10 待决 1）
+  bucket: belegt-eu1-prod
+  region: eu-central
+  objectLockMode: COMPLIANCE
+
+llm:
+  # 默认方案 B（10 §4.3）：Mistral 欧盟原生端点；L/V 档位 Bedrock eu-central-1（经 llm 路由配置）
+  baseUrl: https://api.mistral.ai/v1
+  model: mistral-small-latest
+
+egressGateway:
+  replicas: 2
+  allowlist:
+    - .api.mistral.ai
+    - bedrock-runtime.eu-central-1.amazonaws.com
+    - fsn1.your-objectstorage.com
+    - outlook.office365.com
+  allowedPorts: [443]
+
+workerQuarantine:
+  enabled: false           # 代码拆分 tq-quarantine 后开启
+  runtimeClassName: gvisor
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    nginx.ingress.kubernetes.io/enable-modsecurity: "true"         # WAF（10 §6.2 belegt-edge）
+    nginx.ingress.kubernetes.io/enable-owasp-core-rules: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: 50m
+  web: { host: app.belegt.eu, tlsSecret: belegt-web-tls }
+  supplier: { host: lieferant.belegt.eu, tlsSecret: belegt-supplier-tls }
+
+supplier:
+  publicUrl: https://lieferant.belegt.eu
+
+observability:
+  otlpEndpoint: http://otel-collector.belegt-obs.svc:4317
+  serviceMonitor: { enabled: true, labels: { release: kube-prometheus-stack } }
+  prometheusRule: { enabled: true, labels: { release: kube-prometheus-stack } }
+  grafanaDashboards: { enabled: true }

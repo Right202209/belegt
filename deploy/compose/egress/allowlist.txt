@@ -1,0 +1,10 @@
+# Spec: 07 §2.2、§5.3；10 §6.2（egress-gateway FQDN 白名单）
+# 每行一个域名（前导点 = 含子域）。默认只放行欧盟区 LLM 端点；airgap（private-airgap）时清空本文件。
+# 改完执行：docker compose exec egress-gateway squid -k reconfigure
+.api.mistral.ai
+bedrock-runtime.eu-central-1.amazonaws.com
+# 托管 Azure OpenAI EU Data Zone 示例（按实际资源名替换）
+# .openai.azure.com
+# 拉取本地模型（仅联网安装时临时放开）
+# registry.ollama.ai
+# .huggingface.co

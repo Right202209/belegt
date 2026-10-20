@@ -1,0 +1,79 @@
+{{- /* Spec: 10 §6.6（Pod/节点故障 RTO ≤ 5 min 自动）、§3.3（worker 按积压伸缩，CPU HPA 为保底）、§8.6 */ -}}
+{{- $root := . }}
+{{- $items := list
+  (dict "name" "api" "zone" "app" "cfg" .Values.api)
+  (dict "name" "worker" "zone" "trusted" "cfg" .Values.worker)
+  (dict "name" "web" "zone" "app" "cfg" .Values.web) }}
+{{- range $items }}
+{{- $cfg := .cfg }}
+{{- if $cfg.hpa.enabled }}
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "belegt.fullname" $root }}-{{ .name }}
+  namespace: {{ include "belegt.ns" (list $root .zone) }}
+  labels:
+    {{- include "belegt.metaLabels" $root | nindent 4 }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "belegt.fullname" $root }}-{{ .name }}
+  minReplicas: {{ $cfg.hpa.minReplicas }}
+  maxReplicas: {{ $cfg.hpa.maxReplicas }}
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target: { type: Utilization, averageUtilization: {{ $cfg.hpa.targetCPUUtilizationPercentage }} }
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300
+{{- end }}
+{{- if $cfg.pdb.enabled }}
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "belegt.fullname" $root }}-{{ .name }}
+  namespace: {{ include "belegt.ns" (list $root .zone) }}
+  labels:
+    {{- include "belegt.metaLabels" $root | nindent 4 }}
+spec:
+  minAvailable: {{ $cfg.pdb.minAvailable }}
+  selector:
+    matchLabels:
+      {{- include "belegt.selector" (list $root .name .zone) | nindent 6 }}
+{{- end }}
+{{- end }}
+{{- if and .Values.egressGateway.enabled .Values.egressGateway.pdb.enabled }}
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "belegt.fullname" . }}-egress-gateway
+  namespace: {{ include "belegt.ns" (list . "guard") }}
+  labels:
+    {{- include "belegt.metaLabels" . | nindent 4 }}
+spec:
+  minAvailable: {{ .Values.egressGateway.pdb.minAvailable }}
+  selector:
+    matchLabels:
+      {{- include "belegt.selector" (list . "egress-gateway" "guard") | nindent 6 }}
+{{- end }}
+{{- if and .Values.workerQuarantine.enabled .Values.workerQuarantine.pdb.enabled }}
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "belegt.fullname" . }}-worker-quarantine
+  namespace: {{ include "belegt.ns" (list . "quarantine") }}
+  labels:
+    {{- include "belegt.metaLabels" . | nindent 4 }}
+spec:
+  minAvailable: {{ .Values.workerQuarantine.pdb.minAvailable }}
+  selector:
+    matchLabels:
+      {{- include "belegt.selector" (list . "worker-quarantine" "quarantine") | nindent 6 }}
+{{- end }}

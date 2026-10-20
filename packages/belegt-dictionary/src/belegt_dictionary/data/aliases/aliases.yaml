@@ -1,0 +1,11 @@
+schema: belegt.aliases/1
+aliases:
+  - alias: dp:env.ghg.scope2_total
+    target: dp:env.ghg.scope2_location_based
+    kind: deprecated_id
+    since: v2027.1
+    note: 草案中未区分两种方法；默认指向 location-based，market-based 需人工确认（02 §2.5、§3.5）
+  - alias: dp:energy.consumption.green_power_share
+    target: dp:energy.consumption.renewable_share
+    kind: community_alias
+    since: v2027.1

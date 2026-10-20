@@ -1,0 +1,376 @@
+{
+ "id": "TV-10",
+ "title": "舍入边界（ROUND_HALF_EVEN）",
+ "spec": "05 §9 TV-10",
+ "cases": [
+  {
+   "id": "TV-10.tie-down",
+   "description": "2.5 × 0.805 = 2.0125 → HALF_EVEN 2.012（HALF_UP 会得 2.013）",
+   "request": {
+    "method_id": "ghg.scope2.location_based",
+    "methodology_version": "ghg-scope2-location@1.0.0",
+    "factor_set_version": "fs:belegt-example@2026.10",
+    "boundary": "organization",
+    "period": {
+     "start": "2025-01-01",
+     "end": "2025-12-31"
+    },
+    "params": {
+     "consolidation": "operational_control",
+     "grid_factor_key": "test.tie_factor",
+     "grid_region": "DE"
+    },
+    "inputs": [
+     {
+      "name": "electricity_purchased",
+      "ref": "ev_01JE0TV08EL000000000000001#v1",
+      "value": "2.5",
+      "unit": "MWh"
+     }
+    ]
+   },
+   "factor_set_ref": {
+    "id": "fs:belegt-example@2026.10",
+    "path": "fs/belegt-example@2026.10.yaml",
+    "rows_hash": "sha256:25cd7633e6907491a142f0c6cf90224f4403b25fb49957bacb67987bb71faaf9"
+   },
+   "expected": {
+    "result": {
+     "value": "2.012",
+     "unit": "tCO2e",
+     "rounding": {
+      "mode": "half_even",
+      "digits": 3
+     }
+    },
+    "breakdown": [
+     {
+      "name": "electricity_consumption",
+      "value": "2.5",
+      "unit": "MWh"
+     },
+     {
+      "name": "emissions_unrounded",
+      "value": "2.0125",
+      "unit": "tCO2e"
+     }
+    ],
+    "input_hash": "sha256:d5d9729737848579fa2cfc543fa033a7fd48cfa593c05877b0f1a909ece99407"
+   },
+   "tolerance": "0"
+  },
+  {
+   "id": "TV-10.tie-up",
+   "description": "2.7 × 0.805 = 2.1735 → 2.174",
+   "request": {
+    "method_id": "ghg.scope2.location_based",
+    "methodology_version": "ghg-scope2-location@1.0.0",
+    "factor_set_version": "fs:belegt-example@2026.10",
+    "boundary": "organization",
+    "period": {
+     "start": "2025-01-01",
+     "end": "2025-12-31"
+    },
+    "params": {
+     "consolidation": "operational_control",
+     "grid_factor_key": "test.tie_factor",
+     "grid_region": "DE"
+    },
+    "inputs": [
+     {
+      "name": "electricity_purchased",
+      "ref": "ev_01JE0TV08EL000000000000001#v1",
+      "value": "2.7",
+      "unit": "MWh"
+     }
+    ]
+   },
+   "factor_set_ref": {
+    "id": "fs:belegt-example@2026.10",
+    "path": "fs/belegt-example@2026.10.yaml",
+    "rows_hash": "sha256:25cd7633e6907491a142f0c6cf90224f4403b25fb49957bacb67987bb71faaf9"
+   },
+   "expected": {
+    "result": {
+     "value": "2.174",
+     "unit": "tCO2e",
+     "rounding": {
+      "mode": "half_even",
+      "digits": 3
+     }
+    },
+    "breakdown": [
+     {
+      "name": "electricity_consumption",
+      "value": "2.7",
+      "unit": "MWh"
+     },
+     {
+      "name": "emissions_unrounded",
+      "value": "2.1735",
+      "unit": "tCO2e"
+     }
+    ],
+    "input_hash": "sha256:574c62e03c33f80519890820018055e1a0bdffb07f8a345e033c4c93f00863db"
+   },
+   "tolerance": "0"
+  },
+  {
+   "id": "TV-10.zero",
+   "description": "0 → \"0\"（不是 \"0.000\"）",
+   "request": {
+    "method_id": "ghg.scope2.location_based",
+    "methodology_version": "ghg-scope2-location@1.0.0",
+    "factor_set_version": "fs:belegt-example@2026.10",
+    "boundary": "organization",
+    "period": {
+     "start": "2025-01-01",
+     "end": "2025-12-31"
+    },
+    "params": {
+     "consolidation": "operational_control",
+     "grid_factor_key": "test.tie_factor",
+     "grid_region": "DE"
+    },
+    "inputs": [
+     {
+      "name": "electricity_purchased",
+      "ref": "ev_01JE0TV08EL000000000000001#v1",
+      "value": "0",
+      "unit": "MWh"
+     }
+    ]
+   },
+   "factor_set_ref": {
+    "id": "fs:belegt-example@2026.10",
+    "path": "fs/belegt-example@2026.10.yaml",
+    "rows_hash": "sha256:25cd7633e6907491a142f0c6cf90224f4403b25fb49957bacb67987bb71faaf9"
+   },
+   "expected": {
+    "result": {
+     "value": "0",
+     "unit": "tCO2e",
+     "rounding": {
+      "mode": "half_even",
+      "digits": 3
+     }
+    },
+    "breakdown": [
+     {
+      "name": "electricity_consumption",
+      "value": "0",
+      "unit": "MWh"
+     },
+     {
+      "name": "emissions_unrounded",
+      "value": "0",
+      "unit": "tCO2e"
+     }
+    ],
+    "input_hash": "sha256:5f918cd5da2371af72956dc63458a8b5084000f2ed7fc403ab4f36e0642b0798"
+   },
+   "tolerance": "0"
+  },
+  {
+   "id": "TV-10.negative",
+   "description": "期间更正差额 −2.5 MWh → −2.0125 → −2.012",
+   "request": {
+    "method_id": "ghg.scope2.location_based",
+    "methodology_version": "ghg-scope2-location@1.0.0",
+    "factor_set_version": "fs:belegt-example@2026.10",
+    "boundary": "organization",
+    "period": {
+     "start": "2025-01-01",
+     "end": "2025-12-31"
+    },
+    "params": {
+     "consolidation": "operational_control",
+     "grid_factor_key": "test.tie_factor",
+     "grid_region": "DE",
+     "delta": "true"
+    },
+    "inputs": [
+     {
+      "name": "electricity_purchased",
+      "ref": "ev_01JE0TV08EL000000000000001#v1",
+      "value": "-2.5",
+      "unit": "MWh"
+     }
+    ]
+   },
+   "factor_set_ref": {
+    "id": "fs:belegt-example@2026.10",
+    "path": "fs/belegt-example@2026.10.yaml",
+    "rows_hash": "sha256:25cd7633e6907491a142f0c6cf90224f4403b25fb49957bacb67987bb71faaf9"
+   },
+   "expected": {
+    "result": {
+     "value": "-2.012",
+     "unit": "tCO2e",
+     "rounding": {
+      "mode": "half_even",
+      "digits": 3
+     }
+    },
+    "breakdown": [
+     {
+      "name": "electricity_consumption",
+      "value": "-2.5",
+      "unit": "MWh"
+     },
+     {
+      "name": "emissions_unrounded",
+      "value": "-2.0125",
+      "unit": "tCO2e"
+     }
+    ],
+    "input_hash": "sha256:4e47a0b81cae970fb16d9077ece8d07edf0fc98b4fcdbf27f553a4ead3654426"
+   },
+   "tolerance": "0"
+  },
+  {
+   "id": "TV-10.sum-then-round",
+   "description": "两条 2.0125 分项同一计算内相加 → 4.025（先舍入再加会错得 4.024）",
+   "request": {
+    "method_id": "ghg.scope2.location_based",
+    "methodology_version": "ghg-scope2-location@1.0.0",
+    "factor_set_version": "fs:belegt-example@2026.10",
+    "boundary": "organization",
+    "period": {
+     "start": "2025-01-01",
+     "end": "2025-12-31"
+    },
+    "params": {
+     "consolidation": "operational_control",
+     "grid_factor_key": "test.tie_factor",
+     "grid_region": "DE"
+    },
+    "inputs": [
+     {
+      "name": "electricity_purchased_a",
+      "ref": "ev_01JE0TV08EL000000000000001#v1",
+      "value": "2.5",
+      "unit": "MWh"
+     },
+     {
+      "name": "electricity_purchased_b",
+      "ref": "ev_01JE0TV08EB000000000000001#v1",
+      "value": "2.5",
+      "unit": "MWh"
+     }
+    ]
+   },
+   "factor_set_ref": {
+    "id": "fs:belegt-example@2026.10",
+    "path": "fs/belegt-example@2026.10.yaml",
+    "rows_hash": "sha256:25cd7633e6907491a142f0c6cf90224f4403b25fb49957bacb67987bb71faaf9"
+   },
+   "expected": {
+    "result": {
+     "value": "4.025",
+     "unit": "tCO2e",
+     "rounding": {
+      "mode": "half_even",
+      "digits": 3
+     }
+    },
+    "breakdown": [
+     {
+      "name": "electricity_consumption",
+      "value": "5",
+      "unit": "MWh"
+     },
+     {
+      "name": "electricity_purchased_a_emissions",
+      "value": "2.0125",
+      "unit": "tCO2e"
+     },
+     {
+      "name": "electricity_purchased_b_emissions",
+      "value": "2.0125",
+      "unit": "tCO2e"
+     },
+     {
+      "name": "emissions_unrounded",
+      "value": "4.025",
+      "unit": "tCO2e"
+     }
+    ],
+    "input_hash": "sha256:e339f810135c566a052880e73c6b1e15f3cdca2c8917ba6d5a55f8945f0efa35"
+   },
+   "tolerance": "0"
+  },
+  {
+   "id": "TV-10.err-negative",
+   "description": "错误向量：负值未声明 delta → CALC_DEC_INVALID",
+   "request": {
+    "method_id": "ghg.scope2.location_based",
+    "methodology_version": "ghg-scope2-location@1.0.0",
+    "factor_set_version": "fs:belegt-example@2026.10",
+    "boundary": "organization",
+    "period": {
+     "start": "2025-01-01",
+     "end": "2025-12-31"
+    },
+    "params": {
+     "consolidation": "operational_control",
+     "grid_factor_key": "test.tie_factor",
+     "grid_region": "DE"
+    },
+    "inputs": [
+     {
+      "name": "electricity_purchased",
+      "ref": "ev_01JE0TV08EL000000000000001#v1",
+      "value": "-2.5",
+      "unit": "MWh"
+     }
+    ]
+   },
+   "factor_set_ref": {
+    "id": "fs:belegt-example@2026.10",
+    "path": "fs/belegt-example@2026.10.yaml",
+    "rows_hash": "sha256:25cd7633e6907491a142f0c6cf90224f4403b25fb49957bacb67987bb71faaf9"
+   },
+   "expected": {
+    "error_code": "CALC_DEC_INVALID"
+   },
+   "tolerance": "0"
+  },
+  {
+   "id": "TV-10.err-dec",
+   "description": "错误向量：科学计数法 1e3 → CALC_DEC_INVALID",
+   "request": {
+    "method_id": "ghg.scope2.location_based",
+    "methodology_version": "ghg-scope2-location@1.0.0",
+    "factor_set_version": "fs:belegt-example@2026.10",
+    "boundary": "organization",
+    "period": {
+     "start": "2025-01-01",
+     "end": "2025-12-31"
+    },
+    "params": {
+     "consolidation": "operational_control",
+     "grid_factor_key": "test.tie_factor",
+     "grid_region": "DE"
+    },
+    "inputs": [
+     {
+      "name": "electricity_purchased",
+      "ref": "ev_01JE0TV08EL000000000000001#v1",
+      "value": "1e3",
+      "unit": "MWh"
+     }
+    ]
+   },
+   "factor_set_ref": {
+    "id": "fs:belegt-example@2026.10",
+    "path": "fs/belegt-example@2026.10.yaml",
+    "rows_hash": "sha256:25cd7633e6907491a142f0c6cf90224f4403b25fb49957bacb67987bb71faaf9"
+   },
+   "expected": {
+    "error_code": "CALC_DEC_INVALID"
+   },
+   "tolerance": "0"
+  }
+ ]
+}

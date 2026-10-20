@@ -1,0 +1,36 @@
+id: dp:supply.code_of_conduct.supplier_coc_in_place
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Verhaltenskodex für Lieferanten vorhanden
+  en: Supplier code of conduct in place
+  zh: 是否有供应商行为准则
+definition:
+  en: Whether the undertaking has a written code of conduct that sets environmental, social and ethical requirements for its own suppliers and is communicated to them. Excludes the undertaking's internal employee code.
+  de: Ob das Unternehmen einen schriftlichen Verhaltenskodex mit Umwelt-, Sozial- und Ethikanforderungen an seine eigenen Lieferanten hat und diesen kommuniziert. Interner Mitarbeiterkodex ausgeschlossen.
+  zh: 企业是否有书面的、向其供应商传达的、对供应商提出环境/社会/伦理要求的行为准则；不含企业内部员工守则。
+value_type: bool
+period_type: point_in_time
+boundary:
+  - organization
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - human_confirmation
+    - historical_answer
+  min_sources: 1
+  max_age_days: 365
+  requires_calculation: false
+  human_confirmation_allowed: true
+validity_rule:
+  expires_by: evidence_valid_until
+tags:
+  - cdp_climate
+  - oem_custom
+  - due_diligence

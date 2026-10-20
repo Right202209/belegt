@@ -1,0 +1,41 @@
+id: dp:prod.pcf.primary_data_share
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Anteil Primärdaten (PCF)
+  en: Primary data share of the PCF
+  zh: 一手数据占比
+definition:
+  en: Share of the product carbon footprint (by emissions) that is calculated from primary, supplier- or site-specific activity data rather than secondary database values, as percentage per the PACT definition.
+  de: Anteil des PCF (nach Emissionen), der auf primären, lieferanten- oder standortspezifischen Aktivitätsdaten statt Sekundärdaten beruht, in Prozent gemäß PACT.
+  zh: 按 PACT 定义，产品碳足迹中（按排放量计）基于一手（供应商/场址特定）活动数据而非二手数据库计算部分的百分比。
+value_type: number
+unit: '%'
+period_type: validity_range
+boundary:
+  - product
+methodology_refs:
+  - ref: pact_tech_spec_v2
+    note: primaryDataShare
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - supplier_response
+    - historical_answer
+  min_sources: 1
+  max_age_days: 1095
+  requires_calculation: true
+  human_confirmation_allowed: false
+validity_rule:
+  min: 0
+  max: 100
+  expires_by: evidence_valid_until
+related_datapoints:
+  - id: dp:prod.pcf.cradle_to_gate
+    relation: see_also
+tags:
+  - pact_pcf
+  - catenax_pcf
+  - pcf

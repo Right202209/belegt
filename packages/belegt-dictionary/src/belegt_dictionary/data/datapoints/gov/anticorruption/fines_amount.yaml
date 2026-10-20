@@ -1,0 +1,46 @@
+id: dp:gov.anticorruption.fines_amount
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Bußgelder wegen Korruption
+  en: Fines for corruption or bribery
+  zh: 腐败罚款金额
+definition:
+  en: Total amount of fines imposed on the undertaking in the reporting period following convictions counted in dp:gov.anticorruption.convictions_count, in euro.
+  de: Gesamtbetrag der im Berichtszeitraum infolge der in dp:gov.anticorruption.convictions_count gezählten Verurteilungen verhängten Bußgelder in Euro.
+  zh: 报告期内因 dp:gov.anticorruption.convictions_count 所计定罪而被处罚款的总额（欧元）。
+value_type: number
+unit: EUR
+period_type: reporting_period
+boundary:
+  - organization
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: eu_2026_1560_vcs
+    clause: B11 Para 43
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - erp
+    - human_confirmation
+    - historical_answer
+  min_sources: 1
+  max_age_days: 550
+  requires_calculation: false
+  human_confirmation_allowed: true
+validity_rule:
+  min: 0
+  expires_by: period_end_plus_days
+  expires_after_days: 550
+related_datapoints:
+  - id: dp:gov.anticorruption.convictions_count
+    relation: see_also
+tags:
+  - vsme
+  - anticorruption
+  - human_confirmable_number

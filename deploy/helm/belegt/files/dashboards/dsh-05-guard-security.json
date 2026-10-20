@@ -1,0 +1,305 @@
+{
+  "uid": "dsh-05",
+  "title": "DSH-05 守卫与安全",
+  "description": "GP 拒绝、halted 原因、egress.block、注入标记、审计链校验",
+  "tags": [
+    "belegt",
+    "dsh-05"
+  ],
+  "timezone": "Europe/Berlin",
+  "schemaVersion": 39,
+  "version": 1,
+  "editable": false,
+  "time": {
+    "from": "now-24h",
+    "to": "now"
+  },
+  "refresh": "1m",
+  "templating": {
+    "list": [
+      {
+        "name": "datasource",
+        "type": "datasource",
+        "query": "prometheus",
+        "current": {
+          "text": "Prometheus",
+          "value": "belegt-prom"
+        },
+        "hide": 2
+      }
+    ]
+  },
+  "annotations": {
+    "list": []
+  },
+  "links": [
+    {
+      "title": "Runbooks",
+      "type": "link",
+      "url": "deploy/ops/alerts-runbook.md",
+      "targetBlank": true
+    }
+  ],
+  "panels": [
+    {
+      "id": 1,
+      "type": "timeseries",
+      "title": "guard 决策（按检查/结果）",
+      "description": "",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "belegt-prom"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "belegt-prom"
+          },
+          "expr": "sum by (check, result) (rate(belegt_guard_decisions_total[5m]))",
+          "legendFormat": "{{check}} {{result}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ops"
+        },
+        "overrides": []
+      },
+      "options": {}
+    },
+    {
+      "id": 2,
+      "type": "timeseries",
+      "title": "halted（policy / budget）",
+      "description": "",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "belegt-prom"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 8,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "belegt-prom"
+          },
+          "expr": "sum by (result) (increase(belegt_guard_decisions_total{result=~\"halted.*\"}[1h]))",
+          "legendFormat": "{{result}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {}
+    },
+    {
+      "id": 3,
+      "type": "timeseries",
+      "title": "外发结果（egress，ALR-11）",
+      "description": "",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "belegt-prom"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 8,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "belegt-prom"
+          },
+          "expr": "sum by (channel, result) (rate(belegt_egress_messages_total[5m]))",
+          "legendFormat": "{{channel}} {{result}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ops"
+        },
+        "overrides": []
+      },
+      "options": {}
+    },
+    {
+      "id": 4,
+      "type": "stat",
+      "title": "审计链断点（SLO-07 必须为 0）",
+      "description": "",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "belegt-prom"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 12,
+        "w": 8,
+        "h": 4
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "belegt-prom"
+          },
+          "expr": "max(belegt_audit_chain_breaks)",
+          "legendFormat": "breaks"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "none"
+      }
+    },
+    {
+      "id": 5,
+      "type": "stat",
+      "title": "距上次审计链校验",
+      "description": "",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "belegt-prom"
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 12,
+        "w": 8,
+        "h": 4
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "belegt-prom"
+          },
+          "expr": "time() - max(belegt_audit_chain_last_verified_timestamp_seconds)",
+          "legendFormat": ""
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 7200
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "none"
+      }
+    },
+    {
+      "id": 6,
+      "type": "stat",
+      "title": "RLS / 授权拒绝（authz.deny）",
+      "description": "NFR-01 ②：生产 authz.deny 计数",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "belegt-prom"
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 12,
+        "w": 8,
+        "h": 4
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "belegt-prom"
+          },
+          "expr": "sum(rate(belegt_authz_denied_total[5m]))",
+          "legendFormat": "authz.deny"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "ops"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "background",
+        "graphMode": "none"
+      }
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+id: dp:org.identity.nace_code
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: NACE-Code
+  en: NACE activity code
+  zh: NACE 行业代码
+definition:
+  en: Main economic activity of the undertaking classified with the statistical classification NACE, at section or division level. Where several activities exist, give the one with the largest share of turnover.
+  de: Haupttätigkeit des Unternehmens nach der statistischen Systematik NACE (Abschnitt oder Abteilung). Bei mehreren Tätigkeiten die mit dem größten Umsatzanteil.
+  zh: 按 NACE 统计分类（门类或大类）标注的企业主要经济活动；有多项活动时取营业额占比最大者。
+value_type: enum
+enum_ref: enums/nace_rev2.yaml
+period_type: point_in_time
+boundary:
+  - organization
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: eu_2026_1560_vcs
+    clause: B1
+  - ref: nace_rev2
+sensitivity: public
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - public_source
+    - human_confirmation
+    - historical_answer
+  min_sources: 1
+  max_age_days: 730
+  requires_calculation: false
+  human_confirmation_allowed: true
+validity_rule:
+  expires_by: evidence_valid_until
+tags:
+  - vsme
+  - cdp_climate
+  - identity

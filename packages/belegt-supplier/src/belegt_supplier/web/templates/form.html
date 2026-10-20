@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block main %}
+<h1>{{ t('requests_data', customer=m.customer_name, supplier=m.supplier_name) }}</h1>
+<p class="muted">{{ t('period') }}: {{ period_txt }} · {{ t('due') }}: {{ due_long }}</p>
+{% if saved %}<p class="ok" role="status">✓ {{ t('draft_saved') }}</p>{% endif %}
+{% if notice %}<p class="notice" role="status">{{ t(notice) }}</p>{% endif %}
+<form id="draft-form" method="post" action="/r/{{ token }}/form" data-api="/supplier-api/v1/requests/{{ token }}/draft" data-saved="{{ t('draft_saved') }}" data-conflict="{{ t('draft_conflict') }}">
+  <input type="hidden" name="csrf" value="{{ csrf }}">
+  <input type="hidden" name="draft_version" value="{{ draft_version }}">
+  {% for g in groups %}
+  <section class="card">
+    <h2>{% if g.product %}{{ g.product.name }}{% if g.product.cn_code %} · CN {{ g.product.cn_code }}{% endif %}{% else %}{{ t('organization_level') }}{% endif %}</h2>
+    {% for card in g.cards %}{% include "_field.html" %}{% endfor %}
+  </section>
+  {% endfor %}
+  {% if not readonly %}
+  <div class="actions">
+    <span id="autosave" class="muted" role="status" aria-live="polite"></span>
+    <button type="submit" name="action" value="save" class="secondary">{{ t('save_draft') }}</button>
+    <button type="submit" name="action" value="review">{{ t('review_submit') }} →</button>
+  </div>
+  {% endif %}
+</form>
+{% if not readonly %}
+<section class="card" id="upload">
+  <h2>{{ t('upload_title') }}</h2>
+  <p class="muted">{{ t('upload_hint') }}</p>
+  <form method="post" action="/r/{{ token }}/upload" enctype="multipart/form-data">
+    <input type="hidden" name="csrf" value="{{ csrf }}">
+    <input type="file" name="file" required>
+    <button type="submit">{{ t('upload_button') }}</button>
+  </form>
+  {% if uploads %}<ul class="files">{% for u in uploads %}
+    <li>{{ u.filename }} <small>{{ u.sha256[:19] }}…</small>
+      {% if u.filename.endswith('.xlsx') %}
+      <form method="post" action="/r/{{ token }}/parse" class="inline">
+        <input type="hidden" name="csrf" value="{{ csrf }}"><input type="hidden" name="sha256" value="{{ u.sha256 }}">
+        <button type="submit" class="secondary">{{ t('parse_excel') }}</button>
+      </form>{% endif %}
+    </li>{% endfor %}</ul>{% endif %}
+</section>
+{% endif %}
+{% endblock %}

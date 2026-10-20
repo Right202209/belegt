@@ -1,0 +1,18 @@
+# Spec: 06 §2.2 CR-023
+rule_id: CR-023
+rule_version: 1.0.0
+category: period
+severity: warn
+title:
+  de: Gemischte Berichtszeiträume
+  en: Mixed reporting periods
+scope: request
+triggers:
+- answer_write
+- pre_submit_gate
+- daily_batch
+plugin: cr_023
+assert: distinct_periods <= 1 || all_annotated
+default_action: open_conflict
+explain_template: cr-023
+tests: tests/test_consistency_rules.py::test_cr_023

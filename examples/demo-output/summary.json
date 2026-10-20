@@ -1,0 +1,278 @@
+{
+  "request_id": "req_4YYTHZ15QSRSER4811J3XJ69MR",
+  "request_status": "archived",
+  "workflow_state": "completed",
+  "reached": [
+    "received",
+    "triaged",
+    "parsed",
+    "awaiting_human",
+    "parsed",
+    "mapped",
+    "evidence_gathering",
+    "awaiting_human",
+    "evidence_gathering",
+    "awaiting_human",
+    "evidence_gathering",
+    "awaiting_human",
+    "evidence_gathering",
+    "awaiting_supplier",
+    "evidence_gathering",
+    "awaiting_human",
+    "evidence_gathering",
+    "awaiting_human",
+    "evidence_gathering",
+    "drafting",
+    "auditing",
+    "awaiting_human",
+    "auditing",
+    "awaiting_human",
+    "auditing",
+    "in_review",
+    "approved",
+    "filling",
+    "awaiting_human",
+    "filling",
+    "submitted",
+    "archived"
+  ],
+  "questions": {
+    "total": 100,
+    "mapped": 100,
+    "mapping_by": {
+      "PROMO-MAP-0.85": 93,
+      "human/CQ": 7
+    },
+    "status": {
+      "mapped": 100
+    }
+  },
+  "evidence": {
+    "total": 39,
+    "by_source_status": {
+      "document:verified": 7,
+      "erp:verified": 28,
+      "supplier_response:verified": 4
+    }
+  },
+  "calculations": [
+    {
+      "method": "ghg.scope2.location_based",
+      "result": "1658.08 tCO2e",
+      "status": "computed"
+    },
+    {
+      "method": "ghg.scope2.market_based",
+      "result": "2027.2 tCO2e",
+      "status": "computed"
+    },
+    {
+      "method": "ghg.scope1.total",
+      "result": "481.92 tCO2e",
+      "status": "computed"
+    }
+  ],
+  "scope": {
+    "scope1": "481.92 tCO2e",
+    "scope2_location": "1658.08 tCO2e",
+    "scope2_market": "2027.2 tCO2e"
+  },
+  "answers": {
+    "total": 92,
+    "effective": 92,
+    "by_status": {
+      "submitted": 92
+    },
+    "numbers": 37,
+    "numbers_with_ref": 37,
+    "questions_answered": 92,
+    "questions_pending_manual": 8
+  },
+  "approvals": {
+    "by_status": {
+      "approved": 94
+    },
+    "pending": 0,
+    "answer_by_level": {
+      "L1": 33,
+      "L2": 49,
+      "L3": 10
+    }
+  },
+  "conflicts": [
+    {
+      "id": "cfl_01M5AKFS8TZGSFG1N5170Z20YZ",
+      "rule_id": "CR-004",
+      "severity": "warning",
+      "status": "open",
+      "datapoint": "dp:cert.iso50001.valid_until@1.0.0",
+      "handling": "H-CWRN (warn_note bei Freigabe)",
+      "resolution": null,
+      "explanation_de": "Prüfregel (Gültigkeit/Aktualität) für dp:cert.iso50001.valid_until: die Werte 27 d sind nicht konsistent. Bitte einen gültigen Nachweis beschaffen oder die Verlängerung einleiten."
+    },
+    {
+      "id": "cfl_01M5AKFSKF48BFTF1WX4E6FX7H",
+      "rule_id": "CR-007",
+      "severity": "blocking",
+      "status": "resolved",
+      "datapoint": "dp:prod.cbam.production_route@1.0.0",
+      "handling": "H-C007",
+      "resolution": "corrected",
+      "explanation_de": "Prüfregel (kundenübergreifende Abweichung) für dp:prod.cbam.production_route: die Angaben sind nicht konsistent. Bitte Methodik vereinheitlichen oder die Abweichung mit Kundenvorgabe dokumentieren. Blockiert die Übermittlung."
+    },
+    {
+      "id": "cfl_01M5AKFS9FM0ARZ0KQHTVX518M",
+      "rule_id": "CR-013",
+      "severity": "warning",
+      "status": "resolved",
+      "datapoint": "dp:cert.iso50001.valid_until@1.0.0",
+      "handling": "H-CWRN (warn_note bei Freigabe)",
+      "resolution": "auto_cleared",
+      "explanation_de": "Prüfregel (Gültigkeit/Aktualität) für dp:cert.iso50001.valid_until: die Werte 1 sind nicht konsistent. Bitte einen gültigen Nachweis beschaffen oder die Verlängerung einleiten."
+    },
+    {
+      "id": "cfl_01M5AKFS9MR4MHGNF367Q357YX",
+      "rule_id": "CR-032",
+      "severity": "blocking",
+      "status": "resolved",
+      "datapoint": "dp:prod.cbam.production_route@1.0.0",
+      "handling": "H-C032",
+      "resolution": "corrected",
+      "explanation_de": "Prüfregel (Rechenkonsistenz) für dp:prod.cbam.production_route: die Werte 1 sind nicht konsistent. Mögliche Ursachen: Einheit, Abgrenzung, Zeitraum oder Erfassungsfehler. Blockiert die Übermittlung."
+    }
+  ],
+  "closed_questions": {
+    "total": 13,
+    "answered": 13,
+    "by_kind": {
+      "single_choice": 6,
+      "numeric_confirm": 5,
+      "yes_no": 2
+    }
+  },
+  "supplier_requests": [
+    {
+      "id": "sreq_269DNPJMD4V6HXERNQAMH91A0W",
+      "status": "reviewed",
+      "template": "stpl:cbam_see_request.en@1.0.0",
+      "datapoints": 4
+    }
+  ],
+  "emails_sent": 1,
+  "llm": {
+    "calls": 80,
+    "tokens_in": 88264,
+    "tokens_out": 8443,
+    "cost_eur": "0.0688",
+    "target_eur_p95": "3",
+    "hard_limit_eur": "5",
+    "budget_warnings": [],
+    "by_agent": {
+      "answer-drafter": "0.0178",
+      "evidence-miner": "0.0014",
+      "question-parser": "0.0496",
+      "upstream-chaser": "0.0000"
+    }
+  },
+  "trace_spans": 106,
+  "human_actions": {
+    "H-CQ": 12,
+    "H-MAP": 1,
+    "H-SREQ": 1,
+    "H-C032-MAP": 1,
+    "H-C032": 1,
+    "H-C007": 1,
+    "H-APR(batch items)": 33,
+    "H-APR": 59,
+    "H-SUB": 1
+  },
+  "trail": [
+    {
+      "state": "awaiting_human",
+      "pending": 6,
+      "status": "awaiting_human",
+      "t_s": 5.45
+    },
+    {
+      "state": "awaiting_human",
+      "pending": 1,
+      "status": "awaiting_human",
+      "t_s": 6.47
+    },
+    {
+      "state": "awaiting_human",
+      "pending": 1,
+      "status": "awaiting_human",
+      "t_s": 7.1
+    },
+    {
+      "state": "awaiting_human",
+      "pending": 1,
+      "status": "awaiting_human",
+      "t_s": 8.13
+    },
+    {
+      "state": "awaiting_supplier",
+      "pending": 1,
+      "status": "awaiting_supplier",
+      "t_s": 8.22
+    },
+    {
+      "state": "awaiting_human",
+      "pending": 4,
+      "status": "awaiting_human",
+      "t_s": 8.94
+    },
+    {
+      "state": "awaiting_human",
+      "pending": 1,
+      "status": "awaiting_human",
+      "t_s": 9.61
+    },
+    {
+      "state": "awaiting_human",
+      "pending": 1,
+      "status": "awaiting_human",
+      "t_s": 11.82
+    },
+    {
+      "state": "awaiting_human",
+      "pending": 1,
+      "status": "awaiting_human",
+      "t_s": 12.14
+    },
+    {
+      "state": "in_review",
+      "pending": 92,
+      "status": "in_review",
+      "t_s": 13.29
+    },
+    {
+      "state": "awaiting_human",
+      "pending": 1,
+      "status": "awaiting_human",
+      "t_s": 18.92
+    },
+    {
+      "state": "completed",
+      "pending": 0,
+      "status": "archived",
+      "t_s": 19.58
+    }
+  ],
+  "duration_s": 23.19,
+  "export": {
+    "export_blob": "sha256:5b250d4c797dfc862bfd85e1c78ebf5229614665ccb2c7389caa99af26c6e640",
+    "export_input_hash": "sha256:a4a4bdc73b625c4053cc92c229feac5d250de42e75af39475d797458c8757644",
+    "written": 92,
+    "rejected": [],
+    "auditpack_verified": true,
+    "auditpack_problems": [],
+    "auditpack_files": 208
+  },
+  "outputs": {
+    "filled_file": "examples/demo-output/filled_oem_fragebogen_de_100.xlsx",
+    "auditpack": "examples/demo-output/auditpack_req_4YYTHZ15QSRSER4811J3XJ69MR.zip",
+    "summary": "examples/demo-output/summary.json"
+  }
+}

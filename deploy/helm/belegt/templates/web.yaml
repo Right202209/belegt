@@ -1,0 +1,71 @@
+{{- /* Spec: 01（审批台）、10 §3.4；deploy/docker/web.Dockerfile（nginx-unprivileged :8080，/api/ 反代 graph-api） */ -}}
+{{- $ns := include "belegt.ns" (list . "app") }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "belegt.fullname" . }}-web
+  namespace: {{ $ns }}
+  labels:
+    {{- include "belegt.labels" . | nindent 4 }}
+    {{- include "belegt.selector" (list . "web" "app") | nindent 4 }}
+spec:
+  {{- if not .Values.web.hpa.enabled }}
+  replicas: {{ .Values.web.replicas }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "belegt.selector" (list . "web" "app") | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "belegt.labels" . | nindent 8 }}
+        {{- include "belegt.selector" (list . "web" "app") | nindent 8 }}
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 101
+        runAsGroup: 101
+        fsGroup: 101
+        seccompProfile: { type: RuntimeDefault }
+      {{- with .Values.global.imagePullSecrets }}
+      imagePullSecrets: {{ toYaml . | nindent 8 }}
+      {{- end }}
+      {{- include "belegt.scheduling" (list . "app") | nindent 6 }}
+      containers:
+        - name: web
+          image: {{ include "belegt.image" (list . .Values.image.web) }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: BELEGT_API_UPSTREAM
+              value: {{ printf "http://%s-api.%s.svc:%v" (include "belegt.fullname" .) $ns .Values.api.service.port | quote }}
+          ports:
+            - { name: http, containerPort: 8080, protocol: TCP }
+          readinessProbe:
+            httpGet: { path: /healthz, port: http }
+          livenessProbe:
+            httpGet: { path: /healthz, port: http }
+          resources:
+            {{- toYaml .Values.web.resources | nindent 12 }}
+          securityContext:
+            {{- include "belegt.containerSecurityContext" . | nindent 12 }}
+          volumeMounts:
+            - { name: tmp, mountPath: /tmp }
+            - { name: nginx-conf, mountPath: /etc/nginx/conf.d }
+      volumes:
+        {{- include "belegt.tmpVolume" . | nindent 8 }}
+        - name: nginx-conf
+          emptyDir: { medium: Memory, sizeLimit: 1Mi }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "belegt.fullname" . }}-web
+  namespace: {{ $ns }}
+  labels:
+    {{- include "belegt.metaLabels" . | nindent 4 }}
+spec:
+  selector:
+    {{- include "belegt.selector" (list . "web" "app") | nindent 4 }}
+  ports:
+    - { name: http, port: {{ .Values.web.service.port }}, targetPort: http, protocol: TCP }

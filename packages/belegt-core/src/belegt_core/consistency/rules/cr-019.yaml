@@ -1,0 +1,19 @@
+# Spec: 06 §2.2 CR-019
+rule_id: CR-019
+rule_version: 1.0.0
+category: unit
+severity: warn
+title:
+  de: tCO2 statt tCO2e
+  en: tCO2 used for a CO2e datapoint
+scope: answer
+triggers:
+- answer_write
+- pre_submit_gate
+- daily_batch
+- context_change
+plugin: cr_019
+assert: '!(raw_unit in [''tCO2'', ''kgCO2''] && dp_unit in [''tCO2e'', ''kgCO2e''])'
+default_action: open_conflict
+explain_template: cr-019
+tests: tests/test_consistency_rules.py::test_cr_019

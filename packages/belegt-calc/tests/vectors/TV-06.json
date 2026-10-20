@@ -1,0 +1,688 @@
+{
+ "id": "TV-06",
+ "title": "PCF 分摊（产品 A，cut-off + 机时分摊）",
+ "spec": "05 §9 TV-06",
+ "cases": [
+  {
+   "id": "TV-06",
+   "description": "产品 A：(2772 + 720) / 1200 = 2.91 kgCO2e/kg",
+   "request": {
+    "method_id": "pcf.cradle_to_gate",
+    "methodology_version": "pcf-iso14067-pact@1.0.0",
+    "factor_set_version": "fs:belegt-example@2026.10",
+    "boundary": "product:prod_01JE0TV04PA000000000000001",
+    "period": {
+     "start": "2025-01-01",
+     "end": "2025-12-31"
+    },
+    "params": {
+     "allocation": "physical.machine_hours",
+     "declared_unit": "kg",
+     "pact_spec": "3.0.3",
+     "recycling": "cut_off"
+    },
+    "inputs": [
+     {
+      "name": "coil_consumed",
+      "ref": "ev_01JE0TV04CA000000000000001#v1",
+      "value": "1320",
+      "unit": "t"
+     },
+     {
+      "name": "coil_pcf",
+      "ref": "ev_01JE0TV04CP000000000000001#v1",
+      "value": "2.1",
+      "unit": "kgCO2e/kg"
+     },
+     {
+      "name": "machine_hours_product",
+      "ref": "ev_01JE0TV04HA000000000000001#v1",
+      "value": "6000",
+      "unit": "h"
+     },
+     {
+      "name": "machine_hours_site",
+      "ref": "ev_01JE0TV04HS000000000000001#v1",
+      "value": "10000",
+      "unit": "h"
+     },
+     {
+      "name": "output_product",
+      "ref": "ev_01JE0TV04QA000000000000001#v1",
+      "value": "1200",
+      "unit": "t"
+     },
+     {
+      "name": "site_scope1",
+      "ref": "calc_01JE0TV04S1000000000000001#v1",
+      "value": "400",
+      "unit": "tCO2e"
+     },
+     {
+      "name": "site_scope2_market",
+      "ref": "calc_01JE0TV04S2000000000000001#v1",
+      "value": "800",
+      "unit": "tCO2e"
+     }
+    ]
+   },
+   "factor_set_ref": {
+    "id": "fs:belegt-example@2026.10",
+    "path": "fs/belegt-example@2026.10.yaml",
+    "rows_hash": "sha256:25cd7633e6907491a142f0c6cf90224f4403b25fb49957bacb67987bb71faaf9"
+   },
+   "expected": {
+    "result": {
+     "value": "2.91",
+     "unit": "kgCO2e/kg",
+     "rounding": {
+      "mode": "half_even",
+      "digits": 4
+     }
+    },
+    "breakdown": [
+     {
+      "name": "material_emissions",
+      "value": "2772",
+      "unit": "tCO2e"
+     },
+     {
+      "name": "shared_emissions",
+      "value": "1200",
+      "unit": "tCO2e"
+     },
+     {
+      "name": "allocation_share",
+      "value": "0.6",
+      "unit": "1"
+     },
+     {
+      "name": "allocated_shared_emissions",
+      "value": "720",
+      "unit": "tCO2e"
+     },
+     {
+      "name": "total_emissions",
+      "value": "3492",
+      "unit": "tCO2e"
+     },
+     {
+      "name": "declared_unit_count",
+      "value": "1200000",
+      "unit": "kg"
+     },
+     {
+      "name": "pcf_excluding_biogenic",
+      "value": "2.91",
+      "unit": "kgCO2e/kg"
+     },
+     {
+      "name": "biogenic_co2_uptake",
+      "value": "0",
+      "unit": "kgCO2e/kg"
+     },
+     {
+      "name": "pcf_unrounded",
+      "value": "2.91",
+      "unit": "kgCO2e/kg"
+     }
+    ],
+    "input_hash": "sha256:01b59ef8ea044d572b17cc6347510b91b5df742e685ddd42745e4eb9953e0eff"
+   },
+   "tolerance": "0"
+  },
+  {
+   "id": "TV-06.B",
+   "description": "产品 B：(693 + 480) / 300 = 3.91",
+   "request": {
+    "method_id": "pcf.cradle_to_gate",
+    "methodology_version": "pcf-iso14067-pact@1.0.0",
+    "factor_set_version": "fs:belegt-example@2026.10",
+    "boundary": "product:prod_01JE0TV04PB000000000000001",
+    "period": {
+     "start": "2025-01-01",
+     "end": "2025-12-31"
+    },
+    "params": {
+     "allocation": "physical.machine_hours",
+     "declared_unit": "kg",
+     "pact_spec": "3.0.3",
+     "recycling": "cut_off"
+    },
+    "inputs": [
+     {
+      "name": "coil_consumed",
+      "ref": "ev_01JE0TV04CB000000000000001#v1",
+      "value": "330",
+      "unit": "t"
+     },
+     {
+      "name": "coil_pcf",
+      "ref": "ev_01JE0TV04CP000000000000001#v1",
+      "value": "2.1",
+      "unit": "kgCO2e/kg"
+     },
+     {
+      "name": "machine_hours_product",
+      "ref": "ev_01JE0TV04HB000000000000001#v1",
+      "value": "4000",
+      "unit": "h"
+     },
+     {
+      "name": "machine_hours_site",
+      "ref": "ev_01JE0TV04HS000000000000001#v1",
+      "value": "10000",
+      "unit": "h"
+     },
+     {
+      "name": "output_product",
+      "ref": "ev_01JE0TV04QB000000000000001#v1",
+      "value": "300",
+      "unit": "t"
+     },
+     {
+      "name": "site_scope1",
+      "ref": "calc_01JE0TV04S1000000000000001#v1",
+      "value": "400",
+      "unit": "tCO2e"
+     },
+     {
+      "name": "site_scope2_market",
+      "ref": "calc_01JE0TV04S2000000000000001#v1",
+      "value": "800",
+      "unit": "tCO2e"
+     }
+    ]
+   },
+   "factor_set_ref": {
+    "id": "fs:belegt-example@2026.10",
+    "path": "fs/belegt-example@2026.10.yaml",
+    "rows_hash": "sha256:25cd7633e6907491a142f0c6cf90224f4403b25fb49957bacb67987bb71faaf9"
+   },
+   "expected": {
+    "result": {
+     "value": "3.91",
+     "unit": "kgCO2e/kg",
+     "rounding": {
+      "mode": "half_even",
+      "digits": 4
+     }
+    },
+    "breakdown": [
+     {
+      "name": "material_emissions",
+      "value": "693",
+      "unit": "tCO2e"
+     },
+     {
+      "name": "shared_emissions",
+      "value": "1200",
+      "unit": "tCO2e"
+     },
+     {
+      "name": "allocation_share",
+      "value": "0.4",
+      "unit": "1"
+     },
+     {
+      "name": "allocated_shared_emissions",
+      "value": "480",
+      "unit": "tCO2e"
+     },
+     {
+      "name": "total_emissions",
+      "value": "1173",
+      "unit": "tCO2e"
+     },
+     {
+      "name": "declared_unit_count",
+      "value": "300000",
+      "unit": "kg"
+     },
+     {
+      "name": "pcf_excluding_biogenic",
+      "value": "3.91",
+      "unit": "kgCO2e/kg"
+     },
+     {
+      "name": "biogenic_co2_uptake",
+      "value": "0",
+      "unit": "kgCO2e/kg"
+     },
+     {
+      "name": "pcf_unrounded",
+      "value": "3.91",
+      "unit": "kgCO2e/kg"
+     }
+    ],
+    "input_hash": "sha256:6dff6e7583127632d0f5f6c8ac27afa8a3d8dcc3a773cd383db3d03ae8753d40"
+   },
+   "tolerance": "0"
+  },
+  {
+   "id": "TV-06.dq-A",
+   "description": "产品 A 数据质量：PDS 68.25%，DQR 1.79 / 1.79 / 1",
+   "request": {
+    "method_id": "pcf.data_quality",
+    "methodology_version": "pcf-iso14067-pact@1.0.0",
+    "factor_set_version": "fs:belegt-example@2026.10",
+    "boundary": "product:prod_01JE0TV04PA000000000000001",
+    "period": {
+     "start": "2025-01-01",
+     "end": "2025-12-31"
+    },
+    "params": {
+     "pact_spec": "3.0.3"
+    },
+    "inputs": [
+     {
+      "name": "coil_emissions",
+      "ref": "calc_01JE0TV04MA000000000000001#v1",
+      "value": "2772",
+      "unit": "tCO2e"
+     },
+     {
+      "name": "coil_pds",
+      "ref": "ev_01JE0TV04CP000000000000001#v1",
+      "value": "60",
+      "unit": "%"
+     },
+     {
+      "name": "coil_dqr_technological",
+      "ref": "ev_01JE0TV04CP000000000000001#v1",
+      "value": "2",
+      "unit": "1"
+     },
+     {
+      "name": "coil_dqr_geographical",
+      "ref": "ev_01JE0TV04CP000000000000001#v1",
+      "value": "2",
+      "unit": "1"
+     },
+     {
+      "name": "coil_dqr_temporal",
+      "ref": "ev_01JE0TV04CP000000000000001#v1",
+      "value": "1",
+      "unit": "1"
+     },
+     {
+      "name": "site_emissions",
+      "ref": "calc_01JE0TV04AA000000000000001#v1",
+      "value": "720",
+      "unit": "tCO2e"
+     },
+     {
+      "name": "site_pds",
+      "ref": "ev_01JE0TV04DQ000000000000001#v1",
+      "value": "100",
+      "unit": "%"
+     },
+     {
+      "name": "site_dqr_technological",
+      "ref": "ev_01JE0TV04DQ000000000000001#v1",
+      "value": "1",
+      "unit": "1"
+     },
+     {
+      "name": "site_dqr_geographical",
+      "ref": "ev_01JE0TV04DQ000000000000001#v1",
+      "value": "1",
+      "unit": "1"
+     },
+     {
+      "name": "site_dqr_temporal",
+      "ref": "ev_01JE0TV04DQ000000000000001#v1",
+      "value": "1",
+      "unit": "1"
+     }
+    ]
+   },
+   "factor_set_ref": {
+    "id": "fs:belegt-example@2026.10",
+    "path": "fs/belegt-example@2026.10.yaml",
+    "rows_hash": "sha256:25cd7633e6907491a142f0c6cf90224f4403b25fb49957bacb67987bb71faaf9"
+   },
+   "expected": {
+    "result": {
+     "value": "68.25",
+     "unit": "%",
+     "rounding": {
+      "mode": "half_even",
+      "digits": 2
+     }
+    },
+    "breakdown": [
+     {
+      "name": "pds_unrounded",
+      "value": "68.2474226804",
+      "unit": "%"
+     },
+     {
+      "name": "dqr_technological",
+      "value": "1.79",
+      "unit": "1"
+     },
+     {
+      "name": "dqr_geographical",
+      "value": "1.79",
+      "unit": "1"
+     },
+     {
+      "name": "dqr_temporal",
+      "value": "1",
+      "unit": "1"
+     },
+     {
+      "name": "dqr_technological_unrounded",
+      "value": "1.793814433",
+      "unit": "1"
+     },
+     {
+      "name": "dqr_geographical_unrounded",
+      "value": "1.793814433",
+      "unit": "1"
+     },
+     {
+      "name": "dqr_temporal_unrounded",
+      "value": "1",
+      "unit": "1"
+     }
+    ],
+    "input_hash": "sha256:6ed263a6eea0f68692c4337eccecd0ee84290e8692d9649fddb81fab551a8ee7"
+   },
+   "tolerance": "0"
+  },
+  {
+   "id": "TV-06.dq-B",
+   "description": "产品 B 数据质量：PDS 895.8/1173 → 76.37%",
+   "request": {
+    "method_id": "pcf.data_quality",
+    "methodology_version": "pcf-iso14067-pact@1.0.0",
+    "factor_set_version": "fs:belegt-example@2026.10",
+    "boundary": "product:prod_01JE0TV04PB000000000000001",
+    "period": {
+     "start": "2025-01-01",
+     "end": "2025-12-31"
+    },
+    "params": {
+     "pact_spec": "3.0.3"
+    },
+    "inputs": [
+     {
+      "name": "coil_emissions",
+      "ref": "calc_01JE0TV04MB000000000000001#v1",
+      "value": "693",
+      "unit": "tCO2e"
+     },
+     {
+      "name": "coil_pds",
+      "ref": "ev_01JE0TV04CP000000000000001#v1",
+      "value": "60",
+      "unit": "%"
+     },
+     {
+      "name": "coil_dqr_technological",
+      "ref": "ev_01JE0TV04CP000000000000001#v1",
+      "value": "2",
+      "unit": "1"
+     },
+     {
+      "name": "coil_dqr_geographical",
+      "ref": "ev_01JE0TV04CP000000000000001#v1",
+      "value": "2",
+      "unit": "1"
+     },
+     {
+      "name": "coil_dqr_temporal",
+      "ref": "ev_01JE0TV04CP000000000000001#v1",
+      "value": "1",
+      "unit": "1"
+     },
+     {
+      "name": "site_emissions",
+      "ref": "calc_01JE0TV04AB000000000000001#v1",
+      "value": "480",
+      "unit": "tCO2e"
+     },
+     {
+      "name": "site_pds",
+      "ref": "ev_01JE0TV04DQ000000000000001#v1",
+      "value": "100",
+      "unit": "%"
+     },
+     {
+      "name": "site_dqr_technological",
+      "ref": "ev_01JE0TV04DQ000000000000001#v1",
+      "value": "1",
+      "unit": "1"
+     },
+     {
+      "name": "site_dqr_geographical",
+      "ref": "ev_01JE0TV04DQ000000000000001#v1",
+      "value": "1",
+      "unit": "1"
+     },
+     {
+      "name": "site_dqr_temporal",
+      "ref": "ev_01JE0TV04DQ000000000000001#v1",
+      "value": "1",
+      "unit": "1"
+     }
+    ]
+   },
+   "factor_set_ref": {
+    "id": "fs:belegt-example@2026.10",
+    "path": "fs/belegt-example@2026.10.yaml",
+    "rows_hash": "sha256:25cd7633e6907491a142f0c6cf90224f4403b25fb49957bacb67987bb71faaf9"
+   },
+   "expected": {
+    "result": {
+     "value": "76.37",
+     "unit": "%",
+     "rounding": {
+      "mode": "half_even",
+      "digits": 2
+     }
+    },
+    "breakdown": [
+     {
+      "name": "pds_unrounded",
+      "value": "76.368286445",
+      "unit": "%"
+     },
+     {
+      "name": "dqr_technological",
+      "value": "1.59",
+      "unit": "1"
+     },
+     {
+      "name": "dqr_geographical",
+      "value": "1.59",
+      "unit": "1"
+     },
+     {
+      "name": "dqr_temporal",
+      "value": "1",
+      "unit": "1"
+     },
+     {
+      "name": "dqr_technological_unrounded",
+      "value": "1.5907928389",
+      "unit": "1"
+     },
+     {
+      "name": "dqr_geographical_unrounded",
+      "value": "1.5907928389",
+      "unit": "1"
+     },
+     {
+      "name": "dqr_temporal_unrounded",
+      "value": "1",
+      "unit": "1"
+     }
+    ],
+    "input_hash": "sha256:772f6d690d86d8e2b368adf8453265858be1b18411a12c4d012ab0c31dbf29e2"
+   },
+   "tolerance": "0"
+  },
+  {
+   "id": "TV-06.allocation",
+   "description": "共用排放 1200 按机时 A 6000 / B 4000：A 720、B 480，守恒逐位相等",
+   "request": {
+    "method_id": "pcf.allocation",
+    "methodology_version": "pcf-iso14067-pact@1.0.0",
+    "factor_set_version": "fs:belegt-example@2026.10",
+    "boundary": "site:site_01JE0TV04ST000000000000001",
+    "period": {
+     "start": "2025-01-01",
+     "end": "2025-12-31"
+    },
+    "params": {
+     "allocation": "physical.machine_hours",
+     "product": "a"
+    },
+    "inputs": [
+     {
+      "name": "shared_emissions",
+      "ref": "calc_01JE0TV04SH000000000000001#v1",
+      "value": "1200",
+      "unit": "tCO2e"
+     },
+     {
+      "name": "machine_hours_a",
+      "ref": "ev_01JE0TV04HA000000000000001#v1",
+      "value": "6000",
+      "unit": "h"
+     },
+     {
+      "name": "machine_hours_b",
+      "ref": "ev_01JE0TV04HB000000000000001#v1",
+      "value": "4000",
+      "unit": "h"
+     }
+    ]
+   },
+   "factor_set_ref": {
+    "id": "fs:belegt-example@2026.10",
+    "path": "fs/belegt-example@2026.10.yaml",
+    "rows_hash": "sha256:25cd7633e6907491a142f0c6cf90224f4403b25fb49957bacb67987bb71faaf9"
+   },
+   "expected": {
+    "result": {
+     "value": "720",
+     "unit": "tCO2e",
+     "rounding": {
+      "mode": "half_even",
+      "digits": 3
+     }
+    },
+    "breakdown": [
+     {
+      "name": "shared_emissions",
+      "value": "1200",
+      "unit": "tCO2e"
+     },
+     {
+      "name": "share_a",
+      "value": "0.6",
+      "unit": "1"
+     },
+     {
+      "name": "allocated_a",
+      "value": "720",
+      "unit": "tCO2e"
+     },
+     {
+      "name": "share_b",
+      "value": "0.4",
+      "unit": "1"
+     },
+     {
+      "name": "allocated_b",
+      "value": "480",
+      "unit": "tCO2e"
+     },
+     {
+      "name": "rounding_residual",
+      "value": "0",
+      "unit": "tCO2e"
+     }
+    ],
+    "input_hash": "sha256:fd4ec6e5c0a24faac18c282898ed6de96c6cabcf6cd047c53a3d045c7abe285e"
+   },
+   "tolerance": "0"
+  },
+  {
+   "id": "TV-06.err-allocation",
+   "description": "错误向量：有共用排放但无分摊键选择 → CALC_PARAM_REQUIRES_DECISION（CQ-METH-05）",
+   "request": {
+    "method_id": "pcf.cradle_to_gate",
+    "methodology_version": "pcf-iso14067-pact@1.0.0",
+    "factor_set_version": "fs:belegt-example@2026.10",
+    "boundary": "product:prod_01JE0TV04PA000000000000001",
+    "period": {
+     "start": "2025-01-01",
+     "end": "2025-12-31"
+    },
+    "params": {
+     "declared_unit": "kg",
+     "pact_spec": "3.0.3",
+     "recycling": "cut_off"
+    },
+    "inputs": [
+     {
+      "name": "coil_consumed",
+      "ref": "ev_01JE0TV04CA000000000000001#v1",
+      "value": "1320",
+      "unit": "t"
+     },
+     {
+      "name": "coil_pcf",
+      "ref": "ev_01JE0TV04CP000000000000001#v1",
+      "value": "2.1",
+      "unit": "kgCO2e/kg"
+     },
+     {
+      "name": "machine_hours_product",
+      "ref": "ev_01JE0TV04HA000000000000001#v1",
+      "value": "6000",
+      "unit": "h"
+     },
+     {
+      "name": "machine_hours_site",
+      "ref": "ev_01JE0TV04HS000000000000001#v1",
+      "value": "10000",
+      "unit": "h"
+     },
+     {
+      "name": "output_product",
+      "ref": "ev_01JE0TV04QA000000000000001#v1",
+      "value": "1200",
+      "unit": "t"
+     },
+     {
+      "name": "site_scope1",
+      "ref": "calc_01JE0TV04S1000000000000001#v1",
+      "value": "400",
+      "unit": "tCO2e"
+     },
+     {
+      "name": "site_scope2_market",
+      "ref": "calc_01JE0TV04S2000000000000001#v1",
+      "value": "800",
+      "unit": "tCO2e"
+     }
+    ]
+   },
+   "factor_set_ref": {
+    "id": "fs:belegt-example@2026.10",
+    "path": "fs/belegt-example@2026.10.yaml",
+    "rows_hash": "sha256:25cd7633e6907491a142f0c6cf90224f4403b25fb49957bacb67987bb71faaf9"
+   },
+   "expected": {
+    "error_code": "CALC_PARAM_REQUIRES_DECISION"
+   },
+   "tolerance": "0"
+  }
+ ]
+}

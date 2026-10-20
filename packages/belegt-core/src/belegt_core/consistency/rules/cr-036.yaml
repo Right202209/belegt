@@ -1,0 +1,19 @@
+# Spec: 06 §2.2 CR-036
+rule_id: CR-036
+rule_version: 1.0.0
+category: reference_integrity
+severity: block
+title:
+  de: Berechnungskette enthält ersetzte Knoten
+  en: Calculation lineage contains superseded nodes
+scope: answer
+triggers:
+- answer_write
+- pre_submit_gate
+- daily_batch
+- context_change
+plugin: cr_036
+assert: '!stale_changed'
+default_action: open_conflict
+explain_template: cr-036
+tests: tests/test_consistency_rules.py::test_cr_036

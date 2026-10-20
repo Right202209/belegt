@@ -1,0 +1,176 @@
+{
+ "schema": "belegt-eval-report/1",
+ "created_at": "2026-10-19T15:50:26Z",
+ "agent": "evidence-miner",
+ "dataset_version": "bench-v2027.1",
+ "partition": "test",
+ "smoke": false,
+ "status": "ok",
+ "skip_reason": null,
+ "config": {
+  "predictor": "baseline-belegt-io@1",
+  "predictor_kind": "baseline",
+  "model_id": null,
+  "prompt_version": null,
+  "params": {
+   "temperature": 0,
+   "top_p": 1
+  },
+  "bootstrap": 2000,
+  "seed": 7
+ },
+ "manifest_ok": true,
+ "manifest_errors": [],
+ "leak": {
+  "ok": true,
+  "checks": {
+   "LEAK-01": {
+    "ok": true,
+    "pairs_checked": 6300,
+    "hits": []
+   },
+   "LEAK-02": {
+    "ok": true,
+    "violations": []
+   },
+   "LEAK-03": {
+    "ok": true,
+    "org_overlap": [],
+    "clusters_split": []
+   }
+  }
+ },
+ "metrics": {
+  "M-EVI-01": {
+   "name": "字段级 F1",
+   "value": 0.833333,
+   "n": 20,
+   "star": false,
+   "primary": true,
+   "direction": "higher",
+   "family": "f1",
+   "ci95": [
+    0.636308,
+    1.0
+   ],
+   "violations": null
+  },
+  "M-EVI-01P": {
+   "name": "字段级精确率",
+   "value": 1.0,
+   "n": 20,
+   "star": false,
+   "primary": false,
+   "direction": "higher",
+   "family": "accuracy",
+   "ci95": [
+    1.0,
+    1.0
+   ],
+   "violations": null
+  },
+  "M-EVI-01R": {
+   "name": "字段级召回率",
+   "value": 0.714286,
+   "n": 20,
+   "star": false,
+   "primary": false,
+   "direction": "higher",
+   "family": "accuracy",
+   "ci95": [
+    0.466607,
+    1.0
+   ],
+   "violations": null
+  },
+  "M-EVI-02": {
+   "name": "定位准确率",
+   "value": 1.0,
+   "n": 20,
+   "star": false,
+   "primary": false,
+   "direction": "higher",
+   "family": "accuracy",
+   "ci95": [
+    1.0,
+    1.0
+   ],
+   "violations": null
+  },
+  "M-EVI-03": {
+   "name": "有效期精确匹配",
+   "value": 1.0,
+   "n": 20,
+   "star": false,
+   "primary": false,
+   "direction": "higher",
+   "family": "accuracy",
+   "ci95": [
+    1.0,
+    1.0
+   ],
+   "violations": null
+  },
+  "M-EVI-04": {
+   "name": "自动核验错误率 ★",
+   "value": 0.0,
+   "n": 20,
+   "star": true,
+   "primary": false,
+   "direction": "lower",
+   "family": "rate_low",
+   "ci95": [
+    0.0,
+    0.0
+   ],
+   "violations": 0.0
+  }
+ },
+ "cells": [
+  {
+   "cell": "none×de×pdf_text",
+   "n": 13,
+   "metrics": {
+    "M-EVI-01": {
+     "value": 0.769231,
+     "n": 13
+    }
+   }
+  },
+  {
+   "cell": "none×en×pdf_text",
+   "n": 7,
+   "metrics": {
+    "M-EVI-01": {
+     "value": 1.0,
+     "n": 7
+    }
+   }
+  }
+ ],
+ "worst_cell": {
+  "metric": "M-EVI-01",
+  "cell": "none×de×pdf_text",
+  "n": 13,
+  "metrics": {
+   "M-EVI-01": {
+    "value": 0.769231,
+    "n": 13
+   }
+  }
+ },
+ "ops": {
+  "wall_seconds": 0.155,
+  "M-OPS-01": {
+   "name": "单份问卷 LLM 成本（EUR）",
+   "value": 0.0,
+   "total_eur": 0.0
+  },
+  "M-OPS-02": {
+   "name": "每 100 单元首稿机器时长（分钟）",
+   "value": 0.0129
+  }
+ },
+ "n_samples": 20,
+ "sample_details": "eval-samples.evidence-miner.jsonl"
+}

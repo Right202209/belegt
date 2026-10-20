@@ -1,0 +1,16 @@
+apiVersion: v2
+name: belegt
+description: >-
+  Belegt —— 可审计的供应链 ESG 问卷自动应答平台。同一 chart 覆盖 saas-multi / saas-dedicated / private-k8s / private-airgap
+  （Spec: 10 §6.1、§6.2、§6.5；07 §2.2、§4.5、§5；03 §6；04 §1.3）。
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+kubeVersion: ">=1.28.0-0"
+
+keywords: [esg, cbam, pcf, questionnaire, audit]
+home: https://github.com/belegt/belegt
+sources: [https://github.com/belegt/belegt]
+annotations:
+  belegt.io/spec: "10-非功能与运维 §6"
+  artifacthub.io/license: AGPL-3.0-only

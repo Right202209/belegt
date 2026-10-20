@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block main %}
+<section class="card">
+  <h1>✓ {{ t('submitted_title') }}</h1>
+  <p>{{ t('submitted_text', customer=m.customer_name) }}</p>
+  <p>{{ t('receipt_hash') }}: <code class="hash">sha256:{{ package_hash }}</code></p>
+  <p><a href="/r/{{ token }}">← {{ t('back') }}</a></p>
+</section>
+{% endblock %}

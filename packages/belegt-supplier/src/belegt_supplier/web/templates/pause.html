@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block main %}
+<section class="card">
+  {% if done %}
+  <h1>{{ t('pause_title') }}</h1>
+  <p>{{ t('pause_done', customer=m.customer_name) }}</p>
+  {% else %}
+  <h1>{{ t('pause_reminders') }}</h1>
+  <form method="post" action="/pause/{{ token }}">
+    <input type="hidden" name="csrf" value="{{ csrf }}">
+    <button type="submit">{{ t('pause_reminders') }}</button>
+  </form>
+  {% endif %}
+</section>
+{% endblock %}

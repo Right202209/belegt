@@ -1,0 +1,52 @@
+id: dp:energy.consumption.electricity_total
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Stromverbrauch gesamt
+  en: Total electricity consumption
+  zh: 电力消耗
+definition:
+  en: Electricity actually consumed within the boundary during the period, from grid purchases and self-generation, based on invoices or meter readings. Excludes electricity generated on site and fed into the grid. Component of dp:energy.consumption.total.
+  de: Im Zeitraum innerhalb der Grenze tatsächlich verbrauchter Strom (Netzbezug und Eigenerzeugung) laut Rechnung oder Zählerstand. Eingespeister Eigenstrom ist ausgeschlossen. Teil von dp:energy.consumption.total.
+  zh: 报告期内边界内实际消耗的电量（电网购入 + 自发自用），以电费账单或电表读数为准；不含自发后上网部分。是 dp:energy.consumption.total 的组成部分。
+value_type: number
+unit: MWh
+allowed_units:
+  - kWh
+  - MWh
+  - GJ
+period_type: reporting_period
+boundary:
+  - organization
+  - site
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: eu_2026_1560_vcs
+    clause: B3 Para 32
+  - ref: ghg_protocol_scope2_guidance
+sensitivity: confidential
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - erp
+    - historical_answer
+  min_sources: 1
+  max_age_days: 550
+  requires_calculation: false
+  human_confirmation_allowed: false
+validity_rule:
+  min: 0
+  expires_by: period_end_plus_days
+  expires_after_days: 550
+related_datapoints:
+  - id: dp:energy.consumption.total
+    relation: component_of
+tags:
+  - vsme
+  - cdp_climate
+  - cbam_communication
+  - energy

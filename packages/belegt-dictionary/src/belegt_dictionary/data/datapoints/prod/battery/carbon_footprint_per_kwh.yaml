@@ -1,0 +1,41 @@
+id: dp:prod.battery.carbon_footprint_per_kwh
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: CO2-Fußabdruck der Batterie je funktionelle Einheit
+  en: Battery carbon footprint per functional unit
+  zh: 电池碳足迹（每功能单位）
+definition:
+  en: Life-cycle carbon footprint of the battery model per functional unit, i.e. per kWh of total energy provided over the expected service life, calculated with the methodology of the EU Battery Regulation delegated act. Excludes cradle-to-gate PCF per kg (dp:prod.pcf.cradle_to_gate).
+  de: Lebenszyklus-CO2-Fußabdruck des Batteriemodells je funktioneller Einheit (kWh über die erwartete Lebensdauer gelieferte Energie) nach der Methodik der EU-Batterieverordnung. PCF je kg siehe dp:prod.pcf.cradle_to_gate.
+  zh: 按欧盟电池法规授权法案方法学计算的电池型号全生命周期碳足迹，以每功能单位（预期寿命内提供的总能量 kWh）计；不同于每千克摇篮到大门 PCF（dp:prod.pcf.cradle_to_gate）。
+value_type: number
+unit: kgCO2e/kWh
+period_type: validity_range
+boundary:
+  - product_per_unit
+methodology_refs:
+  - ref: eu_2023_1542_battery
+    clause: Art. 7(1)
+  - ref: eu_2023_1542_battery
+    clause: Annex II
+sensitivity: public
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - supplier_response
+    - historical_answer
+  min_sources: 1
+  max_age_days: 1095
+  requires_calculation: true
+  human_confirmation_allowed: false
+validity_rule:
+  min: 0
+  expires_by: evidence_valid_until
+related_datapoints:
+  - id: dp:prod.pcf.cradle_to_gate
+    relation: see_also
+tags:
+  - eu_battery_passport
+  - battery

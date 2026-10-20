@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block main %}
+<section class="card">
+  <h1>{{ t('request_new_link') }}</h1>
+  {% if done %}<p class="ok">{{ t('link_sent_if') }}</p>{% else %}
+  <form method="post" action="/r/{{ token }}/renew">
+    <label>{{ t('email') }} <input type="email" name="email" required autocomplete="email"></label>
+    <button type="submit">{{ t('request_new_link') }}</button>
+  </form>{% endif %}
+</section>
+{% endblock %}

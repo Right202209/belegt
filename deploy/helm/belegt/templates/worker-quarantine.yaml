@@ -1,0 +1,71 @@
+{{- /* Spec: 07 §2.2（隔离区：gVisor、只读根文件系统、非 root、出站仅 llm/graph-api、belegt_reader_quarantine 凭据）、04 §1.3 tq-quarantine */ -}}
+{{- if .Values.workerQuarantine.enabled }}
+{{- $ns := include "belegt.ns" (list . "quarantine") }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "belegt.fullname" . }}-worker-quarantine
+  namespace: {{ $ns }}
+  labels:
+    {{- include "belegt.labels" . | nindent 4 }}
+    {{- include "belegt.selector" (list . "worker-quarantine" "quarantine") | nindent 4 }}
+spec:
+  replicas: {{ .Values.workerQuarantine.replicas }}
+  selector:
+    matchLabels:
+      {{- include "belegt.selector" (list . "worker-quarantine" "quarantine") | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "belegt.labels" . | nindent 8 }}
+        {{- include "belegt.selector" (list . "worker-quarantine" "quarantine") | nindent 8 }}
+    spec:
+      automountServiceAccountToken: false
+      {{- with .Values.workerQuarantine.runtimeClassName }}
+      runtimeClassName: {{ . }}
+      {{- end }}
+      securityContext:
+        {{- include "belegt.podSecurityContext" . | nindent 8 }}
+      {{- include "belegt.scheduling" (list . "quarantine") | nindent 6 }}
+      containers:
+        - name: worker
+          image: {{ include "belegt.image" (list . .Values.image.worker) }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - { name: metrics, containerPort: 9464, protocol: TCP }
+          env:
+            {{- include "belegt.commonEnv" . | nindent 12 }}
+            - name: OTEL_SERVICE_NAME
+              value: belegt-worker-quarantine
+            - name: BELEGT_DB_PASSWORD
+              valueFrom: { secretKeyRef: { name: {{ include "belegt.quarantineSecretName" . }}, key: quarantine-db-password } }
+            - name: BELEGT_DB_URL
+              value: {{ printf "postgresql+psycopg://%s:$(BELEGT_DB_PASSWORD)@%s:%v/%s?sslmode=%s" .Values.postgresql.quarantineUser (include "belegt.pgHost" .) .Values.postgresql.port .Values.postgresql.database (include "belegt.pgSslmode" .) | quote }}
+            - name: BELEGT_PG_COMMIT
+              value: "off"   # 隔离区不直接写图（写入经 graph-api，R-ZONE）
+            - name: BELEGT_TEMPORAL_ADDRESS
+              value: {{ .Values.temporal.address | quote }}
+            - name: BELEGT_TEMPORAL_NAMESPACE
+              value: {{ .Values.temporal.namespace | quote }}
+            - name: BELEGT_TEMPORAL_TASK_QUEUE
+              value: {{ .Values.temporal.quarantineTaskQueue | quote }}
+            - name: BELEGT_LLM_BASE_URL
+              value: {{ default .Values.llm.baseUrl .Values.llm.quarantineBaseUrl | quote }}
+            - name: BELEGT_LLM_MODEL
+              value: {{ default .Values.llm.model .Values.llm.quarantineModel | quote }}
+            - name: BELEGT_LLM_API_KEY
+              valueFrom: { secretKeyRef: { name: {{ include "belegt.quarantineSecretName" . }}, key: llm-api-key, optional: true } }
+          readinessProbe:
+            httpGet: { path: /healthz, port: metrics }
+          livenessProbe:
+            httpGet: { path: /healthz, port: metrics }
+            periodSeconds: 20
+          resources:
+            {{- toYaml .Values.workerQuarantine.resources | nindent 12 }}
+          securityContext:
+            {{- include "belegt.containerSecurityContext" . | nindent 12 }}
+          volumeMounts:
+            - { name: tmp, mountPath: /tmp }
+      volumes:
+        {{- include "belegt.tmpVolume" . | nindent 8 }}
+{{- end }}

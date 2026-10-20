@@ -1,0 +1,19 @@
+# Spec: 06 §2.2 CR-038
+rule_id: CR-038
+rule_version: 1.0.0
+category: estimate
+severity: block
+title:
+  de: Schätzung ohne Kennzeichnung im Export
+  en: Estimate without export flag
+scope: answer
+triggers:
+- answer_write
+- pre_submit_gate
+- daily_batch
+- context_change
+plugin: cr_038
+assert: '!is_estimate || has_flag || has_note'
+default_action: open_conflict
+explain_template: cr-038
+tests: tests/test_consistency_rules.py::test_cr_038

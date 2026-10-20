@@ -1,0 +1,54 @@
+# 示例因子库（EX-）：数值均为示例值，非官方因子，不得当作真实因子使用（05 §9 阅读约定）。
+# 冻结后行内容与 rows_hash 永不改变（05 §7.3-1）。
+id: fs:belegt-example-cbam@2026.10
+source: belegt-example-cbam
+license: Apache-2.0
+published_at: '2026-10-18'
+valid_from: '2026-01-01'
+note: 05 §9 TV-08、TV-11 用 CBAM 示例库。默认值 2.59、BM 1.37、CSCF 1 为 EX 示例值；加价 10%/20%（2023/956 经 2026/1740）、CBAM factor 0.975（Art. 31）与门槛 50 t（Art. 2a）为法定值
+rows:
+- factor_key: cbam.default.total.7208.XX
+  geography: XX
+  year: '2026'
+  value: '2.59'
+  unit: tCO2e/t
+  source_row_id: EXC-DV-7208-XX
+- factor_key: cbam.markup.iron_steel.2026
+  geography: GLO
+  year: '2026'
+  value: '0.1'
+  unit: '1'
+  source_row_id: EXC-MU-STEEL-2026
+- factor_key: cbam.markup.iron_steel.2027
+  geography: GLO
+  year: '2027'
+  value: '0.2'
+  unit: '1'
+  source_row_id: EXC-MU-STEEL-2027
+- factor_key: cbam.factor.2026
+  geography: EU
+  year: '2026'
+  value: '0.975'
+  unit: '1'
+  source_row_id: EXC-CBAMF-2026
+- factor_key: cbam.cscf.2026
+  geography: EU
+  year: '2026'
+  value: '1'
+  unit: '1'
+  source_row_id: EXC-CSCF-2026
+- factor_key: cbam.bm_default.7208.C
+  geography: GLO
+  year: '2026'
+  value: '1.37'
+  unit: tCO2e/t
+  source_row_id: EXC-BMB-7208-C
+- factor_key: cbam.threshold.net_mass
+  geography: EU
+  year: '2026'
+  value: '50'
+  unit: t
+  source_row_id: EXC-THR-50
+row_count: 7
+rows_hash: sha256:27358e8514ba616585981f7d8e9e3c04f136eb1f2053dd95f6ba92431d2916e5
+status: active

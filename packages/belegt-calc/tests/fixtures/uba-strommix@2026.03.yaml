@@ -1,0 +1,30 @@
+# 05 §7.1 的 FactorSet 示例原样录入（用于验证 rows_hash 实现）。
+# 测试夹具，不随包分发：UBA 数据再分发许可待法务确认（05 §7.2、待决 6）。
+id: fs:uba-strommix@2026.03
+source: uba-strommix
+license: "[需法务确认]"
+published_at: 2026-03-23
+valid_from: 2023-01-01
+valid_until: 2025-12-31
+upstream:
+  title: "Entwicklung der spezifischen Treibhausgas-Emissionen des deutschen Strommix 1990–2025 (Climate Change 16/2026)"
+  url: https://www.umweltbundesamt.de/publikationen/entwicklung-der-spezifischen-treibhausgas-0
+  retrieved_at: 2026-10-18
+rows:
+  - factor_key: grid.electricity.location.DE
+    geography: DE
+    year: "2024"
+    value: "0.353"
+    unit: tCO2e/MWh
+    source_row_id: UBA-CC16-2026-DE-2024
+    quality: {status: preliminary, gas_scope: co2_only}
+  - factor_key: grid.electricity.location.DE
+    geography: DE
+    year: "2025"
+    value: "0.344"
+    unit: tCO2e/MWh
+    source_row_id: UBA-CC16-2026-DE-2025
+    quality: {status: estimated, gas_scope: co2_only}
+row_count: 2
+rows_hash: sha256:12af011e9ff09a062c0a581a253237c565316de013c42e4c527e91e74afce8d0
+status: active

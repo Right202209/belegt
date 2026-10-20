@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.belegt.org/graph/2026-10/counterparty.json",
+  "title": "Counterparty",
+  "type": "object",
+  "required": [
+    "id",
+    "role",
+    "legal_name"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^cp_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "org_id": true,
+    "version": true,
+    "created_at": true,
+    "created_by": true,
+    "trust_zone": true,
+    "provenance": true,
+    "supersedes": true,
+    "schema_version": true,
+    "content_hash": true,
+    "tags": true,
+    "promotion": {
+      "$ref": "common.json#/$defs/promotion"
+    },
+    "role": {
+      "enum": [
+        "customer",
+        "supplier"
+      ]
+    },
+    "legal_name": {
+      "type": "string",
+      "maxLength": 300
+    },
+    "country": {
+      "type": "string",
+      "pattern": "^[A-Z]{2}$"
+    },
+    "domains": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "portal_ids": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "contacts": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "data_sharing_grant": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "$ref": "common.json#/$defs/envelope"
+    }
+  ]
+}

@@ -1,0 +1,296 @@
+template_mapping: tm:cdp_climate@2025
+template_id: cdp_climate
+template_version: '2025'
+template_source: CDP integrated questionnaire 2025, climate change module (Module 7) and related modules
+dictionary_min_version: v2027.1
+license_note: 仅题号与短标签；原文请查阅官方来源
+maintainers:
+  - '@belegt/dict-maintainers'
+notes: 题号每年可能变动，全部条目 verify；旧编号存 legacy_ref（FR-201）。发布许可待法务确认（02 待决问题 2）。
+entries:
+  - entry_id: m1_legal_name
+    locator:
+      kind: question
+      ref: '1.1'
+      verify: true
+    short_label: Organization name
+    datapoint_id: dp:org.identity.legal_name
+    direction: both
+    transform:
+      type: identity
+  - entry_id: m1_turnover
+    locator:
+      kind: question
+      ref: 1.4.1
+      verify: true
+    short_label: Annual revenue
+    datapoint_id: dp:org.financials.turnover
+    direction: both
+    unit_hint: EUR
+    transform:
+      type: identity
+    notes: CDP 以报告币种申报；非 EUR 时须经 calc-service 换算后回填
+  - entry_id: m1_employees
+    locator:
+      kind: question
+      ref: '1.24'
+      verify: true
+    short_label: Number of employees
+    datapoint_id: dp:org.employees.headcount
+    direction: both
+    unit_hint: '1'
+    transform:
+      type: identity
+  - entry_id: m5_2_transition_plan
+    locator:
+      kind: question
+      ref: '5.2'
+      verify: true
+    short_label: Climate transition plan?
+    datapoint_id: dp:gov.policy.climate_transition_plan
+    direction: both
+    transform:
+      type: enum_map
+      map:
+        Yes, we have a climate transition plan: true
+        'No': false
+  - entry_id: m5_11_supplier_coc
+    locator:
+      kind: question
+      ref: '5.11'
+      verify: true
+    short_label: Supplier code of conduct with climate requirements
+    datapoint_id: dp:supply.code_of_conduct.supplier_coc_in_place
+    direction: both
+    transform:
+      type: enum_map
+      map:
+        'Yes': true
+        'No': false
+  - entry_id: m7_6_scope1
+    locator:
+      kind: question
+      ref: '7.6'
+      legacy_ref: C6.1
+      verify: true
+    short_label: Gross global Scope 1, tCO2e
+    datapoint_id: dp:env.ghg.scope1_total
+    direction: both
+    unit_hint: tCO2e
+    transform:
+      type: identity
+  - entry_id: m7_7_scope2_lb
+    locator:
+      kind: column
+      ref: '7.7'
+      column: location-based
+      legacy_ref: C6.3
+      verify: true
+    short_label: Gross global Scope 2, location-based
+    datapoint_id: dp:env.ghg.scope2_location_based
+    direction: both
+    unit_hint: tCO2e
+    transform:
+      type: identity
+  - entry_id: m7_7_scope2_mb
+    locator:
+      kind: column
+      ref: '7.7'
+      column: market-based
+      legacy_ref: C6.3
+      verify: true
+    short_label: Gross global Scope 2, market-based
+    datapoint_id: dp:env.ghg.scope2_market_based
+    direction: both
+    unit_hint: tCO2e
+    transform:
+      type: identity
+  - entry_id: m7_8_scope3_c01
+    locator:
+      kind: question
+      ref: '7.8'
+      row: Purchased goods and services
+      legacy_ref: C6.5
+      verify: true
+    short_label: Scope 3 cat.1 emissions
+    datapoint_id: dp:env.ghg.scope3_category.c01
+    direction: both
+    unit_hint: tCO2e
+    transform:
+      type: identity
+  - entry_id: m7_8_scope3_c04
+    locator:
+      kind: question
+      ref: '7.8'
+      row: Upstream transportation and distribution
+      legacy_ref: C6.5
+      verify: true
+    short_label: Scope 3 cat.4 emissions
+    datapoint_id: dp:env.ghg.scope3_category.c04
+    direction: both
+    unit_hint: tCO2e
+    transform:
+      type: identity
+  - entry_id: m7_8_scope3_total
+    locator:
+      kind: question
+      ref: '7.8'
+      legacy_ref: C6.5
+      verify: true
+    short_label: Scope 3 total (sum of reported categories)
+    datapoint_id: dp:env.ghg.scope3_total
+    direction: import
+    unit_hint: tCO2e
+    transform:
+      type: identity
+    notes: 导入时由各行汇总；导出按类别逐行回填，不回填总量
+  - entry_id: m7_30_1_energy
+    locator:
+      kind: question
+      ref: 7.30.1
+      legacy_ref: C8.2a
+      verify: true
+    short_label: Total energy consumption, MWh
+    datapoint_id: dp:energy.consumption.total
+    direction: both
+    unit_hint: MWh
+    transform:
+      type: pipeline
+      steps:
+        - type: unit_convert
+          from_unit: MWh
+          to_unit: MWh
+          round: 0
+  - entry_id: m7_30_1_electricity
+    locator:
+      kind: question
+      ref: 7.30.1
+      row: Consumption of purchased or acquired electricity
+      legacy_ref: C8.2a
+      verify: true
+    short_label: Purchased electricity consumption, MWh
+    datapoint_id: dp:energy.consumption.electricity_total
+    direction: both
+    unit_hint: MWh
+    transform:
+      type: identity
+    notes: CDP 此行仅含外购电；字典定义含自发自用，导入后须补自发部分，置信度降至 0.85 以下
+  - entry_id: m7_30_1_fuels
+    locator:
+      kind: question
+      ref: 7.30.1
+      row: Consumption of fuel (excluding feedstock)
+      legacy_ref: C8.2a
+      verify: true
+    short_label: Fuel consumption excl. feedstock, MWh
+    datapoint_id: dp:energy.consumption.fuels_total
+    direction: both
+    unit_hint: MWh
+    transform:
+      type: identity
+  - entry_id: m7_30_7_natural_gas
+    locator:
+      kind: question
+      ref: 7.30.7
+      row: Natural gas
+      legacy_ref: C8.2c
+      verify: true
+    short_label: Natural gas consumption, MWh
+    datapoint_id: dp:energy.consumption.natural_gas
+    direction: both
+    unit_hint: MWh
+    transform:
+      type: identity
+  - entry_id: m7_30_6_onsite_renewable
+    locator:
+      kind: question
+      ref: 7.30.6
+      legacy_ref: C8.2d
+      verify: true
+    short_label: Self-generated renewable electricity, MWh
+    datapoint_id: dp:energy.generation.onsite_renewable
+    direction: both
+    unit_hint: MWh
+    transform:
+      type: identity
+  - entry_id: m7_30_14_eac
+    locator:
+      kind: question
+      ref: 7.30.14
+      legacy_ref: C8.2g
+      verify: true
+    short_label: Low-carbon electricity via EACs, MWh
+    datapoint_id: dp:energy.procurement.eac_volume
+    direction: both
+    unit_hint: MWh
+    transform:
+      type: identity
+  - entry_id: m7_45_intensity
+    locator:
+      kind: question
+      ref: '7.45'
+      legacy_ref: C6.10
+      verify: true
+    short_label: Emissions intensity per unit revenue
+    datapoint_id: dp:env.ghg.intensity_turnover
+    direction: both
+    unit_hint: tCO2e/EUR
+    transform:
+      type: identity
+  - entry_id: m7_53_has_target
+    locator:
+      kind: question
+      ref: '7.53'
+      legacy_ref: C4.1
+      verify: true
+    short_label: Emissions target active?
+    datapoint_id: dp:env.ghg_target.has_target
+    direction: both
+    transform:
+      type: enum_map
+      map:
+        Absolute target: true
+        Intensity target: true
+        Both absolute and intensity targets: true
+        No target: false
+  - entry_id: m7_53_1_reduction_pct
+    locator:
+      kind: question
+      ref: 7.53.1
+      legacy_ref: C4.1a
+      verify: true
+    short_label: Targeted reduction from base year, %
+    datapoint_id: dp:env.ghg_target.reduction_pct
+    direction: both
+    unit_hint: '%'
+    transform:
+      type: identity
+    condition: dp:env.ghg_target.has_target == true
+  - entry_id: m7_53_1_target_year
+    locator:
+      kind: question
+      ref: 7.53.1
+      legacy_ref: C4.1a
+      verify: true
+    short_label: Target year
+    datapoint_id: dp:env.ghg_target.target_year
+    direction: both
+    transform:
+      type: format
+      pattern: YYYY
+    condition: dp:env.ghg_target.has_target == true
+  - entry_id: m9_2_2_water_withdrawal
+    locator:
+      kind: question
+      ref: 9.2.2
+      legacy_ref: W1.2b
+      verify: true
+    short_label: Total water withdrawals
+    datapoint_id: dp:env.water.withdrawal_total
+    direction: both
+    unit_hint: m3
+    transform:
+      type: unit_convert
+      from_unit: m3
+      to_unit: m3
+    notes: CDP 以兆升（ML）计，ML 未收入 v0.1 单位表，导入时须人工确认单位

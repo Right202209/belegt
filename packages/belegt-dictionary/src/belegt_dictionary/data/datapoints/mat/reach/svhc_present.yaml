@@ -1,0 +1,43 @@
+id: dp:mat.reach.svhc_present
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: SVHC über 0,1 % (w/w) enthalten
+  en: SVHC above 0.1 % w/w present
+  zh: 是否含 >0.1 %w/w 的 SVHC
+definition:
+  en: Whether the article contains any substance on the REACH Candidate List of SVHC in a concentration above 0.1 % weight by weight, assessed per article as defined by REACH (once an article, always an article). The candidate list version used is dp:mat.reach.candidate_list_version.
+  de: 'Ob das Erzeugnis einen Stoff der REACH-Kandidatenliste in einer Konzentration über 0,1 Massenprozent enthält, je Erzeugnis bewertet (einmal Erzeugnis, immer Erzeugnis). Kandidatenlistenstand: dp:mat.reach.candidate_list_version.'
+  zh: 物品中是否含有 REACH 候选清单 SVHC 且浓度超过 0.1 %（质量分数），按 REACH 对物品的定义逐件评估（一旦为物品，始终为物品）；所依据的候选清单版本见 dp:mat.reach.candidate_list_version。
+value_type: bool
+period_type: point_in_time
+boundary:
+  - product
+methodology_refs:
+  - ref: eu_1907_2006_reach
+    clause: Art. 33
+  - ref: eu_1907_2006_reach
+    clause: Art. 7(2)
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - supplier_response
+    - document
+    - historical_answer
+    - human_confirmation
+  min_sources: 1
+  max_age_days: 365
+  requires_calculation: false
+  human_confirmation_allowed: true
+validity_rule:
+  expires_by: evidence_valid_until
+related_datapoints:
+  - id: dp:mat.reach.svhc_list
+    relation: see_also
+  - id: dp:mat.reach.candidate_list_version
+    relation: see_also
+tags:
+  - reach_scip
+  - oem_custom
+  - reach

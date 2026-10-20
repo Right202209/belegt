@@ -1,0 +1,59 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [5 0 R 7 0 R] /Count 2 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+4 0 obj
+<< /Length 249 >>
+stream
+BT
+/F1 11 Tf
+1 0 0 1 72 780 Tm (Westfalen Netz & Energie GmbH) Tj
+1 0 0 1 72 762 Tm (Stromrechnung 2025 - Zusammenfassung) Tj
+1 0 0 1 72 744 Tm (Abrechnungszeitraum 01.01.2025 - 31.12.2025) Tj
+1 0 0 1 72 726 Tm (Gesamtverbrauch: 1.250.000 kWh) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 4 0 R >>
+endobj
+6 0 obj
+<< /Length 221 >>
+stream
+BT
+/F1 11 Tf
+1 0 0 1 72 780 Tm (Verbrauchsdetails) Tj
+1 0 0 1 72 762 Tm (Zaehler 1ESY1160234567) Tj
+1 0 0 1 72 744 Tm (Verbrauch Strom gesamt: 1.250.000 kWh) Tj
+1 0 0 1 72 726 Tm (Arbeitspreis netto: 312.500,00 EUR) Tj
+ET
+endstream
+endobj
+7 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 6 0 R >>
+endobj
+8 0 obj
+<< /Producer (belegt-bench-synth) /Subject (belegt-bench-canary:c6b66d30-165a-54ad-8b4f-b5376dbe54ea) >>
+endobj
+xref
+0 9
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000121 00000 n 
+0000000218 00000 n 
+0000000518 00000 n 
+0000000644 00000 n 
+0000000916 00000 n 
+0000001042 00000 n 
+trailer
+<< /Size 9 /Root 1 0 R /Info 8 0 R >>
+startxref
+1162
+%%EOF

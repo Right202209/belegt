@@ -1,0 +1,32 @@
+# Spec: 04 §2.12 reg-radar（离线：本地法规源清单；生产由 web.fetch 抓取 EUR-Lex、EFRAG、PACT、Catena-X、ECHA，域名白名单）
+# 片段为本仓库撰写的摘要式示例文本（非官方原文，[需核对]）；只用于离线运行与测试。
+version: reg-sources@0.1.0
+sources:
+  - id: src-cbam-omnibus
+    publisher: EUR-Lex
+    domain: eur-lex.europa.eu
+    celex: "32025R2083"
+    title: "CBAM simplification (Omnibus) – amending Regulation (EU) 2023/956"
+    text: |
+      Article 2a introduces a de minimis threshold of 50 tonnes net mass per importer and calendar year.
+      The amendments apply from 2026-01-01. Authorised CBAM declarants shall submit the annual declaration by 30 September.
+    template_hints: [cbam_communication]
+    datapoint_hints: ["dp:prod.cbam.see_direct", "dp:prod.cbam.see_indirect"]
+  - id: src-vsme
+    publisher: EFRAG
+    domain: efrag.org
+    celex: "32026H1560"
+    title: "Commission Recommendation on the voluntary sustainability reporting standard for SMEs (VSME)"
+    text: |
+      Basic Module B3 requires gross Scope 1 and Scope 2 emissions. This Recommendation applies from 2026-07-01.
+    template_hints: [vsme]
+    datapoint_hints: ["dp:env.ghg.scope1_total", "dp:env.ghg.scope2_location_based"]
+  - id: src-battery
+    publisher: EUR-Lex
+    domain: eur-lex.europa.eu
+    celex: "32023R1542"
+    title: "Batteries Regulation – carbon footprint declaration (Art. 7)"
+    text: |
+      Article 7(1) carbon footprint declaration for EV batteries shall apply from 18.02.2027 subject to the delegated act.
+    template_hints: [eu_battery_passport]
+    datapoint_hints: ["dp:prod.battery.carbon_footprint_per_kwh"]

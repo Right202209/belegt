@@ -1,0 +1,22 @@
+# Spec: 06 §2.2 CR-004
+rule_id: CR-004
+rule_version: 1.0.0
+category: validity
+severity: block
+title:
+  de: Nachweis abgelaufen oder läuft bald ab
+  en: Evidence expired or expiring soon
+scope: answer
+triggers:
+- answer_write
+- pre_submit_gate
+- daily_batch
+- context_change
+plugin: cr_004
+assert: '!expired && days > 30'
+severity_expr: 'expired || days <= 0 ? ''block'' : ''warn'''
+tolerance:
+  days: 30
+default_action: open_conflict
+explain_template: cr-004
+tests: tests/test_consistency_rules.py::test_cr_004

@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.belegt.org/graph/2026-10/datapoint.json",
+  "title": "DataPoint (graph view, 权威见 02)",
+  "type": "object",
+  "required": [
+    "id",
+    "semver",
+    "value_type",
+    "status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^dp:[a-z]+(\\.[a-z0-9_]+){2,3}$"
+    },
+    "semver": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$"
+    },
+    "value_type": {
+      "enum": [
+        "number",
+        "text",
+        "enum",
+        "bool",
+        "date",
+        "file",
+        "geo"
+      ]
+    },
+    "unit": {
+      "type": "string"
+    },
+    "dimension": {
+      "type": "string"
+    },
+    "allowed_boundaries": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "organization",
+          "site",
+          "product",
+          "product_per_unit"
+        ]
+      }
+    },
+    "requires_consolidation": {
+      "type": "boolean"
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "active",
+        "deprecated",
+        "retired"
+      ]
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,44 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [5 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+4 0 obj
+<< /Length 353 >>
+stream
+BT
+/F1 11 Tf
+1 0 0 1 72 780 Tm (Stadtwerke Musterstadt GmbH) Tj
+1 0 0 1 72 762 Tm (Jahresabrechnung Strom 2025) Tj
+1 0 0 1 72 744 Tm (Kunde: Musterteile GmbH, Werk Nord) Tj
+1 0 0 1 72 726 Tm (Abrechnungszeitraum 01.01.2025 - 31.12.2025) Tj
+1 0 0 1 72 708 Tm (Wirkarbeit gesamt: 4.820.000 kWh) Tj
+1 0 0 1 72 690 Tm (Rechnungsbetrag: 964.000,00 EUR) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 4 0 R >>
+endobj
+6 0 obj
+<< /Producer (belegt-bench-synth) /Subject (belegt-bench-canary:cc712c81-9ed8-5a54-8992-a0b1b30a9256) >>
+endobj
+xref
+0 7
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000212 00000 n 
+0000000616 00000 n 
+0000000742 00000 n 
+trailer
+<< /Size 7 /Root 1 0 R /Info 6 0 R >>
+startxref
+862
+%%EOF

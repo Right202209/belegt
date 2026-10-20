@@ -1,0 +1,207 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.belegt.org/graph/2026-10/approval.json",
+  "title": "Approval",
+  "type": "object",
+  "required": [
+    "id",
+    "subject_ref",
+    "risk_level",
+    "required_role",
+    "policy_version",
+    "status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^apr_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "org_id": true,
+    "version": true,
+    "created_at": true,
+    "created_by": true,
+    "trust_zone": {
+      "const": "trusted"
+    },
+    "provenance": true,
+    "supersedes": true,
+    "schema_version": true,
+    "content_hash": true,
+    "tags": true,
+    "subject_ref": {
+      "type": "string",
+      "pattern": "^(ans|cfl|sreq)_[0-9A-HJKMNP-TV-Z]{26}#v[1-9][0-9]*$"
+    },
+    "request_id": {
+      "type": "string",
+      "pattern": "^req_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "risk_level": {
+      "enum": [
+        "L0",
+        "L1",
+        "L2",
+        "L3"
+      ]
+    },
+    "required_role": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "compliance_owner",
+          "executive",
+          "sales",
+          "contributor",
+          "supplier_user",
+          "customer_buyer",
+          "org_admin",
+          "auditor_readonly"
+        ]
+      }
+    },
+    "assignee": {
+      "$ref": "common.json#/$defs/userActor"
+    },
+    "decision": {
+      "enum": [
+        "approved",
+        "rejected",
+        "modified"
+      ]
+    },
+    "decided_by": {
+      "$ref": "common.json#/$defs/actor"
+    },
+    "decided_at": {
+      "$ref": "common.json#/$defs/dateTime"
+    },
+    "comment": {
+      "type": "string",
+      "maxLength": 4000
+    },
+    "modified_answer_ref": {
+      "type": "string",
+      "pattern": "^ans_[0-9A-HJKMNP-TV-Z]{26}#v[1-9][0-9]*$"
+    },
+    "batch_id": {
+      "type": "string",
+      "pattern": "^apb_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "policy_version": {
+      "type": "string",
+      "pattern": "^approval-policy@[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "status": {
+      "enum": [
+        "pending",
+        "approved",
+        "rejected",
+        "modified"
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "$ref": "common.json#/$defs/envelope"
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "pending"
+          }
+        }
+      },
+      "then": {
+        "not": {
+          "required": [
+            "decision"
+          ]
+        }
+      },
+      "else": {
+        "required": [
+          "decision",
+          "decided_by",
+          "decided_at"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "approved"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "decision": {
+            "const": "approved"
+          },
+          "decided_by": {
+            "$ref": "common.json#/$defs/userActor"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "modified"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "modified_answer_ref"
+        ],
+        "properties": {
+          "decision": {
+            "const": "modified"
+          },
+          "decided_by": {
+            "$ref": "common.json#/$defs/userActor"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "rejected"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "decision": {
+            "const": "rejected"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "risk_level": {
+            "const": "L3"
+          }
+        }
+      },
+      "then": {
+        "not": {
+          "required": [
+            "batch_id"
+          ]
+        }
+      }
+    }
+  ]
+}

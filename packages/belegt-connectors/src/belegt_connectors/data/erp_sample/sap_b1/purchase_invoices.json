@@ -1,0 +1,995 @@
+{
+ "odata.metadata": "$metadata#purchase_invoices",
+ "value": [
+  {
+   "DocEntry": 5001,
+   "DocNum": 255001,
+   "DocType": "dDocument_Items",
+   "CardCode": "V10001",
+   "CardName": "Stadtwerke Musterstadt GmbH",
+   "DocDate": "2025-02-05",
+   "TaxDate": "2025-02-05",
+   "DocCurrency": "EUR",
+   "DocTotal": "97104.00",
+   "U_ServiceFrom": "2025-01-01",
+   "U_ServiceTo": "2025-01-31",
+   "UpdateDate": "2025-02-10T08:00:00Z",
+   "DocumentLines": [
+    {
+     "ItemCode": "E-STROM",
+     "ItemDescription": "Strom Netzbezug",
+     "Quantity": "420000",
+     "UnitMsr": "kWh",
+     "Price": "0.2312",
+     "LineTotal": "97104.00",
+     "LineNum": 0
+    }
+   ]
+  },
+  {
+   "DocEntry": 5013,
+   "DocNum": 255013,
+   "DocType": "dDocument_Items",
+   "CardCode": "V10002",
+   "CardName": "Gasversorgung Süd AG",
+   "DocDate": "2025-02-07",
+   "TaxDate": "2025-02-07",
+   "DocCurrency": "EUR",
+   "DocTotal": "24505.00",
+   "U_ServiceFrom": "2025-01-01",
+   "U_ServiceTo": "2025-01-31",
+   "UpdateDate": "2025-02-12T08:00:00Z",
+   "DocumentLines": [
+    {
+     "ItemCode": "E-ERDGAS",
+     "ItemDescription": "Erdgas (Brennwert Hs)",
+     "Quantity": "290000",
+     "UnitMsr": "kWh",
+     "Price": "0.0845",
+     "LineTotal": "24505.00",
+     "LineNum": 0
+    }
+   ]
+  },
+  {
+   "DocEntry": 5031,
+   "DocNum": 255031,
+   "DocType": "dDocument_Items",
+   "CardCode": "V20001",
+   "CardName": "Anadolu Çelik Sanayi A.Ş.",
+   "DocDate": "2025-02-18",
+   "TaxDate": "2025-02-18",
+   "DocCurrency": "EUR",
+   "DocTotal": "269120.00",
+   "U_ServiceFrom": null,
+   "U_ServiceTo": null,
+   "UpdateDate": "2025-02-23T08:00:00Z",
+   "DocumentLines": [
+    {
+     "ItemCode": "ST-COIL-HR",
+     "ItemDescription": "Warmband Coil S235JR 3mm",
+     "Quantity": "420.5",
+     "UnitMsr": "t",
+     "Price": "640.00",
+     "LineTotal": "269120.00",
+     "CountryOfOrigin": "TR",
+     "U_CBAM_Installation": "TR-INST-0042",
+     "LineNum": 0
+    }
+   ]
+  },
+  {
+   "DocEntry": 5002,
+   "DocNum": 255002,
+   "DocType": "dDocument_Items",
+   "CardCode": "V10001",
+   "CardName": "Stadtwerke Musterstadt GmbH",
+   "DocDate": "2025-03-05",
+   "TaxDate": "2025-03-05",
+   "DocCurrency": "EUR",
+   "DocTotal": "91324.00",
+   "U_ServiceFrom": "2025-02-01",
+   "U_ServiceTo": "2025-02-28",
+   "UpdateDate": "2025-03-10T08:00:00Z",
+   "DocumentLines": [
+    {
+     "ItemCode": "E-STROM",
+     "ItemDescription": "Strom Netzbezug",
+     "Quantity": "395000",
+     "UnitMsr": "kWh",
+     "Price": "0.2312",
+     "LineTotal": "91324.00",
+     "LineNum": 0
+    }
+   ]
+  },
+  {
+   "DocEntry": 5014,
+   "DocNum": 255014,
+   "DocType": "dDocument_Items",
+   "CardCode": "V10002",
+   "CardName": "Gasversorgung Süd AG",
+   "DocDate": "2025-03-07",
+   "TaxDate": "2025-03-07",
+   "DocCurrency": "EUR",
+   "DocTotal": "22815.00",
+   "U_ServiceFrom": "2025-02-01",
+   "U_ServiceTo": "2025-02-28",
+   "UpdateDate": "2025-03-12T08:00:00Z",
+   "DocumentLines": [
+    {
+     "ItemCode": "E-ERDGAS",
+     "ItemDescription": "Erdgas (Brennwert Hs)",
+     "Quantity": "270000",
+     "UnitMsr": "kWh",
+     "Price": "0.0845",
+     "LineTotal": "22815.00",
+     "LineNum": 0
+    }
+   ]
+  },
+  {
+   "DocEntry": 5029,
+   "DocNum": 255029,
+   "DocType": "dDocument_Items",
+   "CardCode": "V10004",
+   "CardName": "Mineralöl Krüger KG",
+   "DocDate": "2025-03-14",
+   "TaxDate": "2025-03-14",
+   "DocCurrency": "EUR",
+   "DocTotal": "6480.00",
+   "U_ServiceFrom": null,
+   "U_ServiceTo": null,
+   "UpdateDate": "2025-03-19T08:00:00Z",
+   "DocumentLines": [
+    {
+     "ItemCode": "F-DIESEL",
+     "ItemDescription": "Dieselkraftstoff",
+     "Quantity": "4000",
+     "UnitMsr": "Ltr",
+     "Price": "1.62",
+     "LineTotal": "6480.00",
+     "LineNum": 0
+    }
+   ]
+  },
+  {
+   "DocEntry": 5003,
+   "DocNum": 255003,
+   "DocType": "dDocument_Items",
+   "CardCode": "V10001",
+   "CardName": "Stadtwerke Musterstadt GmbH",
+   "DocDate": "2025-04-05",
+   "TaxDate": "2025-04-05",
+   "DocCurrency": "EUR",
+   "DocTotal": "94792.00",
+   "U_ServiceFrom": "2025-03-01",
+   "U_ServiceTo": "2025-03-31",
+   "UpdateDate": "2025-04-10T08:00:00Z",
+   "DocumentLines": [
+    {
+     "ItemCode": "E-STROM",
+     "ItemDescription": "Strom Netzbezug",
+     "Quantity": "410000",
+     "UnitMsr": "kWh",
+     "Price": "0.2312",
+     "LineTotal": "94792.00",
+     "LineNum": 0
+    }
+   ]
+  },
+  {
+   "DocEntry": 5015,
+   "DocNum": 255015,
+   "DocType": "dDocument_Items",
+   "CardCode": "V10002",
+   "CardName": "Gasversorgung Süd AG",
+   "DocDate": "2025-04-07",
+   "TaxDate": "2025-04-07",
+   "DocCurrency": "EUR",
+   "DocTotal": "19435.00",
+   "U_ServiceFrom": "2025-03-01",
+   "U_ServiceTo": "2025-03-31",
+   "UpdateDate": "2025-04-12T08:00:00Z",
+   "DocumentLines": [
+    {
+     "ItemCode": "E-ERDGAS",
+     "ItemDescription": "Erdgas (Brennwert Hs)",
+     "Quantity": "230000",
+     "UnitMsr": "kWh",
+     "Price": "0.0845",
+     "LineTotal": "19435.00",
+     "LineNum": 0
+    }
+   ]
+  },
+  {
+   "DocEntry": 5036,
+   "DocNum": 255036,
+   "DocType": "dDocument_Items",
+   "CardCode": "V20002",
+   "CardName": "Gulf Aluminium Smelting LLC",
+   "DocDate": "2025-04-09",
+   "TaxDate": "2025-04-09",
+   "DocCurrency": "EUR",
+   "DocTotal": "196350.00",
+   "U_ServiceFrom": null,
+   "U_ServiceTo": null,
+   "UpdateDate": "2025-04-14T08:00:00Z",
+   "DocumentLines": [
+    {
+     "ItemCode": "AL-INGOT",
+     "ItemDescription": "Aluminium Masseln P1020",
+     "Quantity": "85000",
+     "UnitMsr": "kg",
+     "Price": "2.31",
+     "LineTotal": "196350.00",
+     "CountryOfOrigin": "AE",
+     "U_CBAM_Installation": "AE-INST-0007",
+     "LineNum": 0
+    }
+   ]
+  },
+  {
+   "DocEntry": 5025,
+   "DocNum": 255025,
+   "DocType": "dDocument_Items",
+   "CardCode": "V10003",
+   "CardName": "Fernwärme Musterstadt GmbH",
+   "DocDate": "2025-04-10",
+   "TaxDate": "2025-04-10",
+   "DocCurrency": "EUR",
+   "DocTotal": "11400.00",
+   "U_ServiceFrom": "2025-01-01",
+   "U_ServiceTo": "2025-03-31",
+   "UpdateDate": "2025-04-15T08:00:00Z",
+   "DocumentLines": [
+    {
+     "ItemCode": "E-FERNW",
+     "ItemDescription": "Fernwärme",
+     "Quantity": "120",
+     "UnitMsr": "MWh",
+     "Price": "95.00",
+     "LineTotal": "11400.00",
+     "LineNum": 0
+    }
+   ]
+  },
+  {
+   "DocEntry": 5004,
+   "DocNum": 255004,
+   "DocType": "dDocument_Items",
+   "CardCode": "V10001",
+   "CardName": "Stadtwerke Musterstadt GmbH",
+   "DocDate": "2025-05-05",
+   "TaxDate": "2025-05-05",
+   "DocCurrency": "EUR",
+   "DocTotal": "90168.00",
+   "U_ServiceFrom": "2025-04-01",
+   "U_ServiceTo": "2025-04-30",
+   "UpdateDate": "2025-05-10T08:00:00Z",
+   "DocumentLines": [
+    {
+     "ItemCode": "E-STROM",
+     "ItemDescription": "Strom Netzbezug",
+     "Quantity": "390000",
+     "UnitMsr": "kWh",
+     "Price": "0.2312",
+     "LineTotal": "90168.00",
+     "LineNum": 0
+    }
+   ]
+  },
+  {
+   "DocEntry": 5016,
+   "DocNum": 255016,
+   "DocType": "dDocument_Items",
+   "CardCode": "V10002",
+   "CardName": "Gasversorgung Süd AG",
+   "DocDate": "2025-05-07",
+   "TaxDate": "2025-05-07",
+   "DocCurrency": "EUR",
+   "DocTotal": "14365.00",
+   "U_ServiceFrom": "2025-04-01",
+   "U_ServiceTo": "2025-04-30",
+   "UpdateDate": "2025-05-12T08:00:00Z",
+   "DocumentLines": [
+    {
+     "ItemCode": "E-ERDGAS",
+     "ItemDescription": "Erdgas (Brennwert Hs)",
+     "Quantity": "170000",
+     "UnitMsr": "kWh",
+     "Price": "0.0845",
+     "LineTotal": "14365.00",
+     "LineNum": 0
+    }
+   ]
+  },
+  {
+   "DocEntry": 5032,
+   "DocNum": 255032,
+   "DocType": "dDocument_Items",
+   "CardCode": "V20001",
+   "CardName": "Anadolu Çelik Sanayi A.Ş.",
+   "DocDate": "2025-05-20",
+   "TaxDate": "2025-05-20",
+   "DocCurrency": "EUR",
+   "DocTotal": "243360.00",
+   "U_ServiceFrom": null,
+   "U_ServiceTo": null,
+   "UpdateDate": "2025-05-25T08:00:00Z",
+   "DocumentLines": [
+    {
+     "ItemCode": "ST-COIL-HR",
+     "ItemDescription": "Warmband Coil S235JR 3mm",
+     "Quantity": "380.25",
+     "UnitMsr": "t",
+     "Price": "640.00",
+     "LineTotal": "243360.00",
+     "CountryOfOrigin": "TR",
+     "U_CBAM_Installation": "TR-INST-0042",
+     "LineNum": 0
+    }
+   ]
+  },
+  {
+   "DocEntry": 5005,
+   "DocNum": 255005,
+   "DocType": "dDocument_Items",
+   "CardCode": "V10001",
+   "CardName": "Stadtwerke Musterstadt GmbH",
+   "DocDate": "2025-06-05",
+   "TaxDate": "2025-06-05",
+   "DocCurrency": "EUR",
+   "DocTotal": "92480.00",
+   "U_ServiceFrom": "2025-05-01",
+   "U_ServiceTo": "2025-05-31",
+   "UpdateDate": "2025-06-10T08:00:00Z",
+   "DocumentLines": [
+    {
+     "ItemCode": "E-STROM",
+     "ItemDescription": "Strom Netzbezug",
+     "Quantity": "400000",
+     "UnitMsr": "kWh",
+     "Price": "0.2312",
+     "LineTotal": "92480.00",
+     "LineNum": 0
+    }
+   ]
+  },
+  {
+   "DocEntry": 5017,
+   "DocNum": 255017,
+   "DocType": "dDocument_Items",
+   "CardCode": "V10002",
+   "CardName": "Gasversorgung Süd AG",
+   "DocDate": "2025-06-07",
+   "TaxDate": "2025-06-07",
+   "DocCurrency": "EUR",
+   "DocTotal": "10140.00",
+   "U_ServiceFrom": "2025-05-01",
+   "U_ServiceTo": "2025-05-31",
+   "UpdateDate": "2025-06-12T08:00:00Z",
+   "DocumentLines": [
+    {
+     "ItemCode": "E-ERDGAS",
+     "ItemDescription": "Erdgas (Brennwert Hs)",
+     "Quantity": "120000",
+     "UnitMsr": "kWh",
+     "Price": "0.0845",
+     "LineTotal": "10140.00",
+     "LineNum": 0
+    }
+   ]
+  },
+  {
+   "DocEntry": 5035,
+   "DocNum": 255035,
+   "DocType": "dDocument_Items",
+   "CardCode": "V20001",
+   "CardName": "Anadolu Çelik Sanayi A.Ş.",
+   "DocDate": "2025-06-24",
+   "TaxDate": "2025-06-24",
+   "DocCurrency": "EUR",
+   "DocTotal": "56876.00",
+   "U_ServiceFrom": null,
+   "U_ServiceTo": null,
+   "UpdateDate": "2025-06-28T08:00:00Z",
+   "DocumentLines": [
+    {
+     "ItemCode": "ST-BAR-R20",
+     "ItemDescription": "Betonstahl Ø20 B500B",
+     "Quantity": "96.4",
+     "UnitMsr": "t",
+     "Price": "590.00",
+     "LineTotal": "56876.00",
+     "CountryOfOrigin": "TR",
+     "U_CBAM_Installation": "TR-INST-0042",
+     "LineNum": 0
+    }
+   ]
+  },
+  {
+   "DocEntry": 5006,
+   "DocNum": 255006,
+   "DocType": "dDocument_Items",
+   "CardCode": "V10001",
+   "CardName": "Stadtwerke Musterstadt GmbH",
+   "DocDate": "2025-07-05",
+   "TaxDate": "2025-07-05",
+   "DocCurrency": "EUR",
+   "DocTotal": "89012.00",
+   "U_ServiceFrom": "2025-06-01",
+   "U_ServiceTo": "2025-06-30",
+   "UpdateDate": "2025-07-10T08:00:00Z",
+   "DocumentLines": [
+    {
+     "ItemCode": "E-STROM",
+     "ItemDescription": "Strom Netzbezug",
+     "Quantity": "385000",
+     "UnitMsr": "kWh",
+     "Price": "0.2312",
+     "LineTotal": "89012.00",
+     "LineNum": 0
+    }
+   ]
+  },
+  {
+   "DocEntry": 5018,
+   "DocNum": 255018,
+   "DocType": "dDocument_Items",
+   "CardCode": "V10002",
+   "CardName": "Gasversorgung Süd AG",
+   "DocDate": "2025-07-07",
+   "TaxDate": "2025-07-07",
+   "DocCurrency": "EUR",
+   "DocTotal": "7605.00",
+   "U_ServiceFrom": "2025-06-01",
+   "U_ServiceTo": "2025-06-30",
+   "UpdateDate": "2025-07-12T08:00:00Z",
+   "DocumentLines": [
+    {
+     "ItemCode": "E-ERDGAS",
+     "ItemDescription": "Erdgas (Brennwert Hs)",
+     "Quantity": "90000",
+     "UnitMsr": "kWh",
+     "Price": "0.0845",
+     "LineTotal": "7605.00",
+     "LineNum": 0
+    }
+   ]
+  },
+  {
+   "DocEntry": 5026,
+   "DocNum": 255026,
+   "DocType": "dDocument_Items",
+   "CardCode": "V10003",
+   "CardName": "Fernwärme Musterstadt GmbH",
+   "DocDate": "2025-07-10",
+   "TaxDate": "2025-07-10",
+   "DocCurrency": "EUR",
+   "DocTotal": "5700.00",
+   "U_ServiceFrom": "2025-04-01",
+   "U_ServiceTo": "2025-06-30",
+   "UpdateDate": "2025-07-15T08:00:00Z",
+   "DocumentLines": [
+    {
+     "ItemCode": "E-FERNW",
+     "ItemDescription": "Fernwärme",
+     "Quantity": "60",
+     "UnitMsr": "MWh",
+     "Price": "95.00",
+     "LineTotal": "5700.00",
+     "LineNum": 0
+    }
+   ]
+  },
+  {
+   "DocEntry": 5038,
+   "DocNum": 255038,
+   "DocType": "dDocument_Items",
+   "CardCode": "V20003",
+   "CardName": "Ningbo Profiles Co., Ltd.",
+   "DocDate": "2025-07-15",
+   "TaxDate": "2025-07-15",
+   "DocCurrency": "EUR",
+   "DocTotal": "47740.00",
+   "U_ServiceFrom": null,
+   "U_ServiceTo": null,
+   "UpdateDate": "2025-07-20T08:00:00Z",
+   "DocumentLines": [
+    {
+     "ItemCode": "AL-PROF-6060",
+     "ItemDescription": "Alu-Strangpressprofil 6060",
+     "Quantity": "12400",
+     "UnitMsr": "kg",
+     "Price": "3.85",
+     "LineTotal": "47740.00",
+     "CountryOfOrigin": "CN",
+     "LineNum": 0
+    }
+   ]
+  },
+  {
+   "DocEntry": 5007,
+   "DocNum": 255007,
+   "DocType": "dDocument_Items",
+   "CardCode": "V10001",
+   "CardName": "Stadtwerke Musterstadt GmbH",
+   "DocDate": "2025-08-05",
+   "TaxDate": "2025-08-05",
+   "DocCurrency": "EUR",
+   "DocTotal": "85544.00",
+   "U_ServiceFrom": "2025-07-01",
+   "U_ServiceTo": "2025-07-31",
+   "UpdateDate": "2025-08-10T08:00:00Z",
+   "DocumentLines": [
+    {
+     "ItemCode": "E-STROM",
+     "ItemDescription": "Strom Netzbezug",
+     "Quantity": "370000",
+     "UnitMsr": "kWh",
+     "Price": "0.2312",
+     "LineTotal": "85544.00",
+     "LineNum": 0
+    }
+   ]
+  },
+  {
+   "DocEntry": 5019,
+   "DocNum": 255019,
+   "DocType": "dDocument_Items",
+   "CardCode": "V10002",
+   "CardName": "Gasversorgung Süd AG",
+   "DocDate": "2025-08-07",
+   "TaxDate": "2025-08-07",
+   "DocCurrency": "EUR",
+   "DocTotal": "6760.00",
+   "U_ServiceFrom": "2025-07-01",
+   "U_ServiceTo": "2025-07-31",
+   "UpdateDate": "2025-08-12T08:00:00Z",
+   "DocumentLines": [
+    {
+     "ItemCode": "E-ERDGAS",
+     "ItemDescription": "Erdgas (Brennwert Hs)",
+     "Quantity": "80000",
+     "UnitMsr": "kWh",
+     "Price": "0.0845",
+     "LineTotal": "6760.00",
+     "LineNum": 0
+    }
+   ]
+  },
+  {
+   "DocEntry": 5033,
+   "DocNum": 255033,
+   "DocType": "dDocument_Items",
+   "CardCode": "V20001",
+   "CardName": "Anadolu Çelik Sanayi A.Ş.",
+   "DocDate": "2025-08-19",
+   "TaxDate": "2025-08-19",
+   "DocCurrency": "EUR",
+   "DocTotal": "291200.00",
+   "U_ServiceFrom": null,
+   "U_ServiceTo": null,
+   "UpdateDate": "2025-08-24T08:00:00Z",
+   "DocumentLines": [
+    {
+     "ItemCode": "ST-COIL-HR",
+     "ItemDescription": "Warmband Coil S235JR 3mm",
+     "Quantity": "455",
+     "UnitMsr": "t",
+     "Price": "640.00",
+     "LineTotal": "291200.00",
+     "CountryOfOrigin": "TR",
+     "U_CBAM_Installation": "TR-INST-0042",
+     "LineNum": 0
+    }
+   ]
+  },
+  {
+   "DocEntry": 5008,
+   "DocNum": 255008,
+   "DocType": "dDocument_Items",
+   "CardCode": "V10001",
+   "CardName": "Stadtwerke Musterstadt GmbH",
+   "DocDate": "2025-09-05",
+   "TaxDate": "2025-09-05",
+   "DocCurrency": "EUR",
+   "DocTotal": "76296.00",
+   "U_ServiceFrom": "2025-08-01",
+   "U_ServiceTo": "2025-08-31",
+   "UpdateDate": "2025-09-10T08:00:00Z",
+   "DocumentLines": [
+    {
+     "ItemCode": "E-STROM",
+     "ItemDescription": "Strom Netzbezug",
+     "Quantity": "330000",
+     "UnitMsr": "kWh",
+     "Price": "0.2312",
+     "LineTotal": "76296.00",
+     "LineNum": 0
+    }
+   ]
+  },
+  {
+   "DocEntry": 5020,
+   "DocNum": 255020,
+   "DocType": "dDocument_Items",
+   "CardCode": "V10002",
+   "CardName": "Gasversorgung Süd AG",
+   "DocDate": "2025-09-07",
+   "TaxDate": "2025-09-07",
+   "DocCurrency": "EUR",
+   "DocTotal": "6337.50",
+   "U_ServiceFrom": "2025-08-01",
+   "U_ServiceTo": "2025-08-31",
+   "UpdateDate": "2025-09-12T08:00:00Z",
+   "DocumentLines": [
+    {
+     "ItemCode": "E-ERDGAS",
+     "ItemDescription": "Erdgas (Brennwert Hs)",
+     "Quantity": "75000",
+     "UnitMsr": "kWh",
+     "Price": "0.0845",
+     "LineTotal": "6337.50",
+     "LineNum": 0
+    }
+   ]
+  },
+  {
+   "DocEntry": 5030,
+   "DocNum": 255030,
+   "DocType": "dDocument_Items",
+   "CardCode": "V10004",
+   "CardName": "Mineralöl Krüger KG",
+   "DocDate": "2025-09-22",
+   "TaxDate": "2025-09-22",
+   "DocCurrency": "EUR",
+   "DocTotal": "5670.00",
+   "U_ServiceFrom": null,
+   "U_ServiceTo": null,
+   "UpdateDate": "2025-09-27T08:00:00Z",
+   "DocumentLines": [
+    {
+     "ItemCode": "F-DIESEL",
+     "ItemDescription": "Dieselkraftstoff",
+     "Quantity": "3500",
+     "UnitMsr": "Ltr",
+     "Price": "1.62",
+     "LineTotal": "5670.00",
+     "LineNum": 0
+    }
+   ]
+  },
+  {
+   "DocEntry": 5009,
+   "DocNum": 255009,
+   "DocType": "dDocument_Items",
+   "CardCode": "V10001",
+   "CardName": "Stadtwerke Musterstadt GmbH",
+   "DocDate": "2025-10-05",
+   "TaxDate": "2025-10-05",
+   "DocCurrency": "EUR",
+   "DocTotal": "93636.00",
+   "U_ServiceFrom": "2025-09-01",
+   "U_ServiceTo": "2025-09-30",
+   "UpdateDate": "2025-10-10T08:00:00Z",
+   "DocumentLines": [
+    {
+     "ItemCode": "E-STROM",
+     "ItemDescription": "Strom Netzbezug",
+     "Quantity": "405000",
+     "UnitMsr": "kWh",
+     "Price": "0.2312",
+     "LineTotal": "93636.00",
+     "LineNum": 0
+    }
+   ]
+  },
+  {
+   "DocEntry": 5021,
+   "DocNum": 255021,
+   "DocType": "dDocument_Items",
+   "CardCode": "V10002",
+   "CardName": "Gasversorgung Süd AG",
+   "DocDate": "2025-10-07",
+   "TaxDate": "2025-10-07",
+   "DocCurrency": "EUR",
+   "DocTotal": "9295.00",
+   "U_ServiceFrom": "2025-09-01",
+   "U_ServiceTo": "2025-09-30",
+   "UpdateDate": "2025-10-12T08:00:00Z",
+   "DocumentLines": [
+    {
+     "ItemCode": "E-ERDGAS",
+     "ItemDescription": "Erdgas (Brennwert Hs)",
+     "Quantity": "110000",
+     "UnitMsr": "kWh",
+     "Price": "0.0845",
+     "LineTotal": "9295.00",
+     "LineNum": 0
+    }
+   ]
+  },
+  {
+   "DocEntry": 5037,
+   "DocNum": 255037,
+   "DocType": "dDocument_Items",
+   "CardCode": "V20002",
+   "CardName": "Gulf Aluminium Smelting LLC",
+   "DocDate": "2025-10-08",
+   "TaxDate": "2025-10-08",
+   "DocCurrency": "EUR",
+   "DocTotal": "213675.00",
+   "U_ServiceFrom": null,
+   "U_ServiceTo": null,
+   "UpdateDate": "2025-10-13T08:00:00Z",
+   "DocumentLines": [
+    {
+     "ItemCode": "AL-INGOT",
+     "ItemDescription": "Aluminium Masseln P1020",
+     "Quantity": "92500",
+     "UnitMsr": "kg",
+     "Price": "2.31",
+     "LineTotal": "213675.00",
+     "CountryOfOrigin": "AE",
+     "U_CBAM_Installation": "AE-INST-0007",
+     "LineNum": 0
+    }
+   ]
+  },
+  {
+   "DocEntry": 5027,
+   "DocNum": 255027,
+   "DocType": "dDocument_Items",
+   "CardCode": "V10003",
+   "CardName": "Fernwärme Musterstadt GmbH",
+   "DocDate": "2025-10-10",
+   "TaxDate": "2025-10-10",
+   "DocCurrency": "EUR",
+   "DocTotal": "2850.00",
+   "U_ServiceFrom": "2025-07-01",
+   "U_ServiceTo": "2025-09-30",
+   "UpdateDate": "2025-10-15T08:00:00Z",
+   "DocumentLines": [
+    {
+     "ItemCode": "E-FERNW",
+     "ItemDescription": "Fernwärme",
+     "Quantity": "30",
+     "UnitMsr": "MWh",
+     "Price": "95.00",
+     "LineTotal": "2850.00",
+     "LineNum": 0
+    }
+   ]
+  },
+  {
+   "DocEntry": 5010,
+   "DocNum": 255010,
+   "DocType": "dDocument_Items",
+   "CardCode": "V10001",
+   "CardName": "Stadtwerke Musterstadt GmbH",
+   "DocDate": "2025-11-05",
+   "TaxDate": "2025-11-05",
+   "DocCurrency": "EUR",
+   "DocTotal": "95948.00",
+   "U_ServiceFrom": "2025-10-01",
+   "U_ServiceTo": "2025-10-31",
+   "UpdateDate": "2025-11-10T08:00:00Z",
+   "DocumentLines": [
+    {
+     "ItemCode": "E-STROM",
+     "ItemDescription": "Strom Netzbezug",
+     "Quantity": "415000",
+     "UnitMsr": "kWh",
+     "Price": "0.2312",
+     "LineTotal": "95948.00",
+     "LineNum": 0
+    }
+   ]
+  },
+  {
+   "DocEntry": 5022,
+   "DocNum": 255022,
+   "DocType": "dDocument_Items",
+   "CardCode": "V10002",
+   "CardName": "Gasversorgung Süd AG",
+   "DocDate": "2025-11-07",
+   "TaxDate": "2025-11-07",
+   "DocCurrency": "EUR",
+   "DocTotal": "14365.00",
+   "U_ServiceFrom": "2025-10-01",
+   "U_ServiceTo": "2025-10-31",
+   "UpdateDate": "2025-11-12T08:00:00Z",
+   "DocumentLines": [
+    {
+     "ItemCode": "E-ERDGAS",
+     "ItemDescription": "Erdgas (Brennwert Hs)",
+     "Quantity": "170000",
+     "UnitMsr": "kWh",
+     "Price": "0.0845",
+     "LineTotal": "14365.00",
+     "LineNum": 0
+    }
+   ]
+  },
+  {
+   "DocEntry": 5034,
+   "DocNum": 255034,
+   "DocType": "dDocument_Items",
+   "CardCode": "V20001",
+   "CardName": "Anadolu Çelik Sanayi A.Ş.",
+   "DocDate": "2025-11-18",
+   "TaxDate": "2025-11-18",
+   "DocCurrency": "EUR",
+   "DocTotal": "255200.00",
+   "U_ServiceFrom": null,
+   "U_ServiceTo": null,
+   "UpdateDate": "2025-11-23T08:00:00Z",
+   "DocumentLines": [
+    {
+     "ItemCode": "ST-COIL-HR",
+     "ItemDescription": "Warmband Coil S235JR 3mm",
+     "Quantity": "398.75",
+     "UnitMsr": "t",
+     "Price": "640.00",
+     "LineTotal": "255200.00",
+     "CountryOfOrigin": "TR",
+     "U_CBAM_Installation": "TR-INST-0042",
+     "LineNum": 0
+    }
+   ]
+  },
+  {
+   "DocEntry": 5011,
+   "DocNum": 255011,
+   "DocType": "dDocument_Items",
+   "CardCode": "V10001",
+   "CardName": "Stadtwerke Musterstadt GmbH",
+   "DocDate": "2025-12-05",
+   "TaxDate": "2025-12-05",
+   "DocCurrency": "EUR",
+   "DocTotal": "102884.00",
+   "U_ServiceFrom": "2025-11-01",
+   "U_ServiceTo": "2025-11-30",
+   "UpdateDate": "2025-12-10T08:00:00Z",
+   "DocumentLines": [
+    {
+     "ItemCode": "E-STROM",
+     "ItemDescription": "Strom Netzbezug",
+     "Quantity": "445000",
+     "UnitMsr": "kWh",
+     "Price": "0.2312",
+     "LineTotal": "102884.00",
+     "LineNum": 0
+    }
+   ]
+  },
+  {
+   "DocEntry": 5023,
+   "DocNum": 255023,
+   "DocType": "dDocument_Items",
+   "CardCode": "V10002",
+   "CardName": "Gasversorgung Süd AG",
+   "DocDate": "2025-12-07",
+   "TaxDate": "2025-12-07",
+   "DocCurrency": "EUR",
+   "DocTotal": "21125.00",
+   "U_ServiceFrom": "2025-11-01",
+   "U_ServiceTo": "2025-11-30",
+   "UpdateDate": "2025-12-12T08:00:00Z",
+   "DocumentLines": [
+    {
+     "ItemCode": "E-ERDGAS",
+     "ItemDescription": "Erdgas (Brennwert Hs)",
+     "Quantity": "250000",
+     "UnitMsr": "kWh",
+     "Price": "0.0845",
+     "LineTotal": "21125.00",
+     "LineNum": 0
+    }
+   ]
+  },
+  {
+   "DocEntry": 5012,
+   "DocNum": 255012,
+   "DocType": "dDocument_Items",
+   "CardCode": "V10001",
+   "CardName": "Stadtwerke Musterstadt GmbH",
+   "DocDate": "2026-01-05",
+   "TaxDate": "2026-01-05",
+   "DocCurrency": "EUR",
+   "DocTotal": "105196.00",
+   "U_ServiceFrom": "2025-12-01",
+   "U_ServiceTo": "2025-12-31",
+   "UpdateDate": "2026-01-10T08:00:00Z",
+   "DocumentLines": [
+    {
+     "ItemCode": "E-STROM",
+     "ItemDescription": "Strom Netzbezug",
+     "Quantity": "455000",
+     "UnitMsr": "kWh",
+     "Price": "0.2312",
+     "LineTotal": "105196.00",
+     "LineNum": 0
+    }
+   ]
+  },
+  {
+   "DocEntry": 5024,
+   "DocNum": 255024,
+   "DocType": "dDocument_Items",
+   "CardCode": "V10002",
+   "CardName": "Gasversorgung Süd AG",
+   "DocDate": "2026-01-07",
+   "TaxDate": "2026-01-07",
+   "DocCurrency": "EUR",
+   "DocTotal": "24927.50",
+   "U_ServiceFrom": "2025-12-01",
+   "U_ServiceTo": "2025-12-31",
+   "UpdateDate": "2026-01-12T08:00:00Z",
+   "DocumentLines": [
+    {
+     "ItemCode": "E-ERDGAS",
+     "ItemDescription": "Erdgas (Brennwert Hs)",
+     "Quantity": "295000",
+     "UnitMsr": "kWh",
+     "Price": "0.0845",
+     "LineTotal": "24927.50",
+     "LineNum": 0
+    }
+   ]
+  },
+  {
+   "DocEntry": 5028,
+   "DocNum": 255028,
+   "DocType": "dDocument_Items",
+   "CardCode": "V10003",
+   "CardName": "Fernwärme Musterstadt GmbH",
+   "DocDate": "2026-01-10",
+   "TaxDate": "2026-01-10",
+   "DocCurrency": "EUR",
+   "DocTotal": "10450.00",
+   "U_ServiceFrom": "2025-10-01",
+   "U_ServiceTo": "2025-12-31",
+   "UpdateDate": "2026-01-15T08:00:00Z",
+   "DocumentLines": [
+    {
+     "ItemCode": "E-FERNW",
+     "ItemDescription": "Fernwärme",
+     "Quantity": "110",
+     "UnitMsr": "MWh",
+     "Price": "95.00",
+     "LineTotal": "10450.00",
+     "LineNum": 0
+    }
+   ]
+  },
+  {
+   "DocEntry": 5039,
+   "DocNum": 265039,
+   "DocType": "dDocument_Items",
+   "CardCode": "V10001",
+   "CardName": "Stadtwerke Musterstadt GmbH",
+   "DocDate": "2026-02-05",
+   "TaxDate": "2026-02-05",
+   "DocCurrency": "EUR",
+   "DocTotal": "98470.00",
+   "U_ServiceFrom": "2026-01-01",
+   "U_ServiceTo": "2026-01-31",
+   "UpdateDate": "2026-02-10T08:00:00Z",
+   "DocumentLines": [
+    {
+     "ItemCode": "E-STROM",
+     "ItemDescription": "Strom Netzbezug",
+     "Quantity": "430000",
+     "UnitMsr": "kWh",
+     "Price": "0.2290",
+     "LineTotal": "98470.00",
+     "LineNum": 0
+    }
+   ]
+  }
+ ]
+}

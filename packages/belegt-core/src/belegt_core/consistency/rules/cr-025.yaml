@@ -1,0 +1,18 @@
+# Spec: 06 §2.2 CR-025
+rule_id: CR-025
+rule_version: 1.0.0
+category: period
+severity: block
+title:
+  de: Unterschiedliche Konsolidierungsmethoden
+  en: Different consolidation methods
+scope: request
+triggers:
+- answer_write
+- pre_submit_gate
+- daily_batch
+plugin: cr_025
+assert: c1 == c2
+default_action: open_conflict
+explain_template: cr-025
+tests: tests/test_consistency_rules.py::test_cr_025

@@ -1,0 +1,266 @@
+{
+  "uid": "dsh-02",
+  "title": "DSH-02 问卷流水线",
+  "description": "Request.status 计数、阶段 P50/P95（10 §3.1）、最慢关口、awaiting_* 停留",
+  "tags": [
+    "belegt",
+    "dsh-02"
+  ],
+  "timezone": "Europe/Berlin",
+  "schemaVersion": 39,
+  "version": 1,
+  "editable": false,
+  "time": {
+    "from": "now-24h",
+    "to": "now"
+  },
+  "refresh": "1m",
+  "templating": {
+    "list": [
+      {
+        "name": "datasource",
+        "type": "datasource",
+        "query": "prometheus",
+        "current": {
+          "text": "Prometheus",
+          "value": "belegt-prom"
+        },
+        "hide": 2
+      }
+    ]
+  },
+  "annotations": {
+    "list": []
+  },
+  "links": [
+    {
+      "title": "Runbooks",
+      "type": "link",
+      "url": "deploy/ops/alerts-runbook.md",
+      "targetBlank": true
+    }
+  ],
+  "panels": [
+    {
+      "id": 1,
+      "type": "timeseries",
+      "title": "首稿时长 P95（NFR-07：MVP ≤ 60 min，V1 ≤ 30 min）",
+      "description": "",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "belegt-prom"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "belegt-prom"
+          },
+          "expr": "belegt:first_draft_seconds:p95_1d",
+          "legendFormat": "{{deploy_profile}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 1800
+              },
+              {
+                "color": "red",
+                "value": 3600
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {}
+    },
+    {
+      "id": 2,
+      "type": "timeseries",
+      "title": "首稿时长 P50",
+      "description": "",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "belegt-prom"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 0,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "belegt-prom"
+          },
+          "expr": "histogram_quantile(0.5, sum by (le) (rate(belegt_request_first_draft_seconds_bucket[1d])))",
+          "legendFormat": "P50"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "options": {}
+    },
+    {
+      "id": 3,
+      "type": "timeseries",
+      "title": "阶段 P95（§3.1 时间预算）",
+      "description": "",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "belegt-prom"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 8,
+        "w": 24,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "belegt-prom"
+          },
+          "expr": "histogram_quantile(0.95, sum by (le, stage) (rate(belegt_request_stage_duration_seconds_bucket[1h])))",
+          "legendFormat": "{{stage}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "options": {}
+    },
+    {
+      "id": 4,
+      "type": "timeseries",
+      "title": "阶段 P50",
+      "description": "",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "belegt-prom"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 16,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "belegt-prom"
+          },
+          "expr": "histogram_quantile(0.5, sum by (le, stage) (rate(belegt_request_stage_duration_seconds_bucket[1h])))",
+          "legendFormat": "{{stage}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "options": {}
+    },
+    {
+      "id": 5,
+      "type": "bargauge",
+      "title": "最慢关口分布（按模板）",
+      "description": "",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "belegt-prom"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 16,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "belegt-prom"
+          },
+          "expr": "topk(5, histogram_quantile(0.95, sum by (le, stage, template_id) (rate(belegt_request_stage_duration_seconds_bucket[1d]))))",
+          "legendFormat": "{{template_id}} / {{stage}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "options": {}
+    },
+    {
+      "id": 6,
+      "type": "timeseries",
+      "title": "文档解析页数（OCR / 文本层）",
+      "description": "页/小时（10 §3.3）",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "belegt-prom"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 24,
+        "w": 12,
+        "h": 8
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "belegt-prom"
+          },
+          "expr": "sum by (mime, ocr) (rate(belegt_docparse_pages_total[5m])) * 3600",
+          "legendFormat": "{{mime}} ocr={{ocr}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {}
+    }
+  ]
+}

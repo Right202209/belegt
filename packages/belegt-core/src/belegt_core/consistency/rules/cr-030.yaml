@@ -1,0 +1,21 @@
+# Spec: 06 §2.2 CR-030
+rule_id: CR-030
+rule_version: 1.0.0
+category: calculation
+severity: warn
+title:
+  de: PCF unter anteiligen Standortemissionen
+  en: PCF below allocated site emissions
+scope: org
+triggers:
+- answer_write
+- pre_submit_gate
+- daily_batch
+- context_change
+plugin: cr_030
+assert: dec(emb) >= dec('0.9') * dec(own)
+tolerance:
+  factor: '0.9'
+default_action: open_conflict
+explain_template: cr-030
+tests: tests/test_consistency_rules.py::test_cr_030

@@ -1,0 +1,19 @@
+# Spec: 06 §2.2 CR-021
+rule_id: CR-021
+rule_version: 1.0.0
+category: unit
+severity: block
+title:
+  de: Nenner der Intensität passt nicht zur deklarierten Einheit
+  en: Intensity denominator differs from declared unit
+scope: request
+triggers:
+- answer_write
+- pre_submit_gate
+- daily_batch
+- context_change
+plugin: cr_021
+assert: denominator == declared
+default_action: open_conflict
+explain_template: cr-021
+tests: tests/test_consistency_rules.py::test_cr_021

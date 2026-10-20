@@ -1,0 +1,21 @@
+# Spec: 06 §2.2 CR-017
+rule_id: CR-017
+rule_version: 1.0.0
+category: validity
+severity: warn
+title:
+  de: REACH-Kandidatenliste veraltet
+  en: REACH candidate list outdated
+scope: answer
+triggers:
+- answer_write
+- pre_submit_gate
+- daily_batch
+- context_change
+plugin: cr_017
+assert: answer_date >= latest
+tolerance:
+  days: 0
+default_action: closed_question
+explain_template: cr-017
+tests: tests/test_consistency_rules.py::test_cr_017

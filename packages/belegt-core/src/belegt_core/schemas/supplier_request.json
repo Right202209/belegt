@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.belegt.org/graph/2026-10/supplier_request.json",
+  "title": "SupplierRequest",
+  "type": "object",
+  "required": [
+    "id",
+    "counterparty_id",
+    "datapoint_ids",
+    "period",
+    "language",
+    "template_id",
+    "channel",
+    "due_date",
+    "reminder_count",
+    "status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^sreq_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "org_id": true,
+    "version": true,
+    "created_at": true,
+    "created_by": true,
+    "trust_zone": {
+      "const": "trusted"
+    },
+    "provenance": true,
+    "supersedes": true,
+    "schema_version": true,
+    "content_hash": true,
+    "tags": true,
+    "counterparty_id": {
+      "type": "string",
+      "pattern": "^cp_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "datapoint_ids": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "common.json#/$defs/datapointRef"
+      }
+    },
+    "product_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^prod_[0-9A-HJKMNP-TV-Z]{26}$"
+      }
+    },
+    "period": {
+      "$ref": "common.json#/$defs/period"
+    },
+    "language": {
+      "type": "string"
+    },
+    "template_id": {
+      "type": "string",
+      "pattern": "^stpl:[a-z0-9_]+(\\.[a-z0-9_]+)*\\.[a-z]{2}(-[A-Z]{2})?@[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "channel": {
+      "enum": [
+        "email",
+        "supplier_portal"
+      ]
+    },
+    "portal_token_hash": {
+      "$ref": "common.json#/$defs/sha256"
+    },
+    "due_date": {
+      "$ref": "common.json#/$defs/date"
+    },
+    "reminder_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "last_sent_at": {
+      "$ref": "common.json#/$defs/dateTime"
+    },
+    "trigger_ref": {
+      "$ref": "common.json#/$defs/objectRef"
+    },
+    "default_cost_estimate_ref": {
+      "type": "string",
+      "pattern": "^calc_[0-9A-HJKMNP-TV-Z]{26}#v[1-9][0-9]*$"
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "sent",
+        "reminded",
+        "responded",
+        "reviewed",
+        "closed",
+        "escalated",
+        "expired"
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "$ref": "common.json#/$defs/envelope"
+    }
+  ]
+}

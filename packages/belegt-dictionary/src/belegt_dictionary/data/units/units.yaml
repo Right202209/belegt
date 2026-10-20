@@ -1,0 +1,111 @@
+schema: belegt.units/1
+units:
+  - code: t
+    ucum: t
+    dimension: mass
+    note: 公吨
+  - code: kg
+    ucum: kg
+    dimension: mass
+  - code: tCO2e
+    ucum: t{CO2e}
+    dimension: mass_co2e
+    note: GWP 取值版本由 Calculation.methodology_version 记录
+  - code: kgCO2e
+    ucum: kg{CO2e}
+    dimension: mass_co2e
+  - code: kWh
+    ucum: kW.h
+    dimension: energy
+  - code: MWh
+    ucum: MW.h
+    dimension: energy
+  - code: GJ
+    ucum: GJ
+    dimension: energy
+  - code: m3
+    ucum: m3
+    dimension: volume
+    note: 水量
+  - code: L
+    ucum: L
+    dimension: volume
+  - code: m2
+    ucum: m2
+    dimension: area
+  - code: ha
+    ucum: har
+    dimension: area
+    note: EUDR 地块面积
+  - code: '%'
+    ucum: '%'
+    dimension: dimensionless
+    note: 比例统一存百分数（0–100）
+  - code: '%w/w'
+    ucum: '%{w/w}'
+    dimension: mass_fraction
+    note: REACH 浓度
+  - code: ppm
+    ucum: '[ppm]'
+    dimension: mass_fraction
+    note: 仅作 allowed_units，落库换算为 %w/w
+  - code: '1'
+    ucum: '1'
+    dimension: dimensionless
+    note: 计数：人数、件数、次数
+  - code: h
+    ucum: h
+    dimension: time
+    note: 培训小时
+  - code: EUR
+    ucum: null
+    dimension: currency
+    iso4217: EUR
+    note: ISO 4217；其他币种换算须走 calc-service 并记录汇率来源
+  - code: tCO2e/t
+    ucum: t{CO2e}/t
+    dimension: emission_intensity_mass
+    note: CBAM SEE
+  - code: kgCO2e/kg
+    ucum: kg{CO2e}/kg
+    dimension: emission_intensity_mass
+    note: PCF 每声明单位（声明单位为 kg 时）
+  - code: kgCO2e/kWh
+    ucum: kg{CO2e}/(kW.h)
+    dimension: emission_intensity_energy
+    note: 电池碳足迹每功能单位
+  - code: MWh/t
+    ucum: MW.h/t
+    dimension: energy_intensity_mass
+    note: CBAM 比电耗
+  - code: tCO2e/EUR
+    ucum: null
+    dimension: emission_intensity_currency
+    iso4217: EUR
+    note: 单位营收排放强度；导出常需 ×1e6 换算为每百万 EUR
+  - code: tCO2e/MWh
+    ucum: t{CO2e}/(MW.h)
+    dimension: emission_intensity_energy
+    calc_internal: true
+    note: 计算内部单位（FactorSet 行），不作 DataPoint 单位
+  - code: tCO2e/GJ
+    ucum: t{CO2e}/GJ
+    dimension: emission_intensity_energy
+    calc_internal: true
+    note: 计算内部单位（燃料排放因子），不作 DataPoint 单位
+  - code: kgCO2e/L
+    ucum: kg{CO2e}/L
+    dimension: emission_intensity_volume
+    calc_internal: true
+    note: 计算内部单位（液体燃料排放因子），不作 DataPoint 单位
+  - code: kg/MWh
+    ucum: kg/(MW.h)
+    dimension: mass_per_energy
+    calc_internal: true
+    note: 计算内部单位（CH4、N2O 质量每能量），不作 DataPoint 单位
+  - code: EUR/tCO2e
+    ucum: null
+    dimension: price_per_emission
+    iso4217: EUR
+    calc_internal: true
+    note: 计算内部单位（CBAM 证书/EU ETS 价格），不作 DataPoint 单位

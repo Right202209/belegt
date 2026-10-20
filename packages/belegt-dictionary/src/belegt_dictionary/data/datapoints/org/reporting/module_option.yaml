@@ -1,0 +1,37 @@
+id: dp:org.reporting.module_option
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: VSME-Modulauswahl
+  en: VSME module option
+  zh: VSME 模块选择
+definition:
+  en: 'The VSME reporting option chosen by the undertaking for the reporting period: Basic Module only, or Basic plus Comprehensive Module. Describes the scope of the report, not the content of individual disclosures.'
+  de: 'Vom Unternehmen für den Berichtszeitraum gewählte VSME-Option: nur Basismodul oder Basis- und Umfassendes Modul. Beschreibt den Berichtsumfang, nicht einzelne Angaben.'
+  zh: 企业在该报告期选择的 VSME 报告选项：仅基础模块，或基础模块 + 综合模块；描述报告范围而非具体披露内容。
+value_type: enum
+enum_ref: enums/vsme_module_option.yaml
+period_type: reporting_period
+boundary:
+  - organization
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: eu_2026_1560_vcs
+    clause: B1
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - human_confirmation
+    - historical_answer
+  min_sources: 1
+  max_age_days: 365
+  requires_calculation: false
+  human_confirmation_allowed: true
+tags:
+  - vsme
+  - reporting

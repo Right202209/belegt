@@ -1,0 +1,9 @@
+# BuildKit：仅作用于 web.Dockerfile（构建上下文 = code/belegt）；只需要 web/ 与 deploy/docker/nginx/
+*
+!web
+!deploy/docker/nginx
+web/node_modules
+web/dist
+web/coverage
+web/**/.env
+web/**/.env.*

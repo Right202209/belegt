@@ -1,0 +1,251 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.belegt.org/graph/2026-10/closed_question.json",
+  "title": "ClosedQuestion",
+  "type": "object",
+  "required": [
+    "id",
+    "target_ref",
+    "kind",
+    "prompt",
+    "assignee_role",
+    "expires_at",
+    "status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^cq_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "org_id": true,
+    "version": true,
+    "created_at": true,
+    "created_by": true,
+    "trust_zone": {
+      "const": "trusted"
+    },
+    "provenance": true,
+    "supersedes": true,
+    "schema_version": true,
+    "content_hash": true,
+    "tags": true,
+    "target_ref": {
+      "type": "string",
+      "pattern": "^(map|ev|calc|req|q|ans|cfl)_[0-9A-HJKMNP-TV-Z]{26}#v[1-9][0-9]*$"
+    },
+    "request_id": {
+      "type": "string",
+      "pattern": "^req_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "kind": {
+      "enum": [
+        "yes_no",
+        "single_choice",
+        "numeric_confirm",
+        "file_request"
+      ]
+    },
+    "prompt": {
+      "$ref": "common.json#/$defs/i18nText"
+    },
+    "options": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "required": [
+          "key",
+          "label"
+        ],
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "label": {
+            "$ref": "common.json#/$defs/i18nText"
+          },
+          "ref": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "proposed_value": {
+      "type": "object",
+      "required": [
+        "value",
+        "unit",
+        "evidence_ref"
+      ],
+      "properties": {
+        "value": {
+          "$ref": "common.json#/$defs/decStr"
+        },
+        "unit": {
+          "type": "string"
+        },
+        "evidence_ref": {
+          "type": "string",
+          "pattern": "^ev_[0-9A-HJKMNP-TV-Z]{26}#v[1-9][0-9]*$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "context_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "common.json#/$defs/objectRef"
+      }
+    },
+    "assignee_role": {
+      "enum": [
+        "compliance_owner",
+        "executive",
+        "sales",
+        "contributor",
+        "supplier_user",
+        "customer_buyer",
+        "org_admin",
+        "auditor_readonly"
+      ]
+    },
+    "assignee": {
+      "$ref": "common.json#/$defs/userActor"
+    },
+    "expires_at": {
+      "$ref": "common.json#/$defs/dateTime"
+    },
+    "answer": {
+      "type": "object",
+      "required": [
+        "answered_by",
+        "answered_at"
+      ],
+      "properties": {
+        "choice": {
+          "type": "string"
+        },
+        "bool": {
+          "type": "boolean"
+        },
+        "corrected_value": {
+          "$ref": "common.json#/$defs/decStr"
+        },
+        "blob_sha256": {
+          "type": "array",
+          "items": {
+            "$ref": "common.json#/$defs/sha256"
+          }
+        },
+        "answered_by": {
+          "$ref": "common.json#/$defs/userActor"
+        },
+        "answered_at": {
+          "$ref": "common.json#/$defs/dateTime"
+        }
+      },
+      "additionalProperties": false
+    },
+    "status": {
+      "enum": [
+        "open",
+        "answered",
+        "expired"
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "$ref": "common.json#/$defs/envelope"
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "single_choice"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "options"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "numeric_confirm"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "proposed_value"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "answered"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "answer"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "answered"
+          },
+          "kind": {
+            "const": "file_request"
+          }
+        },
+        "required": [
+          "status",
+          "kind"
+        ]
+      },
+      "then": {
+        "properties": {
+          "answer": {
+            "anyOf": [
+              {
+                "required": [
+                  "blob_sha256"
+                ],
+                "properties": {
+                  "blob_sha256": {
+                    "minItems": 1
+                  }
+                }
+              },
+              {
+                "required": [
+                  "bool"
+                ],
+                "properties": {
+                  "bool": {
+                    "const": false
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

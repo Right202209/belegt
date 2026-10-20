@@ -1,0 +1,455 @@
+{
+ "$defs": {
+  "Annotation": {
+   "additionalProperties": false,
+   "description": "双人标注的一份原始标注（裁决前）。`label` 为该类型的判定值（分类类直接比较；值类比较规范化键）。",
+   "properties": {
+    "annotated_at": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Annotated At"
+    },
+    "annotator": {
+     "title": "Annotator",
+     "type": "string"
+    },
+    "label": {
+     "title": "Label"
+    },
+    "note": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Note"
+    }
+   },
+   "required": [
+    "annotator",
+    "label"
+   ],
+   "title": "Annotation",
+   "type": "object"
+  },
+  "Fact": {
+   "additionalProperties": false,
+   "description": "LBL-EVID + LBL-LOC：一个可作为证据的事实（值 DEC-STR），可有多个可接受定位。",
+   "properties": {
+    "boundary": {
+     "default": "organization",
+     "title": "Boundary",
+     "type": "string"
+    },
+    "extracted_value": {
+     "title": "Extracted Value",
+     "type": "string"
+    },
+    "fact_key": {
+     "title": "Fact Key",
+     "type": "string"
+    },
+    "flags": {
+     "items": {
+      "type": "string"
+     },
+     "title": "Flags",
+     "type": "array"
+    },
+    "locators": {
+     "items": {
+      "$ref": "#/$defs/Locator"
+     },
+     "title": "Locators",
+     "type": "array"
+    },
+    "period": {
+     "anyOf": [
+      {
+       "$ref": "#/$defs/Period"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null
+    },
+    "unit": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Unit"
+    }
+   },
+   "required": [
+    "fact_key",
+    "extracted_value",
+    "locators"
+   ],
+   "title": "Fact",
+   "type": "object"
+  },
+  "Locator": {
+   "additionalProperties": false,
+   "description": "03 §3.5 Locator 子集（定位标注 LBL-LOC）。",
+   "properties": {
+    "bbox": {
+     "anyOf": [
+      {
+       "items": {
+        "type": "number"
+       },
+       "maxItems": 4,
+       "minItems": 4,
+       "type": "array"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Bbox"
+    },
+    "blob_sha256": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Blob Sha256"
+    },
+    "cell": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Cell"
+    },
+    "mime": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Mime"
+    },
+    "page": {
+     "anyOf": [
+      {
+       "minimum": 1,
+       "type": "integer"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Page"
+    },
+    "sheet": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Sheet"
+    }
+   },
+   "title": "Locator",
+   "type": "object"
+  },
+  "Period": {
+   "additionalProperties": false,
+   "properties": {
+    "end": {
+     "title": "End",
+     "type": "string"
+    },
+    "start": {
+     "title": "Start",
+     "type": "string"
+    }
+   },
+   "required": [
+    "start",
+    "end"
+   ],
+   "title": "Period",
+   "type": "object"
+  },
+  "Strata": {
+   "additionalProperties": false,
+   "properties": {
+    "format": {
+     "title": "Format",
+     "type": "string"
+    },
+    "lang": {
+     "title": "Lang",
+     "type": "string"
+    },
+    "template": {
+     "title": "Template",
+     "type": "string"
+    }
+   },
+   "required": [
+    "template",
+    "lang",
+    "format"
+   ],
+   "title": "Strata",
+   "type": "object"
+  },
+  "Validity": {
+   "additionalProperties": false,
+   "properties": {
+    "derived": {
+     "default": false,
+     "title": "Derived",
+     "type": "boolean"
+    },
+    "valid_from": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Valid From"
+    },
+    "valid_until": {
+     "anyOf": [
+      {
+       "type": "string"
+      },
+      {
+       "type": "null"
+      }
+     ],
+     "default": null,
+     "title": "Valid Until"
+    }
+   },
+   "title": "Validity",
+   "type": "object"
+  }
+ },
+ "additionalProperties": false,
+ "properties": {
+  "_canary": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ],
+   "default": null,
+   "title": "Canary"
+  },
+  "adjudicated_by": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ],
+   "default": null,
+   "title": "Adjudicated By"
+  },
+  "annotation_version": {
+   "default": "lbl-2026.10",
+   "title": "Annotation Version",
+   "type": "string"
+  },
+  "annotations": {
+   "items": {
+    "$ref": "#/$defs/Annotation"
+   },
+   "title": "Annotations",
+   "type": "array"
+  },
+  "cluster_id": {
+   "title": "Cluster Id",
+   "type": "string"
+  },
+  "difficulty": {
+   "default": "medium",
+   "enum": [
+    "easy",
+    "medium",
+    "hard"
+   ],
+   "title": "Difficulty",
+   "type": "string"
+  },
+  "distractor_values": {
+   "items": {
+    "type": "string"
+   },
+   "title": "Distractor Values",
+   "type": "array"
+  },
+  "doc_kind": {
+   "title": "Doc Kind",
+   "type": "string"
+  },
+  "doc_path": {
+   "title": "Doc Path",
+   "type": "string"
+  },
+  "doc_sha256": {
+   "title": "Doc Sha256",
+   "type": "string"
+  },
+  "facts": {
+   "items": {
+    "$ref": "#/$defs/Fact"
+   },
+   "title": "Facts",
+   "type": "array"
+  },
+  "flags": {
+   "items": {
+    "type": "string"
+   },
+   "title": "Flags",
+   "type": "array"
+  },
+  "history_refs": {
+   "items": {
+    "additionalProperties": {
+     "type": "string"
+    },
+    "type": "object"
+   },
+   "title": "History Refs",
+   "type": "array"
+  },
+  "label_type": {
+   "const": "LBL-EVID",
+   "default": "LBL-EVID",
+   "title": "Label Type",
+   "type": "string"
+  },
+  "mime": {
+   "title": "Mime",
+   "type": "string"
+  },
+  "notes": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ],
+   "default": null,
+   "title": "Notes"
+  },
+  "org": {
+   "title": "Org",
+   "type": "string"
+  },
+  "partition": {
+   "enum": [
+    "fewshot",
+    "dev",
+    "test",
+    "holdout"
+   ],
+   "title": "Partition",
+   "type": "string"
+  },
+  "received_at": {
+   "anyOf": [
+    {
+     "type": "string"
+    },
+    {
+     "type": "null"
+    }
+   ],
+   "default": null,
+   "title": "Received At"
+  },
+  "sample_id": {
+   "title": "Sample Id",
+   "type": "string"
+  },
+  "strata": {
+   "$ref": "#/$defs/Strata"
+  },
+  "synthetic": {
+   "default": true,
+   "title": "Synthetic",
+   "type": "boolean"
+  },
+  "validity": {
+   "anyOf": [
+    {
+     "$ref": "#/$defs/Validity"
+    },
+    {
+     "type": "null"
+    }
+   ],
+   "default": null
+  }
+ },
+ "required": [
+  "sample_id",
+  "partition",
+  "strata",
+  "cluster_id",
+  "org",
+  "doc_path",
+  "doc_sha256",
+  "mime",
+  "doc_kind"
+ ],
+ "title": "EvidSample",
+ "type": "object"
+}

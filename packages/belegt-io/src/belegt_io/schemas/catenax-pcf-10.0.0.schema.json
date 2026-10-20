@@ -1,0 +1,1149 @@
+{
+ "$schema": "http://json-schema.org/draft-04/schema",
+ "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#Pcf",
+ "type": "object",
+ "components": {
+  "schemas": {
+   "Text": {
+    "type": "string",
+    "x-samm-aspect-model-urn": "urn:samm:org.eclipse.esmf.samm:characteristic:2.2.0#Text"
+   },
+   "PartialFullPcfCharacteristic": {
+    "type": "string",
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#PartialFullPcfCharacteristic",
+    "enum": [
+     "Cradle-to-gate",
+     "Cradle-to-grave"
+    ]
+   },
+   "ScopeOfPCFFormEntity": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#ScopeOfPCFFormEntity",
+    "type": "object",
+    "properties": {
+     "specVersion": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#specVersion",
+      "$ref": "#/components/schemas/Text"
+     },
+     "partialFullPcf": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#partialFullPcf",
+      "$ref": "#/components/schemas/PartialFullPcfCharacteristic"
+     }
+    },
+    "required": [
+     "specVersion",
+     "partialFullPcf"
+    ]
+   },
+   "ScopeOfPCFFormCollection": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#ScopeOfPCFFormCollection",
+    "type": "array",
+    "items": {
+     "$ref": "#/components/schemas/ScopeOfPCFFormEntity"
+    }
+   },
+   "NonEmptyStringTrait": {
+    "type": "string",
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#NonEmptyStringTrait",
+    "minLength": 1
+   },
+   "IdSet": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#IdSet",
+    "type": "array",
+    "items": {
+     "type": "string",
+     "format": "uri"
+    },
+    "uniqueItems": true
+   },
+   "CompanyInformationEntity": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#CompanyInformationEntity",
+    "type": "object",
+    "properties": {
+     "companyName": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#companyName",
+      "$ref": "#/components/schemas/NonEmptyStringTrait"
+     },
+     "companyIds": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#companyIds",
+      "$ref": "#/components/schemas/IdSet"
+     }
+    },
+    "required": [
+     "companyName",
+     "companyIds"
+    ]
+   },
+   "CompanyInformationCollection": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#CompanyInformationCollection",
+    "type": "array",
+    "items": {
+     "$ref": "#/components/schemas/CompanyInformationEntity"
+    }
+   },
+   "ProductClassificationCharacteristic": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#ProductClassificationCharacteristic",
+    "type": "array",
+    "items": {
+     "type": "string"
+    },
+    "uniqueItems": true
+   },
+   "DeclaredUnitOfMeasurementCharacteristic": {
+    "type": "string",
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#DeclaredUnitOfMeasurementCharacteristic",
+    "enum": [
+     "liter",
+     "kilogram",
+     "cubic meter",
+     "kilowatt hour",
+     "megajoule",
+     "ton kilometer",
+     "square meter",
+     "piece",
+     "hour",
+     "megabit second"
+    ]
+   },
+   "StrictlyPositiveDecimalTrait": {
+    "type": "number",
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#StrictlyPositiveDecimalTrait",
+    "minimum": 0.0,
+    "exclusiveMinimum": true
+   },
+   "PositiveDecimalWeightTrait": {
+    "type": "number",
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#PositiveDecimalWeightTrait",
+    "minimum": 0,
+    "exclusiveMinimum": false
+   },
+   "ProductInformationEntity": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#ProductInformationEntity",
+    "type": "object",
+    "properties": {
+     "productNameCompany": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#productNameCompany",
+      "$ref": "#/components/schemas/NonEmptyStringTrait"
+     },
+     "productIds": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#productIds",
+      "$ref": "#/components/schemas/IdSet"
+     },
+     "productDescription": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#productDescription",
+      "$ref": "#/components/schemas/Text"
+     },
+     "productClassifications": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#productClassifications",
+      "$ref": "#/components/schemas/ProductClassificationCharacteristic"
+     },
+     "declaredUnitOfMeasurement": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#declaredUnitOfMeasurement",
+      "$ref": "#/components/schemas/DeclaredUnitOfMeasurementCharacteristic"
+     },
+     "declaredUnitAmount": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#declaredUnitAmount",
+      "$ref": "#/components/schemas/StrictlyPositiveDecimalTrait"
+     },
+     "productMassPerDeclaredUnit": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#productMassPerDeclaredUnit",
+      "$ref": "#/components/schemas/PositiveDecimalWeightTrait"
+     }
+    },
+    "required": [
+     "productNameCompany",
+     "productIds",
+     "declaredUnitOfMeasurement",
+     "declaredUnitAmount",
+     "productMassPerDeclaredUnit"
+    ]
+   },
+   "ProductInformationCollection": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#ProductInformationCollection",
+    "type": "array",
+    "items": {
+     "$ref": "#/components/schemas/ProductInformationEntity"
+    }
+   },
+   "CompanyAndProductInformationEntity": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#CompanyAndProductInformationEntity",
+    "type": "object",
+    "properties": {
+     "companyInformation": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#companyInformation",
+      "$ref": "#/components/schemas/CompanyInformationCollection"
+     },
+     "productInformation": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#productInformation",
+      "$ref": "#/components/schemas/ProductInformationCollection"
+     }
+    }
+   },
+   "CompanyAndProductInformationCollection": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#CompanyAndProductInformationCollection",
+    "type": "array",
+    "items": {
+     "$ref": "#/components/schemas/CompanyAndProductInformationEntity"
+    }
+   },
+   "UuidV4Trait": {
+    "type": "string",
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.shared.uuid:2.1.0#UuidV4Trait",
+    "pattern": "(^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$)|(^urn:uuid:[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$)"
+   },
+   "PrecedingPfIdsCharacteristic": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#PrecedingPfIdsCharacteristic",
+    "type": "array",
+    "items": {
+     "type": "string"
+    }
+   },
+   "ProductFootprintVersion": {
+    "type": "number",
+    "minimum": 0,
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#ProductFootprintVersion"
+   },
+   "PfStatusCharacteristic": {
+    "type": "string",
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#PfStatusCharacteristic",
+    "enum": [
+     "Active",
+     "Deprecated"
+    ]
+   },
+   "RetroOrProspectivePcfTypeCharacteristic": {
+    "type": "string",
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#RetroOrProspectivePcfTypeCharacteristic",
+    "enum": [
+     "Retrospective PCF",
+     "Prospective PCF without forerunner",
+     "Prospective PCF of further developed product with forerunner",
+     "Prospective PCF for current product for future production date",
+     "Progressive PCF"
+    ]
+   },
+   "IDAndVersionEntity": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#IDAndVersionEntity",
+    "type": "object",
+    "properties": {
+     "id": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#id",
+      "$ref": "#/components/schemas/UuidV4Trait"
+     },
+     "precedingPfIds": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#precedingPfIds",
+      "$ref": "#/components/schemas/PrecedingPfIdsCharacteristic"
+     },
+     "version": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#version",
+      "$ref": "#/components/schemas/ProductFootprintVersion"
+     },
+     "status": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#status",
+      "$ref": "#/components/schemas/PfStatusCharacteristic"
+     },
+     "retroOrProspectivePcfType": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#retroOrProspectivePcfType",
+      "$ref": "#/components/schemas/RetroOrProspectivePcfTypeCharacteristic"
+     }
+    },
+    "required": [
+     "id",
+     "version",
+     "status",
+     "retroOrProspectivePcfType"
+    ]
+   },
+   "IDAndVersionCollection": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#IDAndVersionCollection",
+    "type": "array",
+    "items": {
+     "$ref": "#/components/schemas/IDAndVersionEntity"
+    }
+   },
+   "ExemptedEmissionsPercentTrait": {
+    "type": "number",
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#ExemptedEmissionsPercentTrait",
+    "maximum": 10.0,
+    "exclusiveMaximum": false,
+    "minimum": 0.0,
+    "exclusiveMinimum": false
+   },
+   "BoundarySpecificationsEntity": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#BoundarySpecificationsEntity",
+    "type": "object",
+    "properties": {
+     "exemptedEmissionsPercent": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#exemptedEmissionsPercent",
+      "$ref": "#/components/schemas/ExemptedEmissionsPercentTrait"
+     },
+     "exemptedEmissionsDescription": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#exemptedEmissionsDescription",
+      "$ref": "#/components/schemas/Text"
+     }
+    },
+    "required": [
+     "exemptedEmissionsPercent"
+    ]
+   },
+   "BoundarySpecificationsCollection": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#BoundarySpecificationsCollection",
+    "type": "array",
+    "items": {
+     "$ref": "#/components/schemas/BoundarySpecificationsEntity"
+    }
+   },
+   "Boolean": {
+    "type": "boolean",
+    "x-samm-aspect-model-urn": "urn:samm:org.eclipse.esmf.samm:characteristic:2.2.0#Boolean"
+   },
+   "TechnologyEntity": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#TechnologyEntity",
+    "type": "object",
+    "properties": {
+     "ccsTechnologicalCO2CaptureIncluded": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#ccsTechnologicalCO2CaptureIncluded",
+      "$ref": "#/components/schemas/Boolean"
+     },
+     "boundaryProcessesDescription": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#boundaryProcessesDescription",
+      "$ref": "#/components/schemas/Text"
+     }
+    },
+    "required": [
+     "ccsTechnologicalCO2CaptureIncluded"
+    ]
+   },
+   "TechnologyCollection": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#TechnologyCollection",
+    "type": "array",
+    "items": {
+     "$ref": "#/components/schemas/TechnologyEntity"
+    }
+   },
+   "GeographyRegionOrSubregionCharacteristic": {
+    "type": "string",
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#GeographyRegionOrSubregionCharacteristic",
+    "enum": [
+     "Africa",
+     "Americas",
+     "Asia",
+     "Europe",
+     "Oceania",
+     "Australia and New Zealand",
+     "Central Asia",
+     "Eastern Asia",
+     "Eastern Europe",
+     "Latin America and the Caribbean",
+     "Melanesia",
+     "Micronesia",
+     "Northern Africa",
+     "Northern America",
+     "Northern Europe",
+     "Polynesia",
+     "South-eastern Asia",
+     "Southern Asia",
+     "Southern Europe",
+     "Sub-Saharan Africa",
+     "Western Asia",
+     "Western Europe",
+     "Global",
+     "Several"
+    ]
+   },
+   "GeographyCountrySubdivisionTrait": {
+    "type": "string",
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#GeographyCountrySubdivisionTrait",
+    "pattern": "([A-Z]{2}-[A-Z0-9]{1,3}|)"
+   },
+   "GeographyCountryTrait": {
+    "type": "string",
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#GeographyCountryTrait",
+    "pattern": "([A-Z]{2})"
+   },
+   "GeographyEntity": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#GeographyEntity",
+    "type": "object",
+    "properties": {
+     "geographyRegionOrSubregion": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#geographyRegionOrSubregion",
+      "$ref": "#/components/schemas/GeographyRegionOrSubregionCharacteristic"
+     },
+     "geographyCountrySubdivision": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#geographyCountrySubdivision",
+      "$ref": "#/components/schemas/GeographyCountrySubdivisionTrait"
+     },
+     "geographyCountry": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#geographyCountry",
+      "$ref": "#/components/schemas/GeographyCountryTrait"
+     }
+    },
+    "required": [
+     "geographyRegionOrSubregion"
+    ]
+   },
+   "GeographyCollection": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#GeographyCollection",
+    "type": "array",
+    "items": {
+     "$ref": "#/components/schemas/GeographyEntity"
+    }
+   },
+   "Timestamp": {
+    "type": "string",
+    "pattern": "-?([1-9][0-9]{3,}|0[0-9]{3})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T(([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\.[0-9]+)?|(24:00:00(\\.0+)?))(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?",
+    "x-samm-aspect-model-urn": "urn:samm:org.eclipse.esmf.samm:characteristic:2.2.0#Timestamp"
+   },
+   "TimeEntity": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#TimeEntity",
+    "type": "object",
+    "properties": {
+     "referencePeriodStart": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#referencePeriodStart",
+      "$ref": "#/components/schemas/Timestamp"
+     },
+     "referencePeriodEnd": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#referencePeriodEnd",
+      "$ref": "#/components/schemas/Timestamp"
+     },
+     "created": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#created",
+      "$ref": "#/components/schemas/Timestamp"
+     },
+     "validityPeriodStart": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#validityPeriodStart",
+      "$ref": "#/components/schemas/Timestamp"
+     },
+     "validityPeriodEnd": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#validityPeriodEnd",
+      "$ref": "#/components/schemas/Timestamp"
+     }
+    },
+    "required": [
+     "referencePeriodStart",
+     "referencePeriodEnd",
+     "created",
+     "validityPeriodEnd"
+    ]
+   },
+   "TimeCollection": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#TimeCollection",
+    "type": "array",
+    "items": {
+     "$ref": "#/components/schemas/TimeEntity"
+    }
+   },
+   "PCFAssessmentInformationEntity": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#PCFAssessmentInformationEntity",
+    "type": "object",
+    "properties": {
+     "idAndVersion": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#idAndVersion",
+      "$ref": "#/components/schemas/IDAndVersionCollection"
+     },
+     "boundarySpecifications": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#boundarySpecifications",
+      "$ref": "#/components/schemas/BoundarySpecificationsCollection"
+     },
+     "technology": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#technology",
+      "$ref": "#/components/schemas/TechnologyCollection"
+     },
+     "geography": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#geography",
+      "$ref": "#/components/schemas/GeographyCollection"
+     },
+     "time": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#time",
+      "$ref": "#/components/schemas/TimeCollection"
+     }
+    },
+    "required": [
+     "idAndVersion",
+     "boundarySpecifications",
+     "technology",
+     "geography",
+     "time"
+    ]
+   },
+   "PCFAssessmentInformationCollection": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#PCFAssessmentInformationCollection",
+    "type": "array",
+    "items": {
+     "$ref": "#/components/schemas/PCFAssessmentInformationEntity"
+    }
+   },
+   "CrossSectoralStandardCharacteristic": {
+    "type": "string",
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#CrossSectoralStandardCharacteristic",
+    "enum": [
+     "ISO 14067",
+     "Pathfinder v1",
+     "PACT-1.0",
+     "Pathfinder v2",
+     "PACT-2.0",
+     "Pathfinder v3",
+     "PACT-3.0",
+     "GHG Protocol Product",
+     "PAS 2050",
+     "ISO 14040-44",
+     "PEF",
+     "Other"
+    ]
+   },
+   "ProductOrSectorSpecificRuleSet": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#ProductOrSectorSpecificRuleSet",
+    "type": "array",
+    "items": {
+     "type": "string"
+    },
+    "uniqueItems": true
+   },
+   "StandardsEntity": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#StandardsEntity",
+    "type": "object",
+    "properties": {
+     "crossSectoralStandards": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#crossSectoralStandards",
+      "$ref": "#/components/schemas/CrossSectoralStandardCharacteristic"
+     },
+     "productOrSectorSpecificRules": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#productOrSectorSpecificRules",
+      "$ref": "#/components/schemas/ProductOrSectorSpecificRuleSet"
+     }
+    },
+    "required": [
+     "crossSectoralStandards",
+     "productOrSectorSpecificRules"
+    ]
+   },
+   "StandardsCollection": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#StandardsCollection",
+    "type": "array",
+    "items": {
+     "$ref": "#/components/schemas/StandardsEntity"
+    }
+   },
+   "IpccCharacterizationFactorsCharacteristic": {
+    "type": "string",
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#IpccCharacterizationFactorsCharacteristic",
+    "enum": [
+     "AR5",
+     "AR6",
+     "AR4",
+     "unspecified"
+    ]
+   },
+   "GWPCharacterizationFactorDetailsEntity": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#GWPCharacterizationFactorDetailsEntity",
+    "type": "object",
+    "properties": {
+     "ipccCharacterizationFactors": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#ipccCharacterizationFactors",
+      "$ref": "#/components/schemas/IpccCharacterizationFactorsCharacteristic"
+     }
+    },
+    "required": [
+     "ipccCharacterizationFactors"
+    ]
+   },
+   "GWPCharacterizationFactorDetailsCollection": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#GWPCharacterizationFactorDetailsCollection",
+    "type": "array",
+    "items": {
+     "$ref": "#/components/schemas/GWPCharacterizationFactorDetailsEntity"
+    }
+   },
+   "AllocationWasteIncinerationCharacteristic": {
+    "type": "string",
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#AllocationWasteIncinerationCharacteristic",
+    "enum": [
+     "cut-off",
+     "reverse cut-off",
+     "system expansion",
+     "polluter pays principle"
+    ]
+   },
+   "AllocationRecycledCarbonCharacteristic": {
+    "type": "string",
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#AllocationRecycledCarbonCharacteristic",
+    "enum": [
+     "upstream system expansion",
+     "cut-off"
+    ]
+   },
+   "AllocationInForegroundEntity": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#AllocationInForegroundEntity",
+    "type": "object",
+    "properties": {
+     "allocationRulesDescription": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#allocationRulesDescription",
+      "$ref": "#/components/schemas/Text"
+     },
+     "allocationWasteIncineration": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#allocationWasteIncineration",
+      "$ref": "#/components/schemas/AllocationWasteIncinerationCharacteristic"
+     },
+     "allocationRecycledCarbon": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#allocationRecycledCarbon",
+      "$ref": "#/components/schemas/AllocationRecycledCarbonCharacteristic"
+     }
+    },
+    "required": [
+     "allocationWasteIncineration"
+    ]
+   },
+   "AllocationInForegroundCollection": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#AllocationInForegroundCollection",
+    "type": "array",
+    "items": {
+     "$ref": "#/components/schemas/AllocationInForegroundEntity"
+    }
+   },
+   "MassBalancingInformationEntity": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#MassBalancingInformationEntity",
+    "type": "object",
+    "properties": {
+     "massBalancingUsed": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#massBalancingUsed",
+      "$ref": "#/components/schemas/Boolean"
+     },
+     "freeAttributionInMassBalancing": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#freeAttributionInMassBalancing",
+      "$ref": "#/components/schemas/Boolean"
+     },
+     "massBalancingCertificateScheme": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#massBalancingCertificateScheme",
+      "$ref": "#/components/schemas/NonEmptyStringTrait"
+     }
+    },
+    "required": [
+     "massBalancingUsed"
+    ]
+   },
+   "MassBalancingInformationCollection": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#MassBalancingInformationCollection",
+    "type": "array",
+    "items": {
+     "$ref": "#/components/schemas/MassBalancingInformationEntity"
+    }
+   },
+   "PCFMethodologyEntity": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#PCFMethodologyEntity",
+    "type": "object",
+    "properties": {
+     "standards": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#standards",
+      "$ref": "#/components/schemas/StandardsCollection"
+     },
+     "gwpCharacterizationFactorDetails": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#gwpCharacterizationFactorDetails",
+      "$ref": "#/components/schemas/GWPCharacterizationFactorDetailsCollection"
+     },
+     "allocationInForeground": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#allocationInForeground",
+      "$ref": "#/components/schemas/AllocationInForegroundCollection"
+     },
+     "massBalancingInformation": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#massBalancingInformation",
+      "$ref": "#/components/schemas/MassBalancingInformationCollection"
+     }
+    },
+    "required": [
+     "standards",
+     "gwpCharacterizationFactorDetails",
+     "allocationInForeground",
+     "massBalancingInformation"
+    ]
+   },
+   "PCFMethodologyCollection": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#PCFMethodologyCollection",
+    "type": "array",
+    "items": {
+     "$ref": "#/components/schemas/PCFMethodologyEntity"
+    }
+   },
+   "PercentTrait": {
+    "type": "number",
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#PercentTrait",
+    "maximum": 100.0,
+    "exclusiveMaximum": false,
+    "minimum": 0.0,
+    "exclusiveMinimum": false
+   },
+   "EmissionFactorDSSet": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#EmissionFactorDSSet",
+    "type": "array",
+    "items": {
+     "type": "string"
+    },
+    "uniqueItems": true
+   },
+   "DqiNumberTrait": {
+    "type": "number",
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#DqiNumberTrait",
+    "maximum": 5,
+    "exclusiveMaximum": false,
+    "minimum": 1,
+    "exclusiveMinimum": false
+   },
+   "DataSourcesAndQualityEntity": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#DataSourcesAndQualityEntity",
+    "type": "object",
+    "properties": {
+     "primaryDataShare": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#primaryDataShare",
+      "$ref": "#/components/schemas/PercentTrait"
+     },
+     "secondaryEmissionFactorSources": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#secondaryEmissionFactorSources",
+      "$ref": "#/components/schemas/EmissionFactorDSSet"
+     },
+     "technologicalDQR": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#technologicalDQR",
+      "$ref": "#/components/schemas/DqiNumberTrait"
+     },
+     "temporalDQR": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#temporalDQR",
+      "$ref": "#/components/schemas/DqiNumberTrait"
+     },
+     "geographicalDQR": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#geographicalDQR",
+      "$ref": "#/components/schemas/DqiNumberTrait"
+     }
+    }
+   },
+   "DataSourcesAndQualityCollection": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#DataSourcesAndQualityCollection",
+    "type": "array",
+    "items": {
+     "$ref": "#/components/schemas/DataSourcesAndQualityEntity"
+    }
+   },
+   "ProgramCertificationShareTrait": {
+    "type": "number",
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#ProgramCertificationShareTrait",
+    "maximum": 100,
+    "exclusiveMaximum": false,
+    "minimum": 0,
+    "exclusiveMinimum": false
+   },
+   "VerificationAndCertificationSharesEntity": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#VerificationAndCertificationSharesEntity",
+    "type": "object",
+    "properties": {
+     "programCertificationShare": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#programCertificationShare",
+      "$ref": "#/components/schemas/ProgramCertificationShareTrait"
+     },
+     "productVerificationShare3rdParty": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#productVerificationShare3rdParty",
+      "$ref": "#/components/schemas/ProgramCertificationShareTrait"
+     },
+     "productVerificationShare2ndParty": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#productVerificationShare2ndParty",
+      "$ref": "#/components/schemas/ProgramCertificationShareTrait"
+     },
+     "productVerificationShare1stParty": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#productVerificationShare1stParty",
+      "$ref": "#/components/schemas/ProgramCertificationShareTrait"
+     }
+    }
+   },
+   "VerificationAndCertificationSharesCollection": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#VerificationAndCertificationSharesCollection",
+    "type": "array",
+    "items": {
+     "$ref": "#/components/schemas/VerificationAndCertificationSharesEntity"
+    }
+   },
+   "pcfAssessmentAndMethodologyEntity": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#pcfAssessmentAndMethodologyEntity",
+    "type": "object",
+    "properties": {
+     "pcfAssessmentInformation": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#pcfAssessmentInformation",
+      "$ref": "#/components/schemas/PCFAssessmentInformationCollection"
+     },
+     "pcfMethodology": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#pcfMethodology",
+      "$ref": "#/components/schemas/PCFMethodologyCollection"
+     },
+     "dataSourcesAndQuality": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#dataSourcesAndQuality",
+      "$ref": "#/components/schemas/DataSourcesAndQualityCollection"
+     },
+     "verificationAndCertificationShares": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#verificationAndCertificationShares",
+      "$ref": "#/components/schemas/VerificationAndCertificationSharesCollection"
+     }
+    },
+    "required": [
+     "dataSourcesAndQuality"
+    ]
+   },
+   "pcfAssessmentAndMethodologyCollection": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#pcfAssessmentAndMethodologyCollection",
+    "type": "array",
+    "items": {
+     "$ref": "#/components/schemas/pcfAssessmentAndMethodologyEntity"
+    }
+   },
+   "GeneralEntity": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#GeneralEntity",
+    "type": "object",
+    "properties": {
+     "comment": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#comment",
+      "$ref": "#/components/schemas/Text"
+     },
+     "pcfLegalStatement": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#pcfLegalStatement",
+      "$ref": "#/components/schemas/Text"
+     }
+    }
+   },
+   "GeneralCollection": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#GeneralCollection",
+    "type": "array",
+    "items": {
+     "$ref": "#/components/schemas/GeneralEntity"
+    }
+   },
+   "PositiveOrNegativeEmission": {
+    "type": "number",
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#PositiveOrNegativeEmission"
+   },
+   "PositiveEmissionsTrait": {
+    "type": "number",
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#PositiveEmissionsTrait",
+    "minimum": 0.0,
+    "exclusiveMinimum": false
+   },
+   "NegativeEmissionsTrait": {
+    "type": "number",
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#NegativeEmissionsTrait",
+    "maximum": 0.0,
+    "exclusiveMaximum": false
+   },
+   "ProductionStageEntity": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#ProductionStageEntity",
+    "type": "object",
+    "properties": {
+     "pcfIncludingBiogenicUptake": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#pcfIncludingBiogenicUptake",
+      "$ref": "#/components/schemas/PositiveOrNegativeEmission"
+     },
+     "pcfExcludingBiogenicUptake": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#pcfExcludingBiogenicUptake",
+      "$ref": "#/components/schemas/PositiveEmissionsTrait"
+     },
+     "fossilGhgEmissions": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#fossilGhgEmissions",
+      "$ref": "#/components/schemas/PositiveEmissionsTrait"
+     },
+     "biogenicNonCO2Emissions": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#biogenicNonCO2Emissions",
+      "$ref": "#/components/schemas/PositiveEmissionsTrait"
+     },
+     "biogenicCO2Uptake": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#biogenicCO2Uptake",
+      "$ref": "#/components/schemas/NegativeEmissionsTrait"
+     },
+     "landUseChangeGhgEmissions": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#landUseChangeGhgEmissions",
+      "$ref": "#/components/schemas/PositiveEmissionsTrait"
+     },
+     "landManagementBiogenicCO2Emissions": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#landManagementBiogenicCO2Emissions",
+      "$ref": "#/components/schemas/PositiveEmissionsTrait"
+     },
+     "landManagementBiogenicCO2Removals": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#landManagementBiogenicCO2Removals",
+      "$ref": "#/components/schemas/NegativeEmissionsTrait"
+     },
+     "aircraftGhgEmissions": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#aircraftGhgEmissions",
+      "$ref": "#/components/schemas/PositiveEmissionsTrait"
+     }
+    },
+    "required": [
+     "pcfIncludingBiogenicUptake",
+     "pcfExcludingBiogenicUptake"
+    ]
+   },
+   "ProductionStageCollection": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#ProductionStageCollection",
+    "type": "array",
+    "items": {
+     "$ref": "#/components/schemas/ProductionStageEntity"
+    }
+   },
+   "PackagingStageEntity": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#PackagingStageEntity",
+    "type": "object",
+    "properties": {
+     "packagingEmissionsIncluded": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#packagingEmissionsIncluded",
+      "$ref": "#/components/schemas/Boolean"
+     },
+     "packagingPcfIncludingBiogenicUptake": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#packagingPcfIncludingBiogenicUptake",
+      "$ref": "#/components/schemas/PositiveEmissionsTrait"
+     },
+     "packagingPcfExcludingBiogenicUptake": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#packagingPcfExcludingBiogenicUptake",
+      "$ref": "#/components/schemas/PositiveEmissionsTrait"
+     },
+     "packagingFossilGhgEmissions": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#packagingFossilGhgEmissions",
+      "$ref": "#/components/schemas/PositiveEmissionsTrait"
+     },
+     "packagingBiogenicNonCO2Emissions": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#packagingBiogenicNonCO2Emissions",
+      "$ref": "#/components/schemas/PositiveEmissionsTrait"
+     },
+     "packagingBiogenicCO2Uptake": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#packagingBiogenicCO2Uptake",
+      "$ref": "#/components/schemas/NegativeEmissionsTrait"
+     },
+     "packagingLandUseChangeGhgEmissions": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#packagingLandUseChangeGhgEmissions",
+      "$ref": "#/components/schemas/PositiveEmissionsTrait"
+     },
+     "packagingLandManagementBiogenicCO2Emissions": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#packagingLandManagementBiogenicCO2Emissions",
+      "$ref": "#/components/schemas/PositiveEmissionsTrait"
+     },
+     "packagingLandManagementBiogenicCO2Removals": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#packagingLandManagementBiogenicCO2Removals",
+      "$ref": "#/components/schemas/NegativeEmissionsTrait"
+     },
+     "packagingAircraftGhgEmissions": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#packagingAircraftGhgEmissions",
+      "$ref": "#/components/schemas/PositiveEmissionsTrait"
+     }
+    },
+    "required": [
+     "packagingEmissionsIncluded"
+    ]
+   },
+   "PackagingStageCollection": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#PackagingStageCollection",
+    "type": "array",
+    "items": {
+     "$ref": "#/components/schemas/PackagingStageEntity"
+    }
+   },
+   "DistributionStageEntity": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#DistributionStageEntity",
+    "type": "object",
+    "properties": {
+     "distributionStageIncluded": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#distributionStageIncluded",
+      "$ref": "#/components/schemas/Boolean"
+     },
+     "distributionStagePcfIncludingBiogenicUptake": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#distributionStagePcfIncludingBiogenicUptake",
+      "$ref": "#/components/schemas/PositiveOrNegativeEmission"
+     },
+     "distributionStagePcfExcludingBiogenicUptake": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#distributionStagePcfExcludingBiogenicUptake",
+      "$ref": "#/components/schemas/PositiveEmissionsTrait"
+     },
+     "distributionStageBiogenicCO2Uptake": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#distributionStageBiogenicCO2Uptake",
+      "$ref": "#/components/schemas/NegativeEmissionsTrait"
+     },
+     "distributionStageFossilGhgEmissions": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#distributionStageFossilGhgEmissions",
+      "$ref": "#/components/schemas/PositiveEmissionsTrait"
+     },
+     "distributionStageBiogenicNonCO2Emissions": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#distributionStageBiogenicNonCO2Emissions",
+      "$ref": "#/components/schemas/PositiveEmissionsTrait"
+     },
+     "distributionStageLandUseChangeGhgEmissions": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#distributionStageLandUseChangeGhgEmissions",
+      "$ref": "#/components/schemas/PositiveEmissionsTrait"
+     },
+     "distributionStageLandManagementBiogenicCO2Emissions": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#distributionStageLandManagementBiogenicCO2Emissions",
+      "$ref": "#/components/schemas/PositiveEmissionsTrait"
+     },
+     "distributionStageLandManagementBiogenicCO2Removals": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#distributionStageLandManagementBiogenicCO2Removals",
+      "$ref": "#/components/schemas/NegativeEmissionsTrait"
+     },
+     "distributionStageAircraftGhgEmissions": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#distributionStageAircraftGhgEmissions",
+      "$ref": "#/components/schemas/PositiveEmissionsTrait"
+     }
+    },
+    "required": [
+     "distributionStageIncluded"
+    ]
+   },
+   "DistributionStageCollection": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#DistributionStageCollection",
+    "type": "array",
+    "items": {
+     "$ref": "#/components/schemas/DistributionStageEntity"
+    }
+   },
+   "ProductLifeCycleStagesAndEmissionsEntity": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#ProductLifeCycleStagesAndEmissionsEntity",
+    "type": "object",
+    "properties": {
+     "productionStage": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#productionStage",
+      "$ref": "#/components/schemas/ProductionStageCollection"
+     },
+     "packagingStage": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#packagingStage",
+      "$ref": "#/components/schemas/PackagingStageCollection"
+     },
+     "distributionStage": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#distributionStage",
+      "$ref": "#/components/schemas/DistributionStageCollection"
+     }
+    },
+    "required": [
+     "productionStage",
+     "packagingStage",
+     "distributionStage"
+    ]
+   },
+   "ProductLifeCycleStagesAndEmissionsCollection": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#ProductLifeCycleStagesAndEmissionsCollection",
+    "type": "array",
+    "items": {
+     "$ref": "#/components/schemas/ProductLifeCycleStagesAndEmissionsEntity"
+    }
+   },
+   "CarbonContentEntity": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#CarbonContentEntity",
+    "type": "object",
+    "properties": {
+     "carbonContentTotal": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#carbonContentTotal",
+      "$ref": "#/components/schemas/PositiveEmissionsTrait"
+     },
+     "fossilCarbonContent": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#fossilCarbonContent",
+      "$ref": "#/components/schemas/PositiveEmissionsTrait"
+     },
+     "biogenicCarbonContent": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#biogenicCarbonContent",
+      "$ref": "#/components/schemas/PositiveEmissionsTrait"
+     },
+     "packagingBiogenicCarbonContent": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#packagingBiogenicCarbonContent",
+      "$ref": "#/components/schemas/PositiveEmissionsTrait"
+     },
+     "recycledCarbonContent": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#recycledCarbonContent",
+      "$ref": "#/components/schemas/PositiveEmissionsTrait"
+     }
+    }
+   },
+   "CarbonContentCollection": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#CarbonContentCollection",
+    "type": "array",
+    "items": {
+     "$ref": "#/components/schemas/CarbonContentEntity"
+    }
+   },
+   "AttestationOfConformanceEntity": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#AttestationOfConformanceEntity",
+    "type": "object",
+    "properties": {
+     "attestationType": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#attestationType",
+      "$ref": "#/components/schemas/Text"
+     },
+     "standardName": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#standardName",
+      "$ref": "#/components/schemas/Text"
+     },
+     "attestationStandard": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#attestationStandard",
+      "$ref": "#/components/schemas/Text"
+     },
+     "attestationOfConformanceId": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#attestationOfConformanceId",
+      "$ref": "#/components/schemas/Text"
+     },
+     "attestationOfConformanceLink": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#attestationOfConformanceLink",
+      "$ref": "#/components/schemas/Text"
+     },
+     "providerName": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#providerName",
+      "$ref": "#/components/schemas/Text"
+     },
+     "providerId": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#providerId",
+      "$ref": "#/components/schemas/Text"
+     },
+     "completedAt": {
+      "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#completedAt",
+      "$ref": "#/components/schemas/Timestamp"
+     }
+    },
+    "required": [
+     "attestationType",
+     "standardName",
+     "attestationStandard",
+     "attestationOfConformanceId",
+     "providerName"
+    ]
+   },
+   "AttestationOfConformanceCollection": {
+    "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#AttestationOfConformanceCollection",
+    "type": "array",
+    "items": {
+     "$ref": "#/components/schemas/AttestationOfConformanceEntity"
+    }
+   }
+  }
+ },
+ "properties": {
+  "scopeOfPcfForm": {
+   "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#scopeOfPcfForm",
+   "$ref": "#/components/schemas/ScopeOfPCFFormCollection"
+  },
+  "companyAndProductInformation": {
+   "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#companyAndProductInformation",
+   "$ref": "#/components/schemas/CompanyAndProductInformationCollection"
+  },
+  "pcfAssessmentAndMethodology": {
+   "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#pcfAssessmentAndMethodology",
+   "$ref": "#/components/schemas/pcfAssessmentAndMethodologyCollection"
+  },
+  "general": {
+   "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#general",
+   "$ref": "#/components/schemas/GeneralCollection"
+  },
+  "productLifeCycleStagesAndEmissions": {
+   "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#productLifeCycleStagesAndEmissions",
+   "$ref": "#/components/schemas/ProductLifeCycleStagesAndEmissionsCollection"
+  },
+  "carbonContent": {
+   "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#carbonContent",
+   "$ref": "#/components/schemas/CarbonContentCollection"
+  },
+  "attestationOfConformance": {
+   "x-samm-aspect-model-urn": "urn:samm:io.catenax.pcf:10.0.0#attestationOfConformance",
+   "$ref": "#/components/schemas/AttestationOfConformanceCollection"
+  }
+ },
+ "required": [
+  "scopeOfPcfForm",
+  "companyAndProductInformation",
+  "pcfAssessmentAndMethodology",
+  "general",
+  "productLifeCycleStagesAndEmissions",
+  "carbonContent"
+ ],
+ "$comment": "Source: eclipse-tractusx/sldt-semantic-models io.catenax.pcf/10.0.0/gen/Pcf-schema.json (status: release, CC-BY-4.0). Descriptions removed."
+}

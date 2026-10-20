@@ -1,0 +1,34 @@
+id: dp:supply.eudr.dds_verification_number
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: DDS-Prüfnummer
+  en: Due diligence statement verification number
+  zh: DDS 验证号
+definition:
+  en: Verification number issued together with the DDS reference number (dp:supply.eudr.dds_reference) that allows a downstream operator to retrieve and verify the statement in the EU information system.
+  de: Zusammen mit der DDS-Referenznummer (dp:supply.eudr.dds_reference) vergebene Prüfnummer zum Abruf und zur Prüfung der Erklärung im EU-Informationssystem.
+  zh: 与 DDS 参考号（dp:supply.eudr.dds_reference）一并签发的验证号，供下游经营者在欧盟信息系统中调取并核验声明。
+value_type: text
+period_type: point_in_time
+boundary:
+  - product
+methodology_refs:
+  - ref: eu_2023_1115_eudr
+    clause: Art. 33
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - supplier_response
+    - historical_answer
+  min_sources: 1
+  requires_calculation: false
+  human_confirmation_allowed: false
+related_datapoints:
+  - id: dp:supply.eudr.dds_reference
+    relation: see_also
+tags:
+  - eudr_dds
+  - eudr

@@ -1,0 +1,63 @@
+id: dp:mat.conflict_minerals.smelter_list
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Schmelzhüttenliste
+  en: Smelter list
+  zh: 冶炼厂清单
+definition:
+  en: List of smelters and refiners of tin, tantalum, tungsten and gold known to be in the supply chain of the reported products, identified where possible by the RMI smelter identification number.
+  de: Liste der Schmelzhütten und Raffinerien für Zinn, Tantal, Wolfram und Gold in der Lieferkette der berichteten Produkte, möglichst mit RMI-Kennung.
+  zh: 已知处于所报告产品供应链中的锡、钽、钨、金冶炼厂与精炼厂清单，尽可能以 RMI 冶炼厂识别号标识。
+value_type: file
+cardinality: many
+record_fields:
+  - name: metal
+    value_type: enum
+    enum_ref: enums/conflict_metals.yaml
+    required: true
+  - name: smelter_name
+    value_type: text
+    required: true
+  - name: country
+    value_type: enum
+    enum_ref: enums/iso3166_alpha2.yaml
+    required: true
+  - name: smelter_id
+    value_type: text
+    required: false
+period_type: point_in_time
+boundary:
+  - organization
+  - product
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: rmi_cmrt
+    clause: Smelter List
+  - ref: oecd_ddg_minerals
+sensitivity: restricted
+evidence_requirements:
+  accepted_source_types:
+    - supplier_response
+    - document
+    - historical_answer
+  min_sources: 1
+  max_age_days: 365
+  requires_calculation: false
+  human_confirmation_allowed: true
+validity_rule:
+  expires_by: evidence_valid_until
+  plausibility:
+    - expr: size(value) > 0 || !dp:mat.conflict_minerals.intentionally_added.tin
+      severity: warn
+      note: 声明有意添加锡却无冶炼厂
+related_datapoints:
+  - id: dp:mat.conflict_minerals.all_smelters_identified
+    relation: see_also
+tags:
+  - cmrt
+  - conflict_minerals

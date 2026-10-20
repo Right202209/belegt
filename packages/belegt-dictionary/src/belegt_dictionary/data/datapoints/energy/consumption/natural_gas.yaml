@@ -1,0 +1,50 @@
+id: dp:energy.consumption.natural_gas
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Erdgasverbrauch
+  en: Natural gas consumption
+  zh: 天然气消耗
+definition:
+  en: Energy content of natural gas consumed within the boundary during the period. German gas bills are usually stated in kWh on gross calorific value (Hs); the answer must state whether Hs or net calorific value (Hi) applies. Component of dp:energy.consumption.fuels_total.
+  de: Energiegehalt des im Zeitraum verbrauchten Erdgases. Gasrechnungen in Deutschland meist in kWh auf Brennwertbasis (Hs); die Antwort muss Hs oder Hi angeben. Teil von dp:energy.consumption.fuels_total.
+  zh: 报告期内消耗天然气的能量含量。德国燃气账单通常按高位热值（Hs）计 kWh，答案须注明 Hs 或低位热值（Hi）。是 dp:energy.consumption.fuels_total 的组成部分。
+value_type: number
+unit: MWh
+allowed_units:
+  - kWh
+  - MWh
+  - GJ
+period_type: reporting_period
+boundary:
+  - organization
+  - site
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: ghg_protocol_corporate
+    clause: Ch.6
+sensitivity: confidential
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - erp
+    - historical_answer
+  min_sources: 1
+  max_age_days: 550
+  requires_calculation: false
+  human_confirmation_allowed: false
+validity_rule:
+  min: 0
+  expires_by: period_end_plus_days
+  expires_after_days: 550
+related_datapoints:
+  - id: dp:energy.consumption.fuels_total
+    relation: component_of
+tags:
+  - cdp_climate
+  - oem_custom
+  - energy

@@ -1,0 +1,67 @@
+{{- /* Spec: 10 §5.1–§5.3（ServiceMonitor、SLO 记录规则与 ALR-01…12、DSH-01…06）；需要 Prometheus Operator / Grafana sidecar */ -}}
+{{- if .Values.observability.serviceMonitor.enabled }}
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "belegt.fullname" . }}-api
+  namespace: {{ include "belegt.ns" (list . "app") }}
+  labels:
+    {{- include "belegt.metaLabels" . | nindent 4 }}
+    {{- with .Values.observability.serviceMonitor.labels }}{{ toYaml . | nindent 4 }}{{ end }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "belegt.selector" (list . "api" "app") | nindent 6 }}
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: {{ .Values.observability.serviceMonitor.interval }}
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "belegt.fullname" . }}-worker
+  namespace: {{ include "belegt.ns" (list . "trusted") }}
+  labels:
+    {{- include "belegt.metaLabels" . | nindent 4 }}
+    {{- with .Values.observability.serviceMonitor.labels }}{{ toYaml . | nindent 4 }}{{ end }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "belegt.selector" (list . "worker" "trusted") | nindent 6 }}
+  endpoints:
+    - port: metrics
+      path: /metrics
+      interval: {{ .Values.observability.serviceMonitor.interval }}
+{{- end }}
+{{- if .Values.observability.prometheusRule.enabled }}
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: {{ include "belegt.fullname" . }}-slo
+  namespace: {{ include "belegt.ns" (list . "app") }}
+  labels:
+    {{- include "belegt.metaLabels" . | nindent 4 }}
+    {{- with .Values.observability.prometheusRule.labels }}{{ toYaml . | nindent 4 }}{{ end }}
+spec:
+  {{- $rules := .Files.Get "files/belegt-slo.yml" | fromYaml }}
+  {{- toYaml $rules | nindent 2 }}
+{{- end }}
+{{- if .Values.observability.grafanaDashboards.enabled }}
+{{- range $path, $_ := .Files.Glob "files/dashboards/*.json" }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "belegt.fullname" $ }}-{{ base $path | trimSuffix ".json" }}
+  namespace: {{ include "belegt.ns" (list $ "app") }}
+  labels:
+    {{- include "belegt.metaLabels" $ | nindent 4 }}
+    {{- with $.Values.observability.grafanaDashboards.labels }}{{ toYaml . | nindent 4 }}{{ end }}
+data:
+  {{ base $path }}: |-
+    {{- $.Files.Get $path | nindent 4 }}
+{{- end }}
+{{- end }}

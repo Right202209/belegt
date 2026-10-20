@@ -1,0 +1,93 @@
+template_mapping: tm:cmrt@6.5
+template_id: cmrt
+template_version: '6.5'
+template_source: RMI Conflict Minerals Reporting Template (Excel), revision 6.5
+dictionary_min_version: v2027.1
+license_note: 仅题号与短标签；原文请查阅官方来源
+maintainers:
+  - '@belegt/dict-maintainers'
+notes: 版本以 RMI 当年发布为准（6.4/6.5 待核对）
+entries:
+  - entry_id: company_name
+    locator:
+      kind: question
+      ref: Declaration!Company name
+      verify: true
+    short_label: Company name
+    datapoint_id: dp:org.identity.legal_name
+    direction: both
+    transform:
+      type: identity
+  - entry_id: company_country
+    locator:
+      kind: question
+      ref: Declaration!Address / country
+      verify: true
+    short_label: Company country
+    datapoint_id: dp:org.identity.hq_country
+    direction: both
+    transform:
+      type: identity
+  - entry_id: decl_q1_intentional
+    locator:
+      kind: question
+      ref: Declaration!Q1
+      per_metal:
+        - tantalum
+        - tin
+        - gold
+        - tungsten
+    short_label: 3TG intentionally added? (per metal)
+    direction: both
+    boundary_hint: organization
+    transform:
+      type: split
+      outputs:
+        - datapoint_id: dp:mat.conflict_minerals.intentionally_added.tin
+          selector: Tin
+        - datapoint_id: dp:mat.conflict_minerals.intentionally_added.tantalum
+          selector: Tantalum
+        - datapoint_id: dp:mat.conflict_minerals.intentionally_added.tungsten
+          selector: Tungsten
+        - datapoint_id: dp:mat.conflict_minerals.intentionally_added.gold
+          selector: Gold
+    notes: 02 §4.3.7 示例的父 ID dp:mat.conflict_minerals.intentionally_added 不在 §5 清单中，故 split 条目不设 datapoint_id，目标见 outputs
+  - entry_id: decl_q5_all_identified
+    locator:
+      kind: question
+      ref: Declaration!Q5
+      verify: true
+    short_label: All smelters identified?
+    datapoint_id: dp:mat.conflict_minerals.all_smelters_identified
+    direction: both
+    transform:
+      type: enum_map
+      map:
+        'Yes': true
+        'No': false
+  - entry_id: smelter_list
+    locator:
+      kind: column
+      ref: Smelter List
+      columns:
+        - Metal
+        - Smelter Name
+        - Smelter Country
+        - Smelter Identification
+      verify: true
+    short_label: Smelter list
+    datapoint_id: dp:mat.conflict_minerals.smelter_list
+    direction: both
+    transform:
+      type: identity
+    notes: 'record_fields: metal, smelter_name, country, smelter_id(CID…)；导出时按 CID 回查 RMI 标准名'
+  - entry_id: company_policy_url
+    locator:
+      kind: question
+      ref: Company Questions!B
+      verify: true
+    short_label: Conflict minerals policy (URL)
+    datapoint_id: dp:mat.conflict_minerals.policy_url
+    direction: both
+    transform:
+      type: identity

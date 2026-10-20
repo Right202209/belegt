@@ -1,0 +1,19 @@
+# Spec: 06 §2.2 CR-014
+rule_id: CR-014
+rule_version: 1.0.0
+category: validity
+severity: block
+title:
+  de: Zertifikatsdatum passt nicht zum Zertifikat
+  en: Certificate date does not match certificate file
+scope: answer
+triggers:
+- answer_write
+- pre_submit_gate
+- daily_batch
+- context_change
+plugin: cr_014
+assert: value == cert_valid_until && !version_mismatch
+default_action: open_conflict
+explain_template: cr-014
+tests: tests/test_consistency_rules.py::test_cr_014

@@ -1,0 +1,39 @@
+id: dp:gov.policy.human_rights_policy
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Menschenrechtsrichtlinie vorhanden
+  en: Human rights policy in place
+  zh: 是否有人权政策
+definition:
+  en: Whether the undertaking has a written, management-approved policy committing to respect human rights in own operations and the value chain (e.g. child labour, forced labour, discrimination).
+  de: Ob das Unternehmen eine schriftliche, von der Leitung genehmigte Grundsatzerklärung zur Achtung der Menschenrechte im eigenen Geschäftsbereich und in der Wertschöpfungskette hat.
+  zh: 企业是否有经管理层批准、承诺在自身运营与价值链中尊重人权（如童工、强迫劳动、歧视）的书面政策。
+value_type: bool
+period_type: point_in_time
+boundary:
+  - organization
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: eu_2026_1560_vcs
+    clause: C6
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - human_confirmation
+    - historical_answer
+  min_sources: 1
+  max_age_days: 365
+  requires_calculation: false
+  human_confirmation_allowed: true
+validity_rule:
+  expires_by: evidence_valid_until
+tags:
+  - vsme
+  - oem_custom
+  - policy

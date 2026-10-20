@@ -1,0 +1,53 @@
+id: dp:energy.procurement.eac_volume
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Strommenge mit Herkunftsnachweisen
+  en: Electricity covered by energy attribute certificates
+  zh: 绿证/原产地证明电量
+definition:
+  en: Volume of consumed electricity for which energy attribute certificates (Guarantees of Origin, I-RECs, PPA-bundled certificates) were cancelled for the reporting period and boundary. Excludes certificates purchased but not cancelled.
+  de: Strommenge, für die für Berichtszeitraum und -grenze Herkunftsnachweise (HKN, I-REC, PPA-gebündelt) entwertet wurden. Gekaufte, nicht entwertete Nachweise zählen nicht.
+  zh: 在该报告期与边界内已注销能源属性证书（原产地证明、I-REC、PPA 捆绑证书）所对应的用电量；不含已购买但未注销的证书。
+value_type: number
+unit: MWh
+allowed_units:
+  - kWh
+  - MWh
+period_type: reporting_period
+boundary:
+  - organization
+  - site
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: ghg_protocol_scope2_guidance
+    clause: Ch.7
+sensitivity: confidential
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - public_source
+    - historical_answer
+  min_sources: 1
+  max_age_days: 550
+  requires_calculation: false
+  human_confirmation_allowed: false
+validity_rule:
+  min: 0
+  expires_by: period_end_plus_days
+  expires_after_days: 550
+  plausibility:
+    - expr: value <= dp:energy.consumption.electricity_total
+      severity: warn
+      note: 注销电量一般不超过用电量
+related_datapoints:
+  - id: dp:env.ghg.scope2_market_based
+    relation: see_also
+tags:
+  - cdp_climate
+  - pact_pcf
+  - energy

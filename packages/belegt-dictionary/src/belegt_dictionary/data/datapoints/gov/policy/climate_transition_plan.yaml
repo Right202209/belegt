@@ -1,0 +1,42 @@
+id: dp:gov.policy.climate_transition_plan
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Klimaübergangsplan vorhanden
+  en: Climate transition plan in place
+  zh: 是否有气候转型计划
+definition:
+  en: Whether the undertaking has adopted a transition plan for climate change mitigation that sets out targets, actions and resources to align its business with limiting global warming. Excludes stand-alone reduction targets without a plan (dp:env.ghg_target.has_target).
+  de: Ob das Unternehmen einen beschlossenen Übergangsplan zum Klimaschutz mit Zielen, Maßnahmen und Ressourcen hat. Reine Reduktionsziele ohne Plan siehe dp:env.ghg_target.has_target.
+  zh: 企业是否已通过气候减缓转型计划，列明目标、行动与资源以使业务与控制全球升温相一致；不含没有计划的单独减排目标（dp:env.ghg_target.has_target）。
+value_type: bool
+period_type: point_in_time
+boundary:
+  - organization
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: eu_2026_1560_vcs
+    clause: C3
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - human_confirmation
+    - historical_answer
+  min_sources: 1
+  max_age_days: 365
+  requires_calculation: false
+  human_confirmation_allowed: true
+validity_rule:
+  expires_by: evidence_valid_until
+related_datapoints:
+  - id: dp:env.ghg_target.has_target
+    relation: see_also
+tags:
+  - vsme
+  - cdp_climate
+  - policy

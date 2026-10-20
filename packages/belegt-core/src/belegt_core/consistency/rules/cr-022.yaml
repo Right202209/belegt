@@ -1,0 +1,19 @@
+# Spec: 06 §2.2 CR-022
+rule_id: CR-022
+rule_version: 1.0.0
+category: period
+severity: block
+title:
+  de: Kein Kalenderjahr
+  en: Not a calendar year
+scope: answer
+triggers:
+- answer_write
+- pre_submit_gate
+- daily_batch
+- context_change
+plugin: cr_022
+assert: start.endsWith('-01-01') && end.endsWith('-12-31') && start_year == end_year
+default_action: open_conflict
+explain_template: cr-022
+tests: tests/test_consistency_rules.py::test_cr_022

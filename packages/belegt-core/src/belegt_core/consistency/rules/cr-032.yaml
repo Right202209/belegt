@@ -1,0 +1,19 @@
+# Spec: 06 §2.2 CR-032
+rule_id: CR-032
+rule_version: 1.0.0
+category: calculation
+severity: block
+title:
+  de: Harte Gültigkeitsregel verletzt
+  en: Hard validity rule violated
+scope: answer
+triggers:
+- answer_write
+- pre_submit_gate
+- daily_batch
+- context_change
+plugin: cr_032
+assert: (!has_min || dec(value) >= dec(min)) && (!has_max || dec(value) <= dec(max)) && ok_regex && ok_enum
+default_action: open_conflict
+explain_template: cr-032
+tests: tests/test_consistency_rules.py::test_cr_032

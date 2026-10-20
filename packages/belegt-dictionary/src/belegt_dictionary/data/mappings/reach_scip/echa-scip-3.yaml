@@ -1,0 +1,108 @@
+template_mapping: tm:reach_scip@echa-scip-3
+template_id: reach_scip
+template_version: echa-scip-3
+template_source: REACH Art. 33 information and ECHA SCIP notification format (IUCLID-based)
+dictionary_min_version: v2027.1
+license_note: 仅题号与短标签；原文请查阅官方来源
+maintainers:
+  - '@belegt/dict-maintainers'
+notes: SCIP 格式版本号待核对
+entries:
+  - entry_id: article_identifier
+    locator:
+      kind: field
+      ref: Primary article identifier
+      verify: true
+    short_label: Article identifier
+    datapoint_id: dp:prod.identity.product_id
+    direction: both
+    transform:
+      type: identity
+  - entry_id: article_cn_code
+    locator:
+      kind: field
+      ref: TARIC / CN code
+      verify: true
+    short_label: CN code of the article
+    datapoint_id: dp:prod.identity.cn_code
+    direction: both
+    transform:
+      type: format
+      pattern: ^[0-9]{8}$
+  - entry_id: article_mass
+    locator:
+      kind: field
+      ref: Article mass
+      verify: true
+    short_label: Net mass of the article, kg
+    datapoint_id: dp:prod.mass.net_per_unit
+    direction: both
+    unit_hint: kg
+    transform:
+      type: unit_convert
+      from_unit: kg
+      to_unit: kg
+  - entry_id: svhc_present
+    locator:
+      kind: field
+      ref: Candidate List substance present > 0.1 % w/w
+    short_label: SVHC above 0.1 % w/w?
+    datapoint_id: dp:mat.reach.svhc_present
+    direction: both
+    transform:
+      type: enum_map
+      map:
+        'Yes': true
+        'No': false
+        Ja: true
+        Nein: false
+  - entry_id: svhc_identity
+    locator:
+      kind: field
+      ref: Candidate List substance (EC/CAS)
+    short_label: SVHC identity
+    datapoint_id: dp:mat.reach.svhc_list
+    direction: both
+    transform:
+      type: identity
+    condition: dp:mat.reach.svhc_present == true
+  - entry_id: concentration_range
+    locator:
+      kind: field
+      ref: Concentration range (w/w)
+      verify: true
+    short_label: Concentration range
+    datapoint_id: dp:mat.reach.svhc_concentration
+    direction: export
+    unit_hint: '%w/w'
+    transform:
+      type: enum_map
+      map:
+        0.1-0.3: '[0.1,0.3)'
+        0.3-1.0: '[0.3,1.0)'
+        1.0-10: '[1.0,10)'
+        10-20: '[10,20)'
+        '>20': '[20,100]'
+    condition: dp:mat.reach.svhc_present == true
+    notes: 字典存精确值（%w/w），导出时归入 SCIP 区间；导入时只得到区间，存为 text 并 is_estimate=true
+  - entry_id: candidate_list_version
+    locator:
+      kind: field
+      ref: Candidate List version
+      verify: true
+    short_label: Candidate List version used
+    datapoint_id: dp:mat.reach.candidate_list_version
+    direction: both
+    transform:
+      type: format
+      pattern: YYYY-MM-DD
+  - entry_id: scip_number
+    locator:
+      kind: field
+      ref: SCIP number
+    short_label: SCIP number (UUID)
+    datapoint_id: dp:mat.scip.scip_number
+    direction: both
+    transform:
+      type: format
+      pattern: UUID

@@ -1,0 +1,40 @@
+{{- /* Spec: 07 §5（欧盟驻留）、10 §6.1 private-airgap（GP-11：只允许本地模型）。渲染期校验，不输出资源。 */ -}}
+{{- $v := .Values -}}
+{{- $profiles := list "saas-multi" "saas-dedicated" "private-k8s" "private-airgap" -}}
+{{- if not (has $v.global.deployProfile $profiles) -}}
+{{- fail (printf "global.deployProfile must be one of %v" $profiles) -}}
+{{- end -}}
+{{- if and (not $v.postgresql.bundled.enabled) (not $v.postgresql.host) -}}
+{{- fail "postgresql.host is required (or enable postgresql.bundled for dev)" -}}
+{{- end -}}
+{{- if eq $v.global.deployProfile "private-airgap" -}}
+  {{- if $v.egressGateway.allowlist -}}
+  {{- fail "private-airgap: egressGateway.allowlist must be empty (no outbound connections, NFR-16)" -}}
+  {{- end -}}
+  {{- if and $v.llm.baseUrl (not (contains ".svc" $v.llm.baseUrl)) -}}
+  {{- fail "private-airgap: llm.baseUrl must point to an in-cluster service (*.svc), e.g. the bundled vLLM" -}}
+  {{- end -}}
+  {{- if ne $v.global.dataResidency "private" -}}
+  {{- fail "private-airgap requires global.dataResidency=private" -}}
+  {{- end -}}
+{{- end -}}
+{{- if and (eq $v.global.dataResidency "eu") $v.llm.baseUrl (not (contains ".svc" $v.llm.baseUrl)) -}}
+  {{- $ok := false -}}
+  {{- range $v.residency.allowedLlmDomainSuffixes -}}{{- if contains . $v.llm.baseUrl -}}{{- $ok = true -}}{{- end -}}{{- end -}}
+  {{- if not $ok -}}
+  {{- fail (printf "dataResidency=eu: llm.baseUrl %s is not an allowed EU endpoint (residency.allowedLlmDomainSuffixes)" $v.llm.baseUrl) -}}
+  {{- end -}}
+{{- end -}}
+{{- if eq $v.global.dataResidency "eu" -}}
+  {{- range $d := $v.egressGateway.allowlist -}}
+    {{- $ok := false -}}
+    {{- range $v.residency.allowedLlmDomainSuffixes -}}{{- if hasSuffix . (trimPrefix "." $d) -}}{{- $ok = true -}}{{- end -}}{{- end -}}
+    {{- range $v.residency.extraAllowedEgressDomains | default list -}}{{- if hasSuffix . (trimPrefix "." $d) -}}{{- $ok = true -}}{{- end -}}{{- end -}}
+    {{- if not $ok -}}
+    {{- fail (printf "dataResidency=eu: egress allowlist entry %s is neither an EU LLM endpoint nor listed in residency.extraAllowedEgressDomains" $d) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- if and $v.residency.enforce (not $v.residency.allowedRegions) -}}
+{{- fail "residency.enforce=true requires residency.allowedRegions" -}}
+{{- end -}}

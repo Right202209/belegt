@@ -1,0 +1,5 @@
+{
+  "dev-compliance-owner": {"actor": "user:u_compliance01", "org_id": "org_01JC0A1B2C3D4E5F6G7H8J9K0M", "roles": ["compliance_owner", "org_admin"]},
+  "dev-executive": {"actor": "user:u_exec01", "org_id": "org_01JC0A1B2C3D4E5F6G7H8J9K0M", "roles": ["executive"]},
+  "dev-sales": {"actor": "user:u_sales01", "org_id": "org_01JC0A1B2C3D4E5F6G7H8J9K0M", "roles": ["sales"], "cp_scope": ["cp_01JC2B3C4D5E6F7G8H9J0K1M2N"]}
+}

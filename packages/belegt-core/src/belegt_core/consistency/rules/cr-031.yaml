@@ -1,0 +1,22 @@
+# Spec: 06 §2.2 CR-031
+rule_id: CR-031
+rule_version: 1.0.0
+category: calculation
+severity: warn
+title:
+  de: Indirekte SEE inkonsistent mit Stromverbrauch und Faktor
+  en: Indirect SEE inconsistent with SEC x factor
+scope: answer
+triggers:
+- answer_write
+- pre_submit_gate
+- daily_batch
+- context_change
+plugin: cr_031
+when: dec(expected) != dec('0')
+assert: dec_abs(dec(see) - dec(expected)) <= dec('0.02') * dec(expected)
+tolerance:
+  rel: '0.02'
+default_action: open_conflict
+explain_template: cr-031
+tests: tests/test_consistency_rules.py::test_cr_031

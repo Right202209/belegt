@@ -1,0 +1,45 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [5 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+4 0 obj
+<< /Length 386 >>
+stream
+BT
+/F1 11 Tf
+1 0 0 1 72 780 Tm (Hansa Power Ltd.) Tj
+1 0 0 1 72 762 Tm (Jahresabrechnung Strom 2025) Tj
+1 0 0 1 72 744 Tm (Abrechnungszeitraum 01.01.2025 - 31.12.2025) Tj
+1 0 0 1 72 726 Tm (Zaehlernummer 1ESY1160998877) Tj
+1 0 0 1 72 708 Tm (Hoechstleistung: 1.250 kW) Tj
+1 0 0 1 72 690 Tm (Stromverbrauch gesamt: 2.345,678 MWh) Tj
+1 0 0 1 72 672 Tm (Arbeitspreis: 0,1873 EUR/kWh) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 4 0 R >>
+endobj
+6 0 obj
+<< /Producer (belegt-bench-synth) /Subject (belegt-bench-canary:5bf9e489-d3de-57fd-9eef-4ba18a0791eb) >>
+endobj
+xref
+0 7
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000212 00000 n 
+0000000649 00000 n 
+0000000775 00000 n 
+trailer
+<< /Size 7 /Root 1 0 R /Info 6 0 R >>
+startxref
+895
+%%EOF

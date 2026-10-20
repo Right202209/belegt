@@ -1,0 +1,12 @@
+# Spec: 10 §5.2（仪表盘数据源）
+apiVersion: 1
+datasources:
+  - name: Prometheus
+    uid: belegt-prom
+    type: prometheus
+    access: proxy
+    url: http://prometheus:9090
+    isDefault: true
+    editable: false
+    jsonData:
+      timeInterval: 15s

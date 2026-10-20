@@ -1,0 +1,373 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.belegt.org/dictionary/template_mapping/0.1.0",
+  "title": "Belegt TemplateMapping",
+  "type": "object",
+  "required": [
+    "template_mapping",
+    "template_id",
+    "template_version",
+    "template_source",
+    "dictionary_min_version",
+    "entries"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "template_mapping": {
+      "type": "string",
+      "pattern": "^tm:[a-z][a-z0-9_]*@[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "template_id": {
+      "type": "string",
+      "pattern": "^(vsme|cdp_climate|pact_pcf|catenax_pcf|cbam_communication|eudr_dds|reach_scip|cmrt|eu_battery_passport|private_[a-z0-9_]+)$"
+    },
+    "template_version": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "template_source": {
+      "type": "string",
+      "minLength": 5
+    },
+    "dictionary_min_version": {
+      "type": "string",
+      "pattern": "^v\\d{4}\\.[1-4](\\.\\d+)?$"
+    },
+    "license_note": {
+      "type": "string"
+    },
+    "maintainers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "status": {
+      "enum": [
+        "active",
+        "frozen"
+      ]
+    },
+    "notes": {
+      "type": "string"
+    },
+    "entries": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/entry"
+      }
+    }
+  },
+  "$defs": {
+    "entry": {
+      "type": "object",
+      "required": [
+        "entry_id",
+        "locator",
+        "short_label",
+        "direction"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "entry_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "locator": {
+          "type": "object",
+          "required": [
+            "kind",
+            "ref"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "enum": [
+                "paragraph",
+                "question",
+                "cell",
+                "column",
+                "json_path",
+                "xml_path",
+                "field"
+              ]
+            },
+            "ref": {
+              "type": "string",
+              "minLength": 1
+            },
+            "legacy_ref": {
+              "type": "string"
+            },
+            "column": {
+              "type": "string"
+            },
+            "columns": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "row": {
+              "type": "string"
+            },
+            "field": {
+              "type": "string"
+            },
+            "per_metal": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "verify": {
+              "type": "boolean"
+            }
+          }
+        },
+        "short_label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60
+        },
+        "datapoint_id": {
+          "type": "string",
+          "pattern": "^dp:(org|env|energy|prod|mat|supply|cert|gov|social)\\.[a-z][a-z0-9_]{1,40}\\.[a-z][a-z0-9_]{1,48}(\\.[a-z][a-z0-9_]{0,40})?$"
+        },
+        "direction": {
+          "enum": [
+            "import",
+            "export",
+            "both"
+          ]
+        },
+        "unit_hint": {
+          "type": "string"
+        },
+        "period_hint": {
+          "enum": [
+            "calendar_year",
+            "fiscal_year",
+            "reporting_period",
+            "point_in_time",
+            "validity_range"
+          ]
+        },
+        "boundary_hint": {
+          "enum": [
+            "organization",
+            "site",
+            "product",
+            "product_per_unit"
+          ]
+        },
+        "transform": {
+          "$ref": "#/$defs/transform"
+        },
+        "condition": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "if": {
+        "not": {
+          "required": [
+            "transform"
+          ],
+          "properties": {
+            "transform": {
+              "required": [
+                "type"
+              ],
+              "properties": {
+                "type": {
+                  "enum": [
+                    "split",
+                    "aggregate"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "datapoint_id"
+        ]
+      }
+    },
+    "transform": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "identity",
+            "unit_convert",
+            "enum_map",
+            "aggregate",
+            "split",
+            "format",
+            "pipeline"
+          ]
+        },
+        "from_unit": {
+          "type": "string"
+        },
+        "to_unit": {
+          "type": "string"
+        },
+        "round": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "map": {
+          "type": "object"
+        },
+        "default": {},
+        "op": {
+          "enum": [
+            "sum",
+            "max",
+            "min",
+            "concat"
+          ]
+        },
+        "inputs": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "type": "string",
+            "pattern": "^dp:(org|env|energy|prod|mat|supply|cert|gov|social)\\.[a-z][a-z0-9_]{1,40}\\.[a-z][a-z0-9_]{1,48}(\\.[a-z][a-z0-9_]{0,40})?$"
+          }
+        },
+        "outputs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "datapoint_id",
+              "selector"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "datapoint_id": {
+                "type": "string",
+                "pattern": "^dp:(org|env|energy|prod|mat|supply|cert|gov|social)\\.[a-z][a-z0-9_]{1,40}\\.[a-z][a-z0-9_]{1,48}(\\.[a-z][a-z0-9_]{0,40})?$"
+              },
+              "selector": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "pattern": {
+          "type": "string"
+        },
+        "steps": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/transform"
+          }
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "unit_convert"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "from_unit",
+              "to_unit"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "enum_map"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "map"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "aggregate"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "op",
+              "inputs"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "split"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "outputs"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "format"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "pattern"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "pipeline"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "steps"
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

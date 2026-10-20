@@ -1,0 +1,44 @@
+id: dp:social.training.avg_hours_per_employee
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Durchschnittliche Weiterbildungsstunden
+  en: Average training hours per employee
+  zh: 人均年培训小时
+definition:
+  en: Total hours of training provided to employees in the reporting period divided by the number of employees, as an average per employee. Excludes mandatory onboarding safety briefings only when the answer states so.
+  de: Gesamte Weiterbildungsstunden der Beschäftigten im Berichtszeitraum geteilt durch die Zahl der Beschäftigten (Durchschnitt je Beschäftigtem).
+  zh: 报告期内员工培训总小时数除以员工人数得到的人均值；仅在答案注明时才排除入职安全告知。
+value_type: number
+unit: h
+period_type: reporting_period
+boundary:
+  - organization
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: eu_2026_1560_vcs
+    clause: B10
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - erp
+    - historical_answer
+  min_sources: 1
+  max_age_days: 550
+  requires_calculation: true
+  human_confirmation_allowed: false
+validity_rule:
+  min: 0
+  expires_by: period_end_plus_days
+  expires_after_days: 550
+related_datapoints:
+  - id: dp:org.employees.headcount
+    relation: derived_from
+tags:
+  - vsme
+  - training

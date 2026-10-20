@@ -1,0 +1,37 @@
+id: dp:prod.identity.cn_code
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: KN-Code
+  en: CN code
+  zh: CN 编码
+definition:
+  en: Eight-digit Combined Nomenclature code under which the product is classified for EU customs purposes, as digits without spaces or dots. Excludes six-digit HS headings used alone and national TARIC extensions beyond eight digits.
+  de: Achtstelliger Code der Kombinierten Nomenklatur für die Zolltarifierung des Produkts, nur Ziffern ohne Leer- und Trennzeichen.
+  zh: 产品在欧盟海关归类的 8 位组合命名法（CN）编码，仅数字、不含空格或点；不含单独的 6 位 HS 编码及超过 8 位的 TARIC 扩展。
+value_type: text
+period_type: point_in_time
+boundary:
+  - product
+methodology_refs:
+  - ref: eu_2658_87_cn
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - public_source
+    - human_confirmation
+    - historical_answer
+  min_sources: 1
+  max_age_days: 730
+  requires_calculation: false
+  human_confirmation_allowed: true
+validity_rule:
+  regex: ^[0-9]{8}$
+tags:
+  - cbam_communication
+  - eudr_dds
+  - reach_scip
+  - identity
+  - customs

@@ -1,0 +1,58 @@
+schema: belegt.methodologies/1
+methodologies:
+  - ref: ghg_protocol_corporate
+    title: GHG Protocol Corporate Accounting and Reporting Standard (revised)
+  - ref: ghg_protocol_scope2_guidance
+    title: GHG Protocol Scope 2 Guidance (2015)
+  - ref: ghg_protocol_scope3_standard
+    title: GHG Protocol Corporate Value Chain (Scope 3) Standard
+  - ref: eu_2026_1560_vcs
+    title: Delegated Regulation (EU) 2026/1560 – voluntary value-chain standard (VSME)
+  - ref: eu_2023_956_cbam
+    title: Regulation (EU) 2023/956 (CBAM)
+  - ref: eu_2023_1773_cbam_ir
+    title: Implementing Regulation (EU) 2023/1773 (CBAM reporting)
+  - ref: eu_2023_1115_eudr
+    title: Regulation (EU) 2023/1115 (EUDR)
+  - ref: eu_2025_2650_eudr_amend
+    title: Regulation (EU) 2025/2650 amending the EUDR
+  - ref: eu_1907_2006_reach
+    title: Regulation (EC) No 1907/2006 (REACH)
+  - ref: eu_2008_98_wfd
+    title: Directive 2008/98/EC (Waste Framework Directive)
+  - ref: eu_2011_65_rohs
+    title: Directive 2011/65/EU (RoHS)
+  - ref: eu_2017_821_conflict_minerals
+    title: Regulation (EU) 2017/821 (conflict minerals)
+  - ref: eu_2023_1542_battery
+    title: Regulation (EU) 2023/1542 (Batteries)
+  - ref: eu_2013_34_accounting
+    title: Directive 2013/34/EU (Accounting Directive)
+  - ref: eu_166_2006_eprtr
+    title: Regulation (EC) No 166/2006 (E-PRTR)
+  - ref: eu_2658_87_cn
+    title: Council Regulation (EEC) No 2658/87 (Combined Nomenclature)
+  - ref: nace_rev2
+    title: Regulation (EC) No 1893/2006 (NACE Rev. 2)
+  - ref: iso_14067
+    title: ISO 14067:2018 Carbon footprint of products
+  - ref: iso_14021
+    title: ISO 14021 Self-declared environmental claims
+  - ref: iso_14001
+    title: ISO 14001 Environmental management systems
+  - ref: iso_50001
+    title: ISO 50001 Energy management systems
+  - ref: iso_45001
+    title: ISO 45001 Occupational health and safety management systems
+  - ref: iatf_16949
+    title: IATF 16949 Automotive quality management system
+  - ref: pact_tech_spec_v2
+    title: PACT Technical Specifications v2.x
+  - ref: pact_tech_spec_v3
+    title: PACT Technical Specifications v3.0.3
+  - ref: catenax_pcf_rulebook_v4
+    title: Catena-X PCF Rulebook v4.0
+  - ref: rmi_cmrt
+    title: RMI Conflict Minerals Reporting Template
+  - ref: oecd_ddg_minerals
+    title: OECD Due Diligence Guidance for Responsible Supply Chains of Minerals

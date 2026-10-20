@@ -1,0 +1,35 @@
+id: dp:prod.cbam.installation_id
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: CBAM-Anlagenkennung
+  en: CBAM installation identifier
+  zh: CBAM 生产装置标识
+definition:
+  en: Identifier of the installation where the CBAM goods were produced, as registered in the CBAM registry (or, before registration, the identifier used in the operator communication). Excludes company registration numbers.
+  de: Kennung der Anlage, in der die CBAM-Waren hergestellt wurden, wie im CBAM-Register erfasst (vor Registrierung die in der Betreiberkommunikation verwendete Kennung).
+  zh: 生产 CBAM 货物的装置在 CBAM 登记系统中的标识（登记前为运营者沟通文件中使用的标识）；不是企业登记号。
+value_type: text
+period_type: point_in_time
+boundary:
+  - site
+methodology_refs:
+  - ref: eu_2023_956_cbam
+    clause: Art. 10
+  - ref: eu_2023_1773_cbam_ir
+    clause: Annex III
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - public_source
+    - human_confirmation
+    - historical_answer
+  min_sources: 1
+  max_age_days: 730
+  requires_calculation: false
+  human_confirmation_allowed: true
+tags:
+  - cbam_communication
+  - cbam

@@ -1,0 +1,32 @@
+enum: enums/battery_chemistry.yaml
+version: 1.0.0
+title: Battery cell chemistry
+source: Regulation (EU) 2023/1542 Annex XIII
+values:
+  - code: nmc
+    label:
+      en: Lithium nickel manganese cobalt oxide
+  - code: lfp
+    label:
+      en: Lithium iron phosphate
+  - code: nca
+    label:
+      en: Lithium nickel cobalt aluminium oxide
+  - code: lmo
+    label:
+      en: Lithium manganese oxide
+  - code: lto
+    label:
+      en: Lithium titanate
+  - code: na_ion
+    label:
+      en: Sodium-ion
+  - code: lead_acid
+    label:
+      en: Lead-acid
+  - code: nimh
+    label:
+      en: Nickel-metal hydride
+  - code: other
+    label:
+      en: Other

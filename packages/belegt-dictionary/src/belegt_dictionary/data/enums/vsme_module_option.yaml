@@ -1,0 +1,15 @@
+enum: enums/vsme_module_option.yaml
+version: 1.0.0
+title: VSME reporting option
+source: Delegated Regulation (EU) 2026/1560
+values:
+  - code: basic
+    label:
+      en: Basic Module only
+      de: Nur Basismodul
+      zh: 仅基础模块
+  - code: basic_and_comprehensive
+    label:
+      en: Basic and Comprehensive Module
+      de: Basis- und umfassendes Modul
+      zh: 基础 + 综合模块

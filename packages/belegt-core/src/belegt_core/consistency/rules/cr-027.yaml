@@ -1,0 +1,23 @@
+# Spec: 06 §2.2 CR-027
+rule_id: CR-027
+rule_version: 1.0.0
+category: calculation
+severity: block
+title:
+  de: Summe Scope 1 und 2 inkonsistent
+  en: Scope 1 plus 2 total inconsistent
+scope: request
+triggers:
+- answer_write
+- pre_submit_gate
+- daily_batch
+- context_change
+plugin: cr_027
+assert: dec_eq(dec(total), dec(s1) + dec(s2), dec('0.5'), dec('0.001'))
+tolerance:
+  abs: '0.5'
+  rel: '0.001'
+  unit: tCO2e
+default_action: open_conflict
+explain_template: cr-027
+tests: tests/test_consistency_rules.py::test_cr_027

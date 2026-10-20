@@ -1,0 +1,40 @@
+id: dp:mat.reach.candidate_list_version
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Stand der Kandidatenliste
+  en: Candidate List version used
+  zh: 依据的候选清单版本
+definition:
+  en: Publication date of the ECHA Candidate List update against which the SVHC assessment was made. Used to detect outdated declarations when new substances are added (twice a year).
+  de: Veröffentlichungsdatum der ECHA-Kandidatenliste, gegen die die SVHC-Bewertung erfolgte. Dient zum Erkennen veralteter Erklärungen bei Aktualisierungen.
+  zh: SVHC 评估所依据的 ECHA 候选清单更新的发布日期；用于在清单新增物质（每年两次）时识别过期声明。
+value_type: date
+period_type: point_in_time
+boundary:
+  - product
+methodology_refs:
+  - ref: eu_1907_2006_reach
+    clause: Art. 59
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - supplier_response
+    - document
+    - historical_answer
+    - human_confirmation
+  min_sources: 1
+  max_age_days: 365
+  requires_calculation: false
+  human_confirmation_allowed: true
+validity_rule:
+  expires_by: value
+  expires_after_days: 200
+related_datapoints:
+  - id: dp:mat.reach.svhc_present
+    relation: see_also
+tags:
+  - reach_scip
+  - oem_custom
+  - reach

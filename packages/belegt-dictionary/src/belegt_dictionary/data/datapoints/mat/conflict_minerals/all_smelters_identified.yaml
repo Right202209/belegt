@@ -1,0 +1,45 @@
+id: dp:mat.conflict_minerals.all_smelters_identified
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Alle Schmelzhütten identifiziert
+  en: All smelters identified
+  zh: 冶炼厂是否全部识别
+definition:
+  en: Whether the undertaking has identified all smelters and refiners supplying the 3TG metals that are intentionally added in its products in scope of the declaration.
+  de: Ob das Unternehmen alle Schmelzhütten und Raffinerien identifiziert hat, die die in seinen Produkten absichtlich zugesetzten 3TG-Metalle liefern.
+  zh: 企业是否已识别为其声明范围内产品中有意添加的 3TG 金属供货的全部冶炼厂与精炼厂。
+value_type: bool
+period_type: point_in_time
+boundary:
+  - organization
+  - product
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: rmi_cmrt
+    clause: Declaration
+  - ref: oecd_ddg_minerals
+    clause: Step 2
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - supplier_response
+    - document
+    - historical_answer
+    - human_confirmation
+  min_sources: 1
+  max_age_days: 365
+  requires_calculation: false
+  human_confirmation_allowed: true
+validity_rule:
+  expires_by: evidence_valid_until
+related_datapoints:
+  - id: dp:mat.conflict_minerals.smelter_list
+    relation: see_also
+tags:
+  - cmrt
+  - conflict_minerals

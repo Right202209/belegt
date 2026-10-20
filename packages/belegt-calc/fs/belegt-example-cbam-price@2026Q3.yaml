@@ -1,0 +1,22 @@
+# CBAM 证书价格快照（05 §9）。冻结后不可改。
+id: fs:belegt-example-cbam-price@2026Q3
+source: belegt-example-cbam-price
+license: '[需法务确认] 委员会公开数据'
+published_at: '2026-10-05'
+valid_from: '2026-07-01'
+valid_until: '2026-09-30'
+upstream:
+  title: DG TAXUD – Price of CBAM certificates
+  url: https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism/price-cbam-certificates_en
+  retrieved_at: '2026-10-18'
+note: 唯一一行取 DG TAXUD 公布的 2026Q3 实价 82.32 €（05 §6.7、§9）
+rows:
+- factor_key: cbam.price.2026Q3
+  geography: EU
+  year: '2026'
+  value: '82.32'
+  unit: EUR/tCO2e
+  source_row_id: EC-CBAM-PRICE-2026Q3
+row_count: 1
+rows_hash: sha256:03cd93e50c409df6741575ee3b7a72b2c72553d451baa6b71d88c83a66a90191
+status: active

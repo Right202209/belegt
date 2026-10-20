@@ -1,0 +1,22 @@
+# Spec: 06 §2.2 CR-003
+rule_id: CR-003
+rule_version: 1.0.0
+category: calculation
+severity: block
+title:
+  de: Summe der Teilwerte ungleich Gesamtwert
+  en: Sum of parts does not match total
+scope: org
+triggers:
+- answer_write
+- pre_submit_gate
+- daily_batch
+- context_change
+plugin: cr_003
+assert: 'relation == ''eq'' ? dec_eq(dec(total), dec(parts_sum), dec(''0.5''), dec(''0.001'')) : dec(parts_sum) <= dec(total) + dec_max(dec(''0.5''), dec_abs(dec(total)) * dec(''0.001''))'
+tolerance:
+  abs: '0.5'
+  rel: '0.001'
+default_action: open_conflict
+explain_template: cr-003
+tests: tests/test_consistency_rules.py::test_cr_003

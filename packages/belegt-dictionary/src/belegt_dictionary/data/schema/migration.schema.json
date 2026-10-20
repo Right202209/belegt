@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schema.belegt.org/dictionary/migration/0.1.0",
+  "title": "Belegt dictionary release migration",
+  "type": "object",
+  "required": [
+    "release",
+    "package_version",
+    "previous",
+    "changes"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "release": {
+      "type": "string",
+      "pattern": "^v\\d{4}\\.[1-4](\\.\\d+)?$"
+    },
+    "package_version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "previous": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "pattern": "^v\\d{4}\\.[1-4](\\.\\d+)?$"
+        }
+      ]
+    },
+    "changes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "kind",
+          "auto_migrate"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "enum": [
+              "rename",
+              "split",
+              "merge",
+              "deprecate",
+              "retire",
+              "add",
+              "major_change"
+            ]
+          },
+          "rfc": {
+            "type": "string",
+            "pattern": "^RFC-\\d{4}$"
+          },
+          "from": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^dp:"
+              },
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^dp:"
+                }
+              }
+            ]
+          },
+          "to": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^dp:"
+            }
+          },
+          "auto_migrate": {
+            "type": "boolean"
+          },
+          "default_target": {
+            "type": "string",
+            "pattern": "^dp:"
+          },
+          "action_required": {
+            "type": "string"
+          },
+          "version_from": {
+            "type": "string"
+          },
+          "version_to": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "auto_migrate": {
+                  "const": false
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "action_required"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "mapping_files_added": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "mapping_files_frozen": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "mapping_files_removed": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

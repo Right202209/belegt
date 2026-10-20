@@ -1,0 +1,96 @@
+{
+ "schema": "belegt-eval-report/1",
+ "created_at": "2026-10-19T15:50:28Z",
+ "agent": "answer-drafter",
+ "dataset_version": "bench-v2027.1",
+ "partition": "test",
+ "smoke": false,
+ "status": "ok",
+ "skip_reason": null,
+ "config": {
+  "predictor": "baseline-citing-drafter@1",
+  "predictor_kind": "baseline",
+  "model_id": null,
+  "prompt_version": null,
+  "params": {
+   "temperature": 0,
+   "top_p": 1
+  },
+  "bootstrap": 2000,
+  "seed": 7
+ },
+ "manifest_ok": true,
+ "manifest_errors": [],
+ "leak": {
+  "ok": true,
+  "checks": {
+   "LEAK-01": {
+    "ok": true,
+    "pairs_checked": 6300,
+    "hits": []
+   },
+   "LEAK-02": {
+    "ok": true,
+    "violations": []
+   },
+   "LEAK-03": {
+    "ok": true,
+    "org_overlap": [],
+    "clusters_split": []
+   }
+  }
+ },
+ "metrics": {
+  "M-DRF-03": {
+   "name": "文本中新增数字（R-NUM 违规）★",
+   "value": 0.0,
+   "n": 6,
+   "star": true,
+   "primary": true,
+   "direction": "lower",
+   "family": "count",
+   "ci95": [
+    0.0,
+    0.0
+   ],
+   "violations": 0.0
+  }
+ },
+ "cells": [
+  {
+   "cell": "none×de×json",
+   "n": 3,
+   "metrics": {
+    "M-DRF-03": {
+     "value": 0.0,
+     "n": 3
+    }
+   }
+  },
+  {
+   "cell": "none×en×json",
+   "n": 3,
+   "metrics": {
+    "M-DRF-03": {
+     "value": 0.0,
+     "n": 3
+    }
+   }
+  }
+ ],
+ "worst_cell": null,
+ "ops": {
+  "wall_seconds": 0.312,
+  "M-OPS-01": {
+   "name": "单份问卷 LLM 成本（EUR）",
+   "value": 0.0,
+   "total_eur": 0.0
+  },
+  "M-OPS-02": {
+   "name": "每 100 单元首稿机器时长（分钟）",
+   "value": 0.0867
+  }
+ },
+ "n_samples": 6,
+ "sample_details": "eval-samples.answer-drafter.jsonl"
+}

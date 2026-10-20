@@ -1,0 +1,24 @@
+Request req_4YYTHZ15QSRSER4811J3XJ69MR  status=archived  workflow=completed  (22.37 s)
+  Status-Verlauf: received → triaged → parsed → awaiting_human → parsed → mapped → evidence_gathering → awaiting_human → evidence_gathering → awaiting_human → evidence_gathering → awaiting_human → evidence_gathering → awaiting_supplier → evidence_gathering → awaiting_human → evidence_gathering → awaiting_human → evidence_gathering → drafting → auditing → awaiting_human → auditing → awaiting_human → auditing → in_review → approved → filling → awaiting_human → filling → submitted → archived
+Fragen: 100 (mapped 100)  Mapping: {'PROMO-MAP-0.85': 93, 'human/CQ': 7}
+Evidenz: 39  {'document:verified': 7, 'erp:verified': 28, 'supplier_response:verified': 4}
+  Berechnung ghg.scope2.location_based: 1658.08 tCO2e
+  Berechnung ghg.scope2.market_based: 2027.2 tCO2e
+  Berechnung ghg.scope1.total: 481.92 tCO2e
+Antworten: 92 {'submitted': 92}  Zahlen: 37 (mit Evidenz/Berechnung: 37)
+  Fragen beantwortet: 92  ohne Beleg (manuell): 8
+Freigaben: {'approved': 94}  Antworten nach Stufe: {'L1': 33, 'L2': 49, 'L3': 10}
+Konflikte: 4
+  CR-004 warning → open (H-CWRN (warn_note bei Freigabe)) dp:cert.iso50001.valid_until@1.0.0
+  CR-007 blocking → resolved (H-C007) dp:prod.cbam.production_route@1.0.0
+  CR-013 warning → resolved (H-CWRN (warn_note bei Freigabe)) dp:cert.iso50001.valid_until@1.0.0
+  CR-032 blocking → resolved (H-C032) dp:prod.cbam.production_route@1.0.0
+Geschlossene Fragen: 13 (beantwortet 13)
+Lieferantenanfrage sreq_269DNPJMD4V6HXERNQAMH91A0W: reviewed (stpl:cbam_see_request.en@1.0.0, 4 Datenpunkte)
+E-Mails über egress: 1
+LLM: 80 Aufrufe, 88264+8443 Tokens, Kosten €0.0688 (Ziel P95 ≤ €3, Hard-Limit €5)
+Trace-Spans: 106  Menschliche Aktionen (Regeln): {'H-CQ': 12, 'H-MAP': 1, 'H-SREQ': 1, 'H-C032-MAP': 1, 'H-C032': 1, 'H-C007': 1, 'H-APR(batch items)': 33, 'H-APR': 59, 'H-SUB': 1}
+Export: geschrieben 92  abgelehnt 0  Auditpaket verifiziert: True
+  filled_file: examples/demo-output/filled_oem_fragebogen_de_100.xlsx
+  auditpack: examples/demo-output/auditpack_req_4YYTHZ15QSRSER4811J3XJ69MR.zip
+Workflow: awaiting_human → awaiting_human → awaiting_human → awaiting_human → awaiting_supplier → awaiting_human → awaiting_human → awaiting_human → awaiting_human → in_review → awaiting_human → completed

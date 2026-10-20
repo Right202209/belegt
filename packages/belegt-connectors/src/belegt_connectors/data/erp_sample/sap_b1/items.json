@@ -1,0 +1,78 @@
+{
+ "odata.metadata": "$metadata#items",
+ "value": [
+  {
+   "ItemCode": "E-STROM",
+   "ItemName": "Strom Netzbezug",
+   "ItemsGroupCode": 101,
+   "InventoryUOM": "kWh",
+   "CustomsGroupCode": null,
+   "SalesUnitWeight": null
+  },
+  {
+   "ItemCode": "E-ERDGAS",
+   "ItemName": "Erdgas (Brennwert Hs)",
+   "ItemsGroupCode": 101,
+   "InventoryUOM": "kWh",
+   "CustomsGroupCode": null,
+   "SalesUnitWeight": null,
+   "U_EnergyBasis": "Hs"
+  },
+  {
+   "ItemCode": "E-FERNW",
+   "ItemName": "Fernwärme",
+   "ItemsGroupCode": 101,
+   "InventoryUOM": "MWh",
+   "CustomsGroupCode": null,
+   "SalesUnitWeight": null
+  },
+  {
+   "ItemCode": "F-DIESEL",
+   "ItemName": "Dieselkraftstoff",
+   "ItemsGroupCode": 102,
+   "InventoryUOM": "Ltr",
+   "CustomsGroupCode": null,
+   "SalesUnitWeight": null
+  },
+  {
+   "ItemCode": "ST-COIL-HR",
+   "ItemName": "Warmband Coil S235JR 3mm",
+   "ItemsGroupCode": 201,
+   "InventoryUOM": "t",
+   "CustomsGroupCode": "72085120",
+   "SalesUnitWeight": "1000"
+  },
+  {
+   "ItemCode": "ST-BAR-R20",
+   "ItemName": "Betonstahl Ø20 B500B",
+   "ItemsGroupCode": 201,
+   "InventoryUOM": "t",
+   "CustomsGroupCode": "72142000",
+   "SalesUnitWeight": "1000"
+  },
+  {
+   "ItemCode": "AL-INGOT",
+   "ItemName": "Aluminium Masseln P1020",
+   "ItemsGroupCode": 202,
+   "InventoryUOM": "kg",
+   "CustomsGroupCode": "76011000",
+   "SalesUnitWeight": "1"
+  },
+  {
+   "ItemCode": "AL-PROF-6060",
+   "ItemName": "Alu-Strangpressprofil 6060",
+   "ItemsGroupCode": 202,
+   "InventoryUOM": "kg",
+   "CustomsGroupCode": "76042100",
+   "SalesUnitWeight": "1"
+  },
+  {
+   "ItemCode": "FG-HALTER-01",
+   "ItemName": "Halterung Typ 01",
+   "ItemsGroupCode": 300,
+   "InventoryUOM": "Stk",
+   "CustomsGroupCode": "87089997",
+   "SalesUnitWeight": "1.85"
+  }
+ ]
+}

@@ -1,0 +1,13 @@
+Belegt {{ .Chart.AppVersion }} 已部署（deploy-profile={{ .Values.global.deployProfile }}，environment={{ .Values.global.environment }}，data_residency={{ .Values.global.dataResidency }}）。
+
+1. 迁移：Job {{ include "belegt.fullname" . }}-migrate-{{ .Release.Revision }} 执行 migrations/postgres/*.sql（RLS + graph.commit_version()）。
+   失败排查：kubectl -n {{ include "belegt.ns" (list . "app") }} logs job/{{ include "belegt.fullname" . }}-migrate-{{ .Release.Revision }}
+2. 健康检查：kubectl -n {{ include "belegt.ns" (list . "app") }} port-forward svc/{{ include "belegt.fullname" . }}-api 8000 && curl localhost:8000/readyz
+3. 网络隔离：NetworkPolicy={{ .Values.networkPolicy.enabled }}；出公网仅经 {{ include "belegt.fullname" . }}-egress-gateway（白名单 {{ len .Values.egressGateway.allowlist }} 个域名）。
+4. 运维手册：deploy/ops/（备份恢复、密钥轮换、事件响应、SLO、成本）。
+{{- if .Values.secrets.create }}
+警告：secrets.create=true 仅用于开发/测试；生产请用 Vault / External Secrets 并设 secrets.create=false（07 §4.5）。
+{{- end }}
+{{- if .Values.api.devTokens }}
+警告：api.devTokens=true 启用了静态开发令牌表；生产必须接 OIDC（07 §4.6）。
+{{- end }}

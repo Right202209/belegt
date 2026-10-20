@@ -1,0 +1,37 @@
+id: dp:cert.iso50001.valid_until
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: ISO 50001 gültig bis
+  en: ISO 50001 valid until
+  zh: ISO 50001 有效期至
+definition:
+  en: Expiry date printed on the valid ISO 50001 (energy management) certificate issued by an accredited certification body for the stated site or organization. Excludes certificates that are suspended or withdrawn; the certificate file is evidence.
+  de: Auf dem gültigen ISO 50001-Zertifikat einer akkreditierten Zertifizierungsstelle angegebenes Ablaufdatum für den genannten Standort bzw. die Organisation. Ausgesetzte oder entzogene Zertifikate zählen nicht.
+  zh: 经认可认证机构为所述场址或组织签发的有效 ISO 50001 证书上的到期日；不含暂停或撤销的证书，证书文件作为证据。
+value_type: date
+period_type: validity_range
+boundary:
+  - organization
+  - site
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: iso_50001
+sensitivity: public
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - public_source
+  min_sources: 1
+  requires_calculation: false
+  human_confirmation_allowed: false
+validity_rule:
+  expires_by: value
+tags:
+  - cdp_climate
+  - oem_custom
+  - certificate

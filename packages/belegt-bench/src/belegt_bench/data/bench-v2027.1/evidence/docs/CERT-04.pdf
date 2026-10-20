@@ -1,0 +1,43 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [5 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+4 0 obj
+<< /Length 248 >>
+stream
+BT
+/F1 11 Tf
+1 0 0 1 72 780 Tm (IATF Oversight) Tj
+1 0 0 1 72 762 Tm (IATF 16949:2016 Certificate) Tj
+1 0 0 1 72 744 Tm (Musterteile GmbH) Tj
+1 0 0 1 72 726 Tm (Certificate valid from 2024-11-01) Tj
+1 0 0 1 72 708 Tm (Expiry date: 2027-10-31) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R >> >> /Contents 4 0 R >>
+endobj
+6 0 obj
+<< /Producer (belegt-bench-synth) /Subject (belegt-bench-canary:4ab87a96-b97e-55bb-883a-41a7e5a17d62) >>
+endobj
+xref
+0 7
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000212 00000 n 
+0000000511 00000 n 
+0000000637 00000 n 
+trailer
+<< /Size 7 /Root 1 0 R /Info 6 0 R >>
+startxref
+757
+%%EOF

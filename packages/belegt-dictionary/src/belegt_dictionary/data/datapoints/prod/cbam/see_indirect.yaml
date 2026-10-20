@@ -1,0 +1,47 @@
+id: dp:prod.cbam.see_indirect
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Spezifische indirekte graue Emissionen
+  en: Specific embedded emissions, indirect
+  zh: 间接比隐含排放
+definition:
+  en: Indirect embedded emissions of the CBAM good per tonne, from electricity consumed in its production (specific electricity consumption times the applicable electricity emission factor), including relevant precursors. Excludes direct emissions (dp:prod.cbam.see_direct).
+  de: Indirekte graue Emissionen der CBAM-Ware je Tonne aus dem bei der Herstellung verbrauchten Strom (spezifischer Stromverbrauch mal Stromemissionsfaktor), einschließlich Vorprodukte.
+  zh: 每吨 CBAM 货物生产中消耗电力导致的间接隐含排放（比电耗 × 适用电力排放因子），含相关前体；不含直接排放（dp:prod.cbam.see_direct）。
+value_type: number
+unit: tCO2e/t
+allowed_units:
+  - tCO2e/t
+  - kgCO2e/kg
+period_type: calendar_year
+boundary:
+  - product_per_unit
+methodology_refs:
+  - ref: eu_2023_956_cbam
+    clause: Annex IV
+  - ref: eu_2023_1773_cbam_ir
+    clause: Annex III
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - supplier_response
+    - historical_answer
+  min_sources: 1
+  max_age_days: 550
+  requires_calculation: true
+  human_confirmation_allowed: false
+validity_rule:
+  min: 0
+  expires_by: period_end_plus_days
+  expires_after_days: 550
+related_datapoints:
+  - id: dp:prod.cbam.see_direct
+    relation: see_also
+  - id: dp:prod.cbam.specific_electricity_consumption
+    relation: derived_from
+tags:
+  - cbam_communication
+  - cbam

@@ -1,0 +1,25 @@
+{
+ "odata.metadata": "$metadata#item_groups",
+ "value": [
+  {
+   "Number": 101,
+   "GroupName": "ENERGIE"
+  },
+  {
+   "Number": 102,
+   "GroupName": "KRAFTSTOFF"
+  },
+  {
+   "Number": 201,
+   "GroupName": "STAHL"
+  },
+  {
+   "Number": 202,
+   "GroupName": "ALUMINIUM"
+  },
+  {
+   "Number": 300,
+   "GroupName": "FERTIGWARE"
+  }
+ ]
+}

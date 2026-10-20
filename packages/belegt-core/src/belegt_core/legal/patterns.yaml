@@ -1,0 +1,47 @@
+# Spec: 06 §6.1 模式库（legal-patterns@1.0.0）。每条：id、type、lang、regex（大小写不敏感，Unicode）、示例、反例。
+# 德语做词形归一：分离动词（sichert … zu、stellt … frei）、verpflichten/verpflichtet/Verpflichtung。
+version: 1.0.0
+patterns:
+  # ---------------- LC-01 保证/担保
+  - {id: LC01-de-zusichern, type: LC-01, lang: de, regex: '\b(?:sicher(?:t|n|e|st)\b[^.;]{0,120}?\bzu\b(?=\s*[,.:;]|\s+dass)|zu(?:ge)?sicher(?:t|n|ung)\w*)',
+     examples: ["Der Lieferant sichert zu, dass die Daten richtig sind.", "Wir sichern hiermit ausdrücklich zu, dass …"],
+     counterexamples: ["Bitte stellen Sie sicher, dass die Datei lesbar ist."]}
+  - {id: LC01-de-gewaehrleisten, type: LC-01, lang: de, regex: '\b(?:gewährleist\w*|gewaehrleist\w*|garantier\w*|Garantie\w*|steh(?:t|en)\s+dafür\s+ein)',
+     examples: ["Der Lieferant gewährleistet die Einhaltung."], counterexamples: ["Geben Sie die Anzahl der Mitarbeitenden an."]}
+  - {id: LC01-en-warrant, type: LC-01, lang: en, regex: '\b(?:represents?\s+and\s+warrants?|warrant(?:s|ed|y|ies)?|guarantee[sd]?)\b',
+     examples: ["The supplier represents and warrants that …", "We guarantee compliance."], counterexamples: ["Please provide your contact person."]}
+  # ---------------- LC-02 赔偿
+  - {id: LC02-de-freistellen, type: LC-02, lang: de, regex: '\b(?:stell(?:t|en|e)\b[^.;]{0,160}?\bfrei\b|freizustellen|Freistellung\w*|schadlos\s+(?:zu\s+)?halt\w*|Schadens?ersatz\w*)',
+     examples: ["Der Lieferant stellt den Auftraggeber von sämtlichen Ansprüchen Dritter frei."], counterexamples: ["Stellen Sie die Daten bis Freitag bereit."]}
+  - {id: LC02-en-indemnify, type: LC-02, lang: en, regex: '\b(?:indemnif(?:y|ies|ied|ication)|hold\s+harmless|compensate\s+for\s+any\s+damages?)\b',
+     examples: ["The supplier shall indemnify and hold harmless the buyer."], counterexamples: ["Describe your damage prevention program."]}
+  # ---------------- LC-03 审计权/现场检查
+  - {id: LC03-de-audit, type: LC-03, lang: de, regex: '\b(?:Auditrechte?|Prüfrechte?|berechtigt\b[^.;]{0,120}?\b(?:zu\s+)?(?:über)?prüfen|Einsicht\s+in\s+(?:die\s+)?(?:Unterlagen|Bücher)|Vor-Ort-Audits?|Audits?\s+vor\s+Ort)',
+     examples: ["Der Auftraggeber ist berechtigt, die Einhaltung durch Audits vor Ort zu überprüfen."], counterexamples: ["Wurde im Berichtsjahr ein internes Audit durchgeführt?"]}
+  - {id: LC03-en-audit, type: LC-03, lang: en, regex: '\b(?:right\s+to\s+audit|on-site\s+(?:inspections?|audits?)|access\s+to\s+(?:records|books))\b',
+     examples: ["The buyer has the right to audit the supplier."], counterexamples: ["Has an internal audit been performed?"]}
+  # ---------------- LC-04 行为准则签署/接受
+  - {id: LC04-de-kodex, type: LC-04, lang: de, regex: '(?:Verhaltenskodex|Code\s+of\s+Conduct)[^.;]{0,160}?\b(?:an(?:erkannt|erkennen|zuerkennen|)\b|akzeptier\w*|unterzeichn\w*|verbindlich)|\berkenn\w*\b[^.;]{0,80}?(?:Verhaltenskodex|Code\s+of\s+Conduct)|verpflicht\w*\s+sich\s+zur\s+Einhaltung',
+     examples: ["Hiermit erkennen wir den Verhaltenskodex für Lieferanten der XY AG als verbindlich an."], counterexamples: ["Haben Sie einen eigenen Verhaltenskodex?"]}
+  - {id: LC04-en-coc, type: LC-04, lang: en, regex: '\b(?:acknowledge\w*\s+and\s+accept\w*\s+the\s+(?:supplier\s+)?code\s+of\s+conduct|agree\w*\s+to\s+comply)\b',
+     examples: ["We acknowledge and accept the Code of Conduct."], counterexamples: ["Do you have a code of conduct?"]}
+  # ---------------- LC-05 目标承诺
+  - {id: LC05-de-ziel, type: LC-05, lang: de, regex: '\b(?:verpflicht\w*\b[^.;]{0,160}?\b(?:zu\s+)?(?:reduzieren|senken|verringern|mindern)|SBTi|Netto-?Null\s+bis|Klimaneutralität\s+bis)',
+     examples: ["Wir verpflichten uns, unsere Emissionen bis 2030 um 42 % zu reduzieren (SBTi)."], counterexamples: ["Wie hoch waren Ihre Emissionen im Vorjahr?"]}
+  - {id: LC05-en-target, type: LC-05, lang: en, regex: '\b(?:commit\w*\s+to\b[^.;]{0,100}?\breduc\w*|science[- ]based\s+targets?|net[- ]zero\s+by)\b',
+     examples: ["We commit to a 42% reduction by 2030."], counterexamples: ["What were your scope 1 emissions?"]}
+  # ---------------- LC-06 数据真实完整确认
+  - {id: LC06-de-richtigkeit, type: LC-06, lang: de, regex: '\b(?:bestätig\w*\b[^.;]{0,80}?Richtigkeit|nach\s+bestem\s+Wissen(?:\s+und\s+Gewissen)?|wahrheitsgemäß\w*|richtig\s+und\s+vollständig|Richtigkeit\s+und\s+Vollständigkeit)',
+     examples: ["Wir bestätigen nach bestem Wissen und Gewissen die Richtigkeit der Angaben."], counterexamples: ["Bitte bestätigen Sie den Eingang der Anfrage."]}
+  - {id: LC06-en-true, type: LC-06, lang: en, regex: '\b(?:(?:confirm|certif)\w*\s+that\s+the\s+information\s+(?:provided\s+)?is\s+true|true,?\s+accurate\s+and\s+complete|to\s+the\s+best\s+of\s+(?:our|my)\s+knowledge)\b',
+     examples: ["We confirm that the information is true, accurate and complete."], counterexamples: ["Is the data available?"]}
+  # ---------------- LC-07 违约责任/处罚
+  - {id: LC07-de-strafe, type: LC-07, lang: de, regex: '\b(?:Vertragsstrafe\w*|Kündigung\w*[^.;]{0,60}?(?:bei|im\s+Falle)\s+(?:eines\s+)?Versto\w*|(?:bei|im\s+Falle\s+eines?)\s+Versto\w*[^.;]{0,120}?(?:Kündigung|kündigen)|fristlose[nr]?\s+Kündigung|haftet\s+für|haften\s+für)',
+     examples: ["Bei Verstoß gegen diese Verpflichtungen ist der Auftraggeber zur fristlosen Kündigung berechtigt."], counterexamples: ["Wie viele Kündigungen gab es im Berichtsjahr?"]}
+  - {id: LC07-en-penalty, type: LC-07, lang: en, regex: '\b(?:penalt(?:y|ies)|liquidated\s+damages|terminat\w*\s+for\s+breach|liable\s+for)\b',
+     examples: ["The buyer may terminate for breach."], counterexamples: ["How many terminations occurred?"]}
+  # ---------------- LC-08 通知/持续义务
+  - {id: LC08-de-mitteilen, type: LC-08, lang: de, regex: '\b(?:(?:unverzüglich|umgehend)\b[^.;]{0,80}?(?:mitzuteilen|mitteilen|zu\s+informieren|informieren|anzuzeigen)|mitzuteilen\b[^.;]{0,40}?(?:unverzüglich|umgehend)|informier\w*\b[^.;]{0,80}?\bumgehend|jährlich\s+zu\s+aktualisieren)',
+     examples: ["Änderungen der Zertifizierung sind dem Auftraggeber unverzüglich schriftlich mitzuteilen."], counterexamples: ["Teilen Sie uns Ihre Umsatzsteuer-ID mit."]}
+  - {id: LC08-en-notify, type: LC-08, lang: en, regex: '\b(?:promptly\s+notify|undertake\s+to\s+inform|keep\s+(?:\w+\s+)?updated)\b',
+     examples: ["The supplier shall promptly notify the buyer of changes."], counterexamples: ["Please notify us of your contact person."]}

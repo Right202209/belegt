@@ -1,0 +1,24 @@
+# Spec: 02 §4.3.8（字段名参考 Battery Pass / DIN DKE SPEC 99100 [需核对]）；01 AC-503-2
+template_mapping: tm:eu_battery_passport@2023-1542
+template_id: eu_battery_passport
+template_version: "2023-1542"
+template_source: "Reg. (EU) 2023/1542 Art. 7, Art. 77, Annex XIII"
+fingerprint:
+  threshold: 0.85
+  markers:
+    - { json_key: "batteryCarbonFootprint", weight: 3 }
+    - { json_key: "batteryChemistry", weight: 1 }
+entries:
+  - entry_id: annex13_1c_cf
+    locator: { kind: paragraph, ref: "Annex XIII 1(c) → Art. 7(1)", field: "batteryCarbonFootprint" }
+    short_label: "Carbon footprint per functional unit"
+    datapoint_id: dp:prod.battery.carbon_footprint_per_kwh
+    direction: export
+    unit_hint: kgCO2e/kWh
+    boundary_hint: product_per_unit
+  - entry_id: annex13_1b_chemistry
+    locator: { kind: paragraph, ref: "Annex XIII 1(b)", field: "batteryChemistry" }
+    short_label: "Battery chemistry"
+    datapoint_id: dp:prod.battery.chemistry
+    direction: export
+    transform: { type: enum_map, map: { NMC: nmc, LFP: lfp, NCA: nca } }

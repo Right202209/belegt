@@ -1,0 +1,45 @@
+id: dp:social.health_safety.recordable_accident_rate
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Quote meldepflichtiger Arbeitsunfälle
+  en: Rate of recordable work-related accidents
+  zh: 可记录工伤事故率
+definition:
+  en: Number of recordable work-related accidents (dp:social.health_safety.recordable_accidents) per 1 000 000 hours worked by own employees in the reporting period, computed by calc-service.
+  de: Anzahl meldepflichtiger Arbeitsunfälle (dp:social.health_safety.recordable_accidents) je 1 000 000 geleistete Arbeitsstunden im Berichtszeitraum, berechnet von calc-service.
+  zh: 报告期内每 1 000 000 工作小时的可记录工伤事故数（dp:social.health_safety.recordable_accidents），由 calc-service 计算。
+value_type: number
+unit: '1'
+period_type: reporting_period
+boundary:
+  - organization
+  - site
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: eu_2026_1560_vcs
+    clause: B9 Para 41(a)
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - erp
+    - historical_answer
+  min_sources: 1
+  max_age_days: 550
+  requires_calculation: true
+  human_confirmation_allowed: false
+validity_rule:
+  min: 0
+  expires_by: period_end_plus_days
+  expires_after_days: 550
+related_datapoints:
+  - id: dp:social.health_safety.recordable_accidents
+    relation: derived_from
+tags:
+  - vsme
+  - health_safety

@@ -1,0 +1,20 @@
+enum: enums/cbam_production_route.yaml
+version: 1.0.0
+title: CBAM production route (iron and steel subset)
+source: Implementing Regulation (EU) 2023/1773 Annex II（v0.1 仅钢铁路线子集）[需核对]
+values:
+  - code: bf_bof
+    label:
+      en: Blast furnace / basic oxygen furnace
+  - code: eaf
+    label:
+      en: Electric arc furnace
+  - code: dri_eaf
+    label:
+      en: Direct reduced iron + EAF
+  - code: smelting_reduction
+    label:
+      en: Smelting reduction
+  - code: other
+    label:
+      en: Other route (state in answer note)

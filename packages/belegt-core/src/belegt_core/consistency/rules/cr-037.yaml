@@ -1,0 +1,19 @@
+# Spec: 06 §2.2 CR-037
+rule_id: CR-037
+rule_version: 1.0.0
+category: reference_integrity
+severity: block
+title:
+  de: Zahl im Text ohne Quelle
+  en: Number in text without source
+scope: answer
+triggers:
+- answer_write
+- pre_submit_gate
+- daily_batch
+- context_change
+plugin: cr_037
+assert: unsourced == 0
+default_action: open_conflict
+explain_template: cr-037
+tests: tests/test_consistency_rules.py::test_cr_037

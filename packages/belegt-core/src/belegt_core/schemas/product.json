@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.belegt.org/graph/2026-10/product.json",
+  "title": "Product",
+  "type": "object",
+  "required": [
+    "id",
+    "name"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^prod_[0-9A-HJKMNP-TV-Z]{26}$"
+    },
+    "org_id": true,
+    "version": true,
+    "created_at": true,
+    "created_by": true,
+    "trust_zone": true,
+    "provenance": true,
+    "supersedes": true,
+    "schema_version": true,
+    "content_hash": true,
+    "tags": true,
+    "name": {
+      "type": "string"
+    },
+    "sku": {
+      "type": "string"
+    },
+    "cn_code": {
+      "type": "string",
+      "pattern": "^[0-9]{8}$"
+    },
+    "declared_unit": {
+      "type": "string"
+    },
+    "site_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^site_[0-9A-HJKMNP-TV-Z]{26}$"
+      }
+    },
+    "cbam_relevant": {
+      "type": "boolean"
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "$ref": "common.json#/$defs/envelope"
+    }
+  ]
+}

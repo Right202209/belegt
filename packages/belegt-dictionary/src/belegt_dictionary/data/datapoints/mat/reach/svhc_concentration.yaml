@@ -1,0 +1,43 @@
+id: dp:mat.reach.svhc_concentration
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: SVHC-Konzentration
+  en: SVHC concentration
+  zh: SVHC 浓度
+definition:
+  en: Concentration of a Candidate List substance in the article as mass fraction (% w/w), relative to the article as defined by REACH. Stored as an exact value; templates asking for ranges receive the range at export. Values received only as a range are stored as text with is_estimate=true.
+  de: Konzentration eines Kandidatenlistenstoffs im Erzeugnis als Massenanteil (% w/w). Exakter Wert; Bereichsangaben erst beim Export.
+  zh: 候选清单物质在物品（按 REACH 定义）中的质量分数（%w/w），存精确值；模板要求区间时导出归档；仅得到区间的按文本存储并 is_estimate=true。
+value_type: number
+unit: '%w/w'
+allowed_units:
+  - '%w/w'
+  - ppm
+period_type: point_in_time
+boundary:
+  - product
+methodology_refs:
+  - ref: eu_1907_2006_reach
+    clause: Art. 33
+sensitivity: confidential
+evidence_requirements:
+  accepted_source_types:
+    - supplier_response
+    - document
+    - historical_answer
+  min_sources: 1
+  max_age_days: 365
+  requires_calculation: false
+  human_confirmation_allowed: false
+validity_rule:
+  min: 0
+  max: 100
+  expires_by: evidence_valid_until
+related_datapoints:
+  - id: dp:mat.reach.svhc_list
+    relation: see_also
+tags:
+  - reach_scip
+  - reach

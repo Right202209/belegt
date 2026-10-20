@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="{{ lang }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>{% block title %}{{ t('app_name') }}{% endblock %}</title>
+<link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+<header class="bar">
+  <span class="brand">{{ t('app_name') }}</span>
+  <nav class="langs" aria-label="language">
+    {% for code, name in languages %}<a href="?lang={{ code }}" {% if code == lang %}aria-current="true" class="on"{% endif %}>{{ code|upper }}</a>{% endfor %}
+  </nav>
+</header>
+{% if t.beta and t('beta_notice') %}<p class="beta">{{ t('beta_notice') }}</p>{% endif %}
+<main>
+{% block main %}{% endblock %}
+</main>
+<footer>
+  {% if privacy_link %}<a href="{{ privacy_link }}" rel="noopener noreferrer">{{ t('footer_privacy') }}</a>{% else %}<a href="/privacy">{{ t('footer_privacy') }}</a>{% endif %}
+  {% if token is defined and token %} · <a href="/pause/{{ token }}">{{ t('pause_reminders') }}</a>{% endif %}
+</footer>
+<script src="/static/app.js" defer></script>
+</body>
+</html>

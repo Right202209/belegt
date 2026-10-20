@@ -1,0 +1,39 @@
+id: dp:prod.mass.net_per_unit
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Nettomasse je Stück
+  en: Net mass per unit
+  zh: 单件净重
+definition:
+  en: Net mass of one unit of the product as delivered, excluding packaging, from design data or weighing records. Used to convert per-kg values to per-piece values; excludes gross shipping weight.
+  de: Nettomasse einer Einheit des Produkts im Lieferzustand ohne Verpackung, aus Konstruktionsdaten oder Wägung. Bruttoversandgewicht ausgeschlossen.
+  zh: 交付状态下一件产品的净质量（不含包装），以设计数据或称重记录为准；用于每千克值与每件值换算，不是含包装的运输毛重。
+value_type: number
+unit: kg
+allowed_units:
+  - kg
+  - t
+period_type: point_in_time
+boundary:
+  - product
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - erp
+    - human_confirmation
+    - historical_answer
+  min_sources: 1
+  max_age_days: 1095
+  requires_calculation: false
+  human_confirmation_allowed: true
+validity_rule:
+  min: 0
+tags:
+  - pact_pcf
+  - cbam_communication
+  - reach_scip
+  - product
+  - human_confirmable_number
