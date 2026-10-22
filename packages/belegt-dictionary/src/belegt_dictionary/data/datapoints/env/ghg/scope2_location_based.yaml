@@ -1,0 +1,58 @@
+id: dp:env.ghg.scope2_location_based
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Scope-2-Emissionen (standortbasiert)
+  en: Scope 2 GHG emissions (location-based)
+  zh: 范围二排放（基于位置）
+definition:
+  en: Gross indirect GHG emissions from purchased or acquired electricity, steam, heat and cooling consumed within the reporting boundary, calculated with grid-average emission factors. Excludes market instruments (GoO, PPA). Biogenic CO2 reported separately.
+  de: Indirekte Brutto-THG-Emissionen aus eingekauftem Strom, Dampf, Wärme und Kälte innerhalb der Berichtsgrenze, berechnet mit durchschnittlichen Netzfaktoren. Herkunftsnachweise und PPA werden nicht berücksichtigt; biogenes CO2 separat.
+  zh: 报告边界内消耗的外购电力、蒸汽、热和冷所产生的间接温室气体排放毛值，使用电网平均排放因子计算；不考虑绿证、PPA 等市场工具；生物源 CO2 单列。
+value_type: number
+unit: tCO2e
+allowed_units:
+  - kgCO2e
+  - tCO2e
+period_type: reporting_period
+boundary:
+  - organization
+  - site
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: ghg_protocol_scope2_guidance
+    clause: Ch.6
+  - ref: eu_2026_1560_vcs
+    clause: B3 Para 33(b)
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - erp
+    - historical_answer
+  min_sources: 1
+  max_age_days: 550
+  requires_calculation: true
+  human_confirmation_allowed: false
+validity_rule:
+  min: 0
+  expires_by: period_end_plus_days
+  expires_after_days: 550
+  plausibility:
+    - expr: value <= dp:energy.consumption.electricity_total * 1.2
+      severity: warn
+      note: 上限按 1.2 tCO2e/MWh 粗估，超出提示单位或口径错误
+related_datapoints:
+  - id: dp:env.ghg.scope2_market_based
+    relation: alternative_of
+  - id: dp:energy.consumption.electricity_total
+    relation: derived_from
+tags:
+  - vsme
+  - cdp_climate
+  - vsme_basic
+  - ghg

@@ -1,0 +1,45 @@
+id: dp:env.ghg_target.has_target
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: THG-Reduktionsziel vorhanden
+  en: GHG reduction target in place
+  zh: 是否有减排目标
+definition:
+  en: Whether the undertaking has adopted a greenhouse gas emissions reduction target. This is a statement about the existence of a target, distinct from a climate transition plan; the reduction percentage, base year and target year are documented separately.
+  de: Ob das Unternehmen ein beschlossenes THG-Reduktionsziel hat. Das Vorhandensein eines Ziels ist vom Klimaübergangsplan zu unterscheiden; Reduktionsquote, Basisjahr und Zieljahr werden separat dokumentiert.
+  zh: 企业是否已通过温室气体减排目标；目标的存在与气候转型计划不同，减排比例、基准年及目标年另行记录。
+value_type: bool
+period_type: point_in_time
+boundary:
+  - organization
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: eu_2026_1560_vcs
+    clause: C3
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - human_confirmation
+    - historical_answer
+  min_sources: 1
+  max_age_days: 365
+  requires_calculation: false
+  human_confirmation_allowed: true
+validity_rule:
+  expires_by: evidence_valid_until
+related_datapoints:
+  - id: dp:env.ghg_target.reduction_pct
+    relation: see_also
+  - id: dp:env.ghg_target.target_year
+    relation: see_also
+tags:
+  - vsme
+  - cdp_climate
+  - oem_custom
+  - ghg_target

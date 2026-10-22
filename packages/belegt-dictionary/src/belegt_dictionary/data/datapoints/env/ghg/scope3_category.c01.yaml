@@ -1,0 +1,45 @@
+id: dp:env.ghg.scope3_category.c01
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: 'Scope 3 Kat. 1: eingekaufte Waren und Dienstleistungen'
+  en: 'Scope 3 cat. 1: purchased goods and services'
+  zh: 范围三第1类：外购商品与服务
+definition:
+  en: Upstream cradle-to-gate greenhouse gas emissions of goods and services purchased or acquired by the undertaking during the reporting period, excluding capital goods and activities allocated to other Scope 3 categories. Calculated under Scope 3 category 1.
+  de: Vorgelagerte Cradle-to-Gate-THG-Emissionen der im Berichtszeitraum eingekauften Waren und Dienstleistungen, ohne Investitionsgüter und Aktivitäten anderer Scope-3-Kategorien; Scope 3 Kategorie 1.
+  zh: 报告期内企业采购商品与服务的上游摇篮到大门温室气体排放，排除资本货物及归属其他范围三类别的活动；按范围三第1类计算。
+value_type: number
+unit: tCO2e
+allowed_units:
+  - kgCO2e
+  - tCO2e
+period_type: reporting_period
+boundary:
+  - organization
+  - site
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: ghg_protocol_scope3_standard
+    clause: Category 1
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - erp
+    - historical_answer
+  min_sources: 1
+  max_age_days: 550
+  requires_calculation: true
+  human_confirmation_allowed: false
+validity_rule:
+  min: 0
+  expires_by: period_end_plus_days
+  expires_after_days: 550
+tags:
+  - cdp_climate
+  - ghg

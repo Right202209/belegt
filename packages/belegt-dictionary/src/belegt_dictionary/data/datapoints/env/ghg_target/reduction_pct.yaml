@@ -1,0 +1,45 @@
+id: dp:env.ghg_target.reduction_pct
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Ziel-Reduktionsquote
+  en: Target reduction percentage
+  zh: 目标减排比例
+definition:
+  en: Percentage reduction in greenhouse gas emissions planned by the undertaking relative to a documented base year. The answer states whether the target is absolute or intensity-based and specifies covered scopes, base year and target year.
+  de: Geplante prozentuale Senkung der THG-Emissionen gegenüber einem dokumentierten Basisjahr. Absolute oder intensitätsbasierte Zielart, Scopes, Basisjahr und Zieljahr sind anzugeben.
+  zh: 企业计划相对于注明基准年的温室气体减排百分比；答案说明目标是绝对量还是强度目标，并注明覆盖范围、基准年及目标年。
+value_type: number
+unit: '%'
+period_type: point_in_time
+boundary:
+  - organization
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: eu_2026_1560_vcs
+    clause: C3
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - erp
+    - historical_answer
+  min_sources: 1
+  max_age_days: 365
+  requires_calculation: false
+  human_confirmation_allowed: false
+validity_rule:
+  min: 0
+  max: 100
+  expires_by: evidence_valid_until
+related_datapoints:
+  - id: dp:env.ghg_target.has_target
+    relation: see_also
+tags:
+  - vsme
+  - cdp_climate
+  - ghg_target

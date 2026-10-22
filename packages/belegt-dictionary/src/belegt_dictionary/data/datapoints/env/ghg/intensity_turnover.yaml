@@ -1,0 +1,50 @@
+id: dp:env.ghg.intensity_turnover
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: THG-Intensität je Umsatz
+  en: GHG intensity per turnover
+  zh: 单位营收排放强度
+definition:
+  en: Greenhouse gas emissions intensity per euro of net turnover, calculated from Scope 1 and location-based Scope 2 emissions divided by net revenue for the same reporting period and consolidation boundary. The answer specifies the emission scopes included.
+  de: 'THG-Intensität je Euro Nettoumsatz: Scope 1 und standortbasierte Scope-2-Emissionen geteilt durch den Nettoumsatz derselben Periode und Konsolidierungsgrenze. Einbezogene Scopes sind anzugeben.'
+  zh: 每欧元净营业额对应的温室气体排放强度，由同一报告期与合并边界的范围一及基于位置的范围二排放除以净营业额计算；答案注明纳入的范围。
+value_type: number
+unit: tCO2e/EUR
+period_type: reporting_period
+boundary:
+  - organization
+  - site
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: eu_2026_1560_vcs
+    clause: B3 Para 34
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - erp
+    - historical_answer
+  min_sources: 1
+  max_age_days: 550
+  requires_calculation: true
+  human_confirmation_allowed: false
+validity_rule:
+  min: 0
+  expires_by: period_end_plus_days
+  expires_after_days: 550
+related_datapoints:
+  - id: dp:env.ghg.scope1_total
+    relation: derived_from
+  - id: dp:env.ghg.scope2_location_based
+    relation: derived_from
+  - id: dp:org.financials.turnover
+    relation: derived_from
+tags:
+  - vsme
+  - cdp_climate
+  - ghg

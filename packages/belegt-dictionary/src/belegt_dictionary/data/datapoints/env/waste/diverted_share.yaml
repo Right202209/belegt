@@ -1,0 +1,47 @@
+id: dp:env.waste.diverted_share
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Verwertungsquote Abfall
+  en: Waste diverted from disposal share
+  zh: 回收/再利用比例
+definition:
+  en: Share of total waste generated that is diverted from disposal through preparation for reuse, recycling or other recovery, expressed as percentage by mass. The answer documents which recovery operations, including or excluding energy recovery, are counted.
+  de: Massenanteil des gesamten Abfallaufkommens, der durch Vorbereitung zur Wiederverwendung, Recycling oder sonstige Verwertung von der Beseitigung abgeleitet wird. Berücksichtigte Verwertungsarten sind anzugeben.
+  zh: 总废弃物中通过准备再使用、回收或其他再利用而避免最终处置的质量百分比；答案注明纳入的再利用方式及是否包含能源回收。
+value_type: number
+unit: '%'
+period_type: reporting_period
+boundary:
+  - organization
+  - site
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: eu_2026_1560_vcs
+    clause: B7
+  - ref: eu_2008_98_wfd
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - erp
+    - historical_answer
+  min_sources: 1
+  max_age_days: 550
+  requires_calculation: true
+  human_confirmation_allowed: false
+validity_rule:
+  min: 0
+  max: 100
+  expires_by: period_end_plus_days
+  expires_after_days: 550
+related_datapoints:
+  - id: dp:env.waste.generated
+    relation: derived_from
+tags:
+  - vsme
+  - waste

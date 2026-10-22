@@ -1,0 +1,39 @@
+id: dp:env.biodiversity.sites_near_sensitive_area
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Standorte nahe biodiversitätssensiblen Gebieten
+  en: Sites near biodiversity-sensitive areas
+  zh: 是否有临近生物多样性敏感区的场址
+definition:
+  en: Whether any owned, leased or managed site is located in or near a biodiversity-sensitive area, such as a protected area or key biodiversity area. The answer identifies relevant sites and distinguishes proximity from a documented adverse impact.
+  de: Ob eigene, gepachtete oder verwaltete Standorte in oder nahe biodiversitätssensiblen Gebieten wie Schutzgebieten liegen. Relevante Standorte sind zu benennen; Nähe ist von nachgewiesener negativer Wirkung zu unterscheiden.
+  zh: 企业拥有、租赁或管理的场址是否位于或临近生物多样性敏感区，如保护区或关键生物多样性区域；答案注明相关场址，临近与已证实不利影响须区分。
+value_type: bool
+period_type: point_in_time
+boundary:
+  - organization
+  - site
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: eu_2026_1560_vcs
+    clause: B5
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - human_confirmation
+    - historical_answer
+  min_sources: 1
+  max_age_days: 365
+  requires_calculation: false
+  human_confirmation_allowed: true
+validity_rule:
+  expires_by: evidence_valid_until
+tags:
+  - vsme
+  - biodiversity

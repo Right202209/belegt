@@ -1,0 +1,57 @@
+id: dp:env.ghg.scope1_total
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Scope-1-Emissionen (brutto)
+  en: Scope 1 GHG emissions (gross)
+  zh: 范围一排放总量
+definition:
+  en: Gross direct greenhouse gas emissions from sources owned or controlled by the undertaking within the reporting boundary, expressed as CO2 equivalents using the stated GWP version. Includes stationary and mobile combustion, process emissions and fugitive emissions. Biogenic CO2 is reported separately; offsets are not deducted.
+  de: Brutto-Treibhausgasemissionen aus eigenen oder kontrollierten Quellen innerhalb der Berichtsgrenze, als CO2-Äquivalente mit dokumentierter GWP-Version. Umfasst stationäre und mobile Verbrennung, Prozesse und diffuse Emissionen; biogenes CO2 separat, ohne Abzug von Kompensationen.
+  zh: 报告边界内企业拥有或控制的排放源产生的温室气体排放毛值，按注明的 GWP 版本折算为 CO2 当量，包含固定及移动燃烧、过程及逸散排放；生物源 CO2 单列，不扣除碳抵消。
+value_type: number
+unit: tCO2e
+allowed_units:
+  - kgCO2e
+  - tCO2e
+period_type: reporting_period
+boundary:
+  - organization
+  - site
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: ghg_protocol_corporate
+    clause: Ch. 4
+  - ref: eu_2026_1560_vcs
+    clause: B3 Para 33(a)
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - erp
+    - historical_answer
+  min_sources: 1
+  max_age_days: 550
+  requires_calculation: true
+  human_confirmation_allowed: false
+validity_rule:
+  min: 0
+  expires_by: period_end_plus_days
+  expires_after_days: 550
+tags:
+  - vsme
+  - cdp_climate
+  - oem_custom
+  - vsme_basic
+  - ghg
+related_datapoints:
+  - id: dp:env.ghg.scope2_location_based
+    relation: see_also
+  - id: dp:env.ghg.scope2_market_based
+    relation: see_also
+  - id: dp:env.ghg.scope3_total
+    relation: see_also

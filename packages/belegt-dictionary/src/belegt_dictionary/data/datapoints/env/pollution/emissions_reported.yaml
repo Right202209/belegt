@@ -1,0 +1,41 @@
+id: dp:env.pollution.emissions_reported
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Schadstoffemissionen (Pflichtmeldung)
+  en: Pollutant emissions (regulatory reporting)
+  zh: 污染物排放（法定申报）
+definition:
+  en: Document containing pollutant emissions to air, water and soil that the undertaking is legally required to report to competent authorities, for the reporting period. Covers the filed regulatory declaration; greenhouse gas totals are recorded separately.
+  de: Dokument der gesetzlich vorgeschriebenen Meldung von Schadstoffemissionen in Luft, Wasser und Boden an die zuständigen Behörden für den Berichtszeitraum. THG-Summen werden separat erfasst.
+  zh: 企业报告期内依法向主管机关申报的大气、水及土壤污染物排放文件；记录已提交的法定申报，温室气体总量另行列示。
+value_type: file
+period_type: reporting_period
+boundary:
+  - organization
+  - site
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: eu_2026_1560_vcs
+    clause: B4
+  - ref: eu_166_2006_eprtr
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - erp
+    - historical_answer
+  min_sources: 1
+  max_age_days: 550
+  requires_calculation: false
+  human_confirmation_allowed: false
+validity_rule:
+  expires_by: period_end_plus_days
+  expires_after_days: 550
+tags:
+  - vsme
+  - pollution

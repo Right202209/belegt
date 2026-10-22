@@ -1,0 +1,45 @@
+id: dp:env.ghg.scope3_total
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Scope-3-Emissionen gesamt
+  en: Scope 3 GHG emissions (total)
+  zh: 范围三排放总量
+definition:
+  en: Total indirect greenhouse gas emissions in the upstream and downstream value chain across all relevant Scope 3 categories, excluding Scope 1 and Scope 2. The answer documents included categories, exclusions, calculation methods and GWP version.
+  de: Summe indirekter THG-Emissionen der vor- und nachgelagerten Wertschöpfungskette über alle relevanten Scope-3-Kategorien, ohne Scope 1 und 2. Einbezogene Kategorien, Ausschlüsse, Methoden und GWP-Version sind anzugeben.
+  zh: 企业上下游价值链所有相关范围三类别的间接温室气体排放总量，不含范围一和范围二；答案注明纳入类别、排除项、计算方法及 GWP 版本。
+value_type: number
+unit: tCO2e
+allowed_units:
+  - kgCO2e
+  - tCO2e
+period_type: reporting_period
+boundary:
+  - organization
+  - site
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: ghg_protocol_scope3_standard
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - erp
+    - historical_answer
+  min_sources: 1
+  max_age_days: 550
+  requires_calculation: true
+  human_confirmation_allowed: false
+validity_rule:
+  min: 0
+  expires_by: period_end_plus_days
+  expires_after_days: 550
+tags:
+  - cdp_climate
+  - oem_custom
+  - ghg

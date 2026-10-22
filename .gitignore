@@ -15,6 +15,8 @@ dist/
 venv/
 env/
 ENV/
+# Environmental dictionary data is source, not a virtual environment.
+!packages/belegt-dictionary/src/belegt_dictionary/data/datapoints/env/
 
 # Unit test / coverage / tooling
 .pytest_cache/

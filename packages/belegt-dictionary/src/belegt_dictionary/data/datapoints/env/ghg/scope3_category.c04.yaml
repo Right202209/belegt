@@ -1,0 +1,45 @@
+id: dp:env.ghg.scope3_category.c04
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: 'Scope 3 Kat. 4: vorgelagerter Transport und Verteilung'
+  en: 'Scope 3 cat. 4: upstream transportation and distribution'
+  zh: 范围三第4类：上游运输与配送
+definition:
+  en: Greenhouse gas emissions from upstream transportation and distribution of purchased products and transport services purchased by the undertaking, in vehicles and facilities not owned or controlled by it. Excludes own fleet emissions reported in Scope 1.
+  de: THG-Emissionen aus vorgelagertem Transport und Verteilung eingekaufter Produkte sowie eingekauften Transportleistungen in fremden Fahrzeugen und Anlagen. Eigene Flottenemissionen gehören zu Scope 1.
+  zh: 企业采购产品的上游运输与配送以及采购运输服务产生的温室气体排放，运输车辆及设施不由企业拥有或控制；排除归入范围一的自有车队排放。
+value_type: number
+unit: tCO2e
+allowed_units:
+  - kgCO2e
+  - tCO2e
+period_type: reporting_period
+boundary:
+  - organization
+  - site
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: ghg_protocol_scope3_standard
+    clause: Category 4
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - erp
+    - historical_answer
+  min_sources: 1
+  max_age_days: 550
+  requires_calculation: true
+  human_confirmation_allowed: false
+validity_rule:
+  min: 0
+  expires_by: period_end_plus_days
+  expires_after_days: 550
+tags:
+  - cdp_climate
+  - ghg

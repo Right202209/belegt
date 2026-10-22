@@ -1,0 +1,51 @@
+id: dp:env.ghg.scope2_market_based
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Scope-2-Emissionen (marktbasiert)
+  en: Scope 2 GHG emissions (market-based)
+  zh: 范围二排放（基于市场）
+definition:
+  en: Gross indirect greenhouse gas emissions from purchased electricity, steam, heat and cooling using supplier-specific emission factors and qualifying contractual instruments under the GHG Protocol Scope 2 Guidance. Residual-mix factors apply to uncovered consumption; offsets are excluded.
+  de: Indirekte Brutto-THG-Emissionen aus eingekauftem Strom, Dampf, Wärme und Kälte mit lieferantenspezifischen Faktoren und qualifizierten Vertragsinstrumenten nach Scope 2 Guidance. Nicht abgedeckter Verbrauch nutzt den Residualmix; keine Kompensationen.
+  zh: 按 GHG Protocol Scope 2 Guidance，使用供应商特定排放因子及合格合同工具计算的外购电力、蒸汽、热和冷间接排放毛值；未覆盖的用量采用剩余组合因子，不扣除碳抵消。
+value_type: number
+unit: tCO2e
+allowed_units:
+  - kgCO2e
+  - tCO2e
+period_type: reporting_period
+boundary:
+  - organization
+  - site
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: ghg_protocol_scope2_guidance
+    clause: Ch.7
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - erp
+    - historical_answer
+  min_sources: 1
+  max_age_days: 550
+  requires_calculation: true
+  human_confirmation_allowed: false
+validity_rule:
+  min: 0
+  expires_by: period_end_plus_days
+  expires_after_days: 550
+related_datapoints:
+  - id: dp:env.ghg.scope2_location_based
+    relation: alternative_of
+  - id: dp:energy.procurement.eac_volume
+    relation: see_also
+tags:
+  - cdp_climate
+  - oem_custom
+  - ghg

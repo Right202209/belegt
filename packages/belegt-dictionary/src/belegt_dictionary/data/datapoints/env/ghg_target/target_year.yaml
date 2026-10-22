@@ -1,0 +1,42 @@
+id: dp:env.ghg_target.target_year
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Zieljahr
+  en: Target year
+  zh: 目标年
+definition:
+  en: Target date for achieving the undertaking's greenhouse gas emissions reduction commitment. When only a target year is available, it is represented as the end of that calendar year; it is not the reporting period or certificate expiry date.
+  de: Zieldatum für das Erreichen der THG-Reduktionsverpflichtung. Ist nur ein Zieljahr bekannt, wird dessen Kalenderjahresende angegeben; nicht mit Berichtszeitraum oder Zertifikatsablauf verwechseln.
+  zh: 企业温室气体减排承诺的目标日期；仅提供目标年时用该日历年末表示，不等同于报告期或证书到期日。
+value_type: date
+period_type: point_in_time
+boundary:
+  - organization
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: eu_2026_1560_vcs
+    clause: C3
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - human_confirmation
+    - historical_answer
+  min_sources: 1
+  max_age_days: 365
+  requires_calculation: false
+  human_confirmation_allowed: true
+validity_rule:
+  expires_by: evidence_valid_until
+related_datapoints:
+  - id: dp:env.ghg_target.has_target
+    relation: see_also
+tags:
+  - vsme
+  - cdp_climate
+  - ghg_target

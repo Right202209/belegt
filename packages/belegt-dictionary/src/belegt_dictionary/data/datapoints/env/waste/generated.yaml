@@ -1,0 +1,51 @@
+id: dp:env.waste.generated
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Abfallaufkommen gesamt
+  en: Total waste generated
+  zh: 废弃物产生总量
+definition:
+  en: Total mass of waste generated within the reporting boundary during the reporting period, including hazardous and non-hazardous waste. Waste is counted when generated, independent of its subsequent disposal, recycling or recovery route.
+  de: Gesamte Masse der im Berichtszeitraum innerhalb der Berichtsgrenze entstandenen gefährlichen und nicht gefährlichen Abfälle, unabhängig von anschließender Entsorgung, Recycling oder Verwertung.
+  zh: 报告边界内报告期产生的危险与非危险废弃物总质量，按产生时计量，不因后续处置、回收或再利用方式而改变。
+value_type: number
+unit: t
+allowed_units:
+  - t
+  - kg
+period_type: reporting_period
+boundary:
+  - organization
+  - site
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: eu_2026_1560_vcs
+    clause: B7 Para 39(a)
+  - ref: eu_2008_98_wfd
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - erp
+    - historical_answer
+  min_sources: 1
+  max_age_days: 550
+  requires_calculation: false
+  human_confirmation_allowed: false
+validity_rule:
+  min: 0
+  expires_by: period_end_plus_days
+  expires_after_days: 550
+related_datapoints:
+  - id: dp:env.waste.generated.hazardous
+    relation: sum_of
+  - id: dp:env.waste.generated.non_hazardous
+    relation: sum_of
+tags:
+  - vsme
+  - waste

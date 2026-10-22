@@ -1,0 +1,46 @@
+id: dp:env.water.withdrawal_total
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Wasserentnahme gesamt
+  en: Total water withdrawal
+  zh: 取水总量
+definition:
+  en: Total volume of water withdrawn from all sources within the reporting boundary during the reporting period, including third-party supply, groundwater and surface water. Excludes internal recirculation and distinguishes withdrawal from water consumption.
+  de: Gesamtes im Berichtszeitraum aus allen Quellen entnommenes Wasser innerhalb der Berichtsgrenze, einschließlich Fremdbezug, Grund- und Oberflächenwasser. Interne Kreisläufe sind ausgeschlossen; Entnahme ist nicht Verbrauch.
+  zh: 报告边界内报告期从所有来源取用的水量，含第三方供水、地下水及地表水；不含内部循环水，取水量与耗水量须区分。
+value_type: number
+unit: m3
+allowed_units:
+  - m3
+  - L
+period_type: reporting_period
+boundary:
+  - organization
+  - site
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: eu_2026_1560_vcs
+    clause: B6
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - erp
+    - historical_answer
+  min_sources: 1
+  max_age_days: 550
+  requires_calculation: false
+  human_confirmation_allowed: false
+validity_rule:
+  min: 0
+  expires_by: period_end_plus_days
+  expires_after_days: 550
+tags:
+  - vsme
+  - cdp_climate
+  - water

@@ -129,12 +129,14 @@ CI 样例：`code/belegt/.github/workflows/bench.yml`（bench-offline：单元�
 
 | 被测 | 关键结果 |
 |---|---|
-| 词元基线 question-parser | Top-1 88.8%、Top-3 95.4%、ECE 0.24、M-MAP-04 ★ 100%（全部转人工）、自动采用 0% |
+| 词元基线 question-parser | Top-1 86.9%、Top-3 93.8%、ECE 0.22、M-MAP-04 ★ 100%（全部转人工）、自动采用 0% |
 | **belegt-core QuestionParser + MockLLM** | Top-1 81.5%、Top-3 88.0%、ECE 0.14、自动采用 36.1%、**M-MAP-04 ★ 98.1% → QG-01 block**：1 道错题被自动采用（`QN-T12-q04` “Net mass of the relevant commdoity?” → `dp:prod.mass.net_per_unit`，置信度 0.959） |
 | belegt-io 证据基线 | P 100%、R 71.4%、F1 83.3%、定位 100%、有效期 100%、M-EVI-04 ★ 0 |
 | 规则冲突基线 | 漏检 0、误报 0（与黄金集同一作者，**不代表质量**） |
 | 正则注入基线 | 召回 100%、难负例误报 0（同上，不代表质量） |
 | **belegt-core guard `scan()`** | 在全部 20 条注入上只检出 6 条（漏检 INJ-02/03/04/07/08/10/11/13/14/15/16/17/18/20）→ auto 模式下 **M-SRR-03 ★ 违例** |
+
+词元参考基线使用完整的 91 个字典数据点。初始提交的 `env/` 忽略规则遗漏了 17 个环境数据点；按 `docs/02-数据点字典规范.md` 恢复定义后，重生成了词元基线报告和逐样本结果。黄金集逐字节保持一致，映射器和门禁阈值未改。
 
 ## 发现（需 belegt-core 跟进）
 

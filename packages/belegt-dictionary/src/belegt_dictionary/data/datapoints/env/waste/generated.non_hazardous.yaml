@@ -1,0 +1,49 @@
+id: dp:env.waste.generated.non_hazardous
+version: 1.0.0
+introduced_in: v2027.1
+status: draft
+label:
+  de: Nicht gefährliche Abfälle
+  en: Non-hazardous waste generated
+  zh: 非危险废弃物
+definition:
+  en: Mass of non-hazardous waste generated within the reporting boundary during the reporting period, excluding hazardous waste. Together with hazardous waste this forms total waste generated, independent of disposal or recovery route.
+  de: Masse nicht gefährlicher Abfälle im Berichtszeitraum innerhalb der Berichtsgrenze, ohne gefährliche Abfälle. Zusammen mit gefährlichen Abfällen bildet sie das Gesamtaufkommen, unabhängig vom Verwertungsweg.
+  zh: 报告边界内报告期产生的非危险废弃物质量，不含危险废弃物；与危险废弃物共同构成总量，不受处置或再利用方式影响。
+value_type: number
+unit: t
+allowed_units:
+  - t
+  - kg
+period_type: reporting_period
+boundary:
+  - organization
+  - site
+consolidation:
+  - operational_control
+  - financial_control
+  - equity_share
+methodology_refs:
+  - ref: eu_2026_1560_vcs
+    clause: B7 Para 39(a)
+  - ref: eu_2008_98_wfd
+sensitivity: customer_shared
+evidence_requirements:
+  accepted_source_types:
+    - document
+    - erp
+    - historical_answer
+  min_sources: 1
+  max_age_days: 550
+  requires_calculation: false
+  human_confirmation_allowed: false
+validity_rule:
+  min: 0
+  expires_by: period_end_plus_days
+  expires_after_days: 550
+related_datapoints:
+  - id: dp:env.waste.generated
+    relation: component_of
+tags:
+  - vsme
+  - waste
